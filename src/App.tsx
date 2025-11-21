@@ -12,6 +12,8 @@ import Transactions from "./pages/Transactions";
 import DashboardClients from "./pages/DashboardClients";
 import DashboardReports from "./pages/DashboardReports";
 import DashboardSettings from "./pages/DashboardSettings";
+import RegisterCard from "./pages/RegisterCard";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/pay/:linkId" element={<RegisterCard />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="links" element={<PaymentLinks />} />

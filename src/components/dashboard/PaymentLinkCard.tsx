@@ -32,7 +32,8 @@ export function PaymentLinkCard({ link }: PaymentLinkCardProps) {
   const statusInfo = statusConfig[link.status];
   
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://pay.empresa.com/${link.id}`);
+    const fullUrl = `${window.location.origin}/pay/${link.id}`;
+    navigator.clipboard.writeText(fullUrl);
     toast.success('Link copiado al portapapeles');
   };
 
