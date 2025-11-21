@@ -9,6 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Infinity, Calendar, TrendingUp, DollarSign } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -56,12 +59,83 @@ interface NewSubscriptionDialogProps {
   onSuccess: () => void;
 }
 
+type SubscriptionTypeOption = {
+  id: string;
+  title: string;
+  description: string;
+  durationType: "unlimited" | "limited";
+  amountType: "fixed" | "variable";
+  icon: any;
+  features: string[];
+};
+
+const subscriptionTypes: SubscriptionTypeOption[] = [
+  {
+    id: "unlimited-variable",
+    title: "Ilimitada - Monto Variable",
+    description: "Suscripción continua con montos que pueden cambiar cada período",
+    durationType: "unlimited",
+    amountType: "variable",
+    icon: TrendingUp,
+    features: [
+      "Renovación automática indefinida",
+      "Monto ajustable según consumo",
+      "Ideal para servicios cooperativos",
+      "Seguros con renovación automática",
+    ],
+  },
+  {
+    id: "unlimited-fixed",
+    title: "Ilimitada - Monto Fijo",
+    description: "Suscripción continua con monto constante y reconfirmación para cambios",
+    durationType: "unlimited",
+    amountType: "fixed",
+    icon: Infinity,
+    features: [
+      "Renovación automática indefinida",
+      "Monto fijo constante",
+      "Cambios requieren reconfirmación previa",
+      "Ideal para membresías y asociaciones",
+    ],
+  },
+  {
+    id: "limited-variable",
+    title: "Limitada - Monto Variable",
+    description: "Duración específica con montos diferenciados por período",
+    durationType: "limited",
+    amountType: "variable",
+    icon: Calendar,
+    features: [
+      "Número definido de pagos",
+      "Montos variables por período",
+      "Ideal para planes con descuentos iniciales",
+      "Promociones con precios diferenciados",
+    ],
+  },
+  {
+    id: "limited-fixed",
+    title: "Limitada - Monto Fijo",
+    description: "Duración específica con monto constante en todos los pagos",
+    durationType: "limited",
+    amountType: "fixed",
+    icon: DollarSign,
+    features: [
+      "Número definido de pagos",
+      "Monto fijo constante",
+      "Ideal para cursos y programas",
+      "Planes con duración determinada",
+    ],
+  },
+];
+
 export function NewSubscriptionDialog({
   open,
   onOpenChange,
   onSuccess,
 }: NewSubscriptionDialogProps) {
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<"selection" | "form">("selection");
+  const [selectedType, setSelectedType] = useState<SubscriptionTypeOption | null>(null);
 
   const form = useForm<SubscriptionFormData>({
     resolver: zodResolver(subscriptionSchema),
@@ -77,6 +151,27 @@ export function NewSubscriptionDialog({
   const watchType = form.watch("type");
   const watchDurationType = form.watch("duration_type");
   const watchFirstChargeType = form.watch("first_charge_type");
+
+  const handleTypeSelection = (type: SubscriptionTypeOption) => {
+    setSelectedType(type);
+    form.setValue("type", type.amountType);
+    form.setValue("duration_type", type.durationType);
+    setStep("form");
+  };
+
+  const handleBack = () => {
+    setStep("selection");
+    setSelectedType(null);
+  };
+
+  const handleClose = (open: boolean) => {
+    if (!open) {
+      setStep("selection");
+      setSelectedType(null);
+      form.reset();
+    }
+    onOpenChange(open);
+  };
 
   const onSubmit = async (data: SubscriptionFormData) => {
     setLoading(true);
@@ -138,17 +233,84 @@ export function NewSubscriptionDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Nueva Suscripción</DialogTitle>
-          <DialogDescription>
-            Completa los datos para crear una nueva suscripción recurrente
-          </DialogDescription>
+          <div className="flex items-center gap-2">
+            {step === "form" && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={handleBack}
+                className="h-8 w-8"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            )}
+            <div>
+              <DialogTitle>
+                {step === "selection" ? "Selecciona el Tipo de Suscripción" : "Nueva Suscripción"}
+              </DialogTitle>
+              <DialogDescription>
+                {step === "selection"
+                  ? "Elige el tipo de suscripción que mejor se adapte a tus necesidades"
+                  : `Completa los datos para crear una suscripción ${selectedType?.title.toLowerCase()}`}
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {step === "selection" ? (
+          <div className="grid gap-4 py-4">
+            {subscriptionTypes.map((type) => {
+              const Icon = type.icon;
+              return (
+                <Card
+                  key={type.id}
+                  className="cursor-pointer transition-all hover:border-primary hover:shadow-md"
+                  onClick={() => handleTypeSelection(type)}
+                >
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-primary/10">
+                          <Icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-base">{type.title}</CardTitle>
+                          <CardDescription className="text-sm mt-1">
+                            {type.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Badge variant="outline" className="text-xs">
+                          {type.durationType === "unlimited" ? "Ilimitada" : "Limitada"}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {type.amountType === "fixed" ? "Fijo" : "Variable"}
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-1.5">
+                      {type.features.map((feature, idx) => (
+                        <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-primary mt-1">•</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Client Information */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-foreground">Información del Cliente</h3>
@@ -415,21 +577,22 @@ export function NewSubscriptionDialog({
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={loading}
-              >
-                Cancelar
-              </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Creando..." : "Crear Suscripción"}
-              </Button>
-            </div>
-          </form>
-        </Form>
+              <div className="flex justify-end gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => handleClose(false)}
+                  disabled={loading}
+                >
+                  Cancelar
+                </Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Creando..." : "Crear Suscripción"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
       </DialogContent>
     </Dialog>
   );
