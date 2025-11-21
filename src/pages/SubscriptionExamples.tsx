@@ -15,6 +15,7 @@ import {
 const subscriptionTypes = [
   {
     id: 1,
+    anchor: "limited-fixed",
     title: "Suscripción Limitada - Monto Fijo",
     description: "Ideal para planes de pago con cuotas definidas y monto constante",
     durationType: "limited",
@@ -41,6 +42,7 @@ const subscriptionTypes = [
   },
   {
     id: 2,
+    anchor: "unlimited-variable",
     title: "Suscripción Ilimitada - Monto Variable",
     description: "Perfecta para servicios con precios ajustables sin fecha de finalización",
     durationType: "unlimited",
@@ -67,6 +69,7 @@ const subscriptionTypes = [
   },
   {
     id: 3,
+    anchor: "limited-variable",
     title: "Suscripción Limitada - Monto Variable",
     description: "Para servicios temporales con precios ajustables según condiciones",
     durationType: "limited",
@@ -93,6 +96,7 @@ const subscriptionTypes = [
   },
   {
     id: 4,
+    anchor: "unlimited-fixed",
     title: "Suscripción Ilimitada - Monto Fijo",
     description: "Suscripciones continuas con precio constante hasta cancelación",
     durationType: "unlimited",
@@ -172,8 +176,9 @@ export default function SubscriptionExamples() {
             const Icon = sub.icon;
             return (
               <Card 
-                key={sub.id} 
-                className={`relative overflow-hidden border-2 ${sub.borderColor} ${sub.bgColor} ${sub.bgColorDark} backdrop-blur-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] animate-slide-up group`}
+                key={sub.id}
+                id={sub.anchor}
+                className={`relative overflow-hidden border-2 ${sub.borderColor} ${sub.bgColor} ${sub.bgColorDark} backdrop-blur-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] animate-slide-up group scroll-mt-24`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Decorative gradient overlay */}
