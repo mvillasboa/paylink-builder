@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Edit3, Eye, Plus, Receipt } from "lucide-react";
+import { Search, Edit3, Eye, Plus, Receipt, TrendingUp, Infinity, Calendar, DollarSign } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/currency";
 import { Subscription } from "@/types/subscription";
 import { supabase } from "@/integrations/supabase/client";
@@ -348,6 +348,38 @@ export default function Subscriptions() {
     yearly: 'Anual',
   };
 
+  const getSubscriptionTypeConfig = (subscription: Subscription) => {
+    const isUnlimited = subscription.duration_type === 'unlimited';
+    const isFixed = subscription.type === 'fixed';
+
+    if (isUnlimited && !isFixed) {
+      return {
+        label: 'Ilimitada - Variable',
+        color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/30',
+        icon: TrendingUp,
+      };
+    }
+    if (isUnlimited && isFixed) {
+      return {
+        label: 'Ilimitada - Fijo',
+        color: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30',
+        icon: Infinity,
+      };
+    }
+    if (!isUnlimited && !isFixed) {
+      return {
+        label: 'Limitada - Variable',
+        color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
+        icon: Calendar,
+      };
+    }
+    return {
+      label: 'Limitada - Fijo',
+      color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30',
+      icon: DollarSign,
+    };
+  };
+
   const handleModifyPrice = (subscription: Subscription) => {
     setSelectedSubscription(subscription);
     setModifyDialogOpen(true);
@@ -465,19 +497,24 @@ export default function Subscriptions() {
           ) : (
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead>Referencia</TableHead>
-                  <TableHead>Concepto</TableHead>
-                  <TableHead>Monto</TableHead>
-                  <TableHead>Frecuencia</TableHead>
-                  <TableHead>Estado</TableHead>
+                  <TableRow>
+                    <TableHead>Cliente</TableHead>
+                    <TableHead>Referencia</TableHead>
+                    <TableHead>Concepto</TableHead>
+                    <TableHead>Tipo</TableHead>
+                    <TableHead>Monto</TableHead>
+                    <TableHead>Frecuencia</TableHead>
+                    <TableHead>Estado</TableHead>
                     <TableHead>Próximo Cobro</TableHead>
                     <TableHead className="text-right" style={{ width: "180px" }}>Acciones</TableHead>
-                </TableRow>
+                  </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredSubscriptions.map((subscription) => (
+                {filteredSubscriptions.map((subscription) => {
+                  const typeConfig = getSubscriptionTypeConfig(subscription);
+                  const TypeIcon = typeConfig.icon;
+                  
+                  return (
                   <TableRow key={subscription.id}>
                     <TableCell>
                       <div>
@@ -491,6 +528,12 @@ export default function Subscriptions() {
                       </code>
                     </TableCell>
                     <TableCell>{subscription.concept}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className={typeConfig.color}>
+                        <TypeIcon className="h-3 w-3 mr-1" />
+                        {typeConfig.label}
+                      </Badge>
+                    </TableCell>
                     <TableCell className="font-semibold">
                       {formatCurrency(subscription.amount)}
                     </TableCell>
@@ -540,7 +583,8 @@ export default function Subscriptions() {
                       </div>
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           )}

@@ -243,13 +243,23 @@ export function ViewEditSubscriptionDialog({
                   Monto
                 </Label>
                 {isEditing ? (
-                  <Input
-                    type="number"
-                    value={formData.amount || ""}
-                    onChange={(e) =>
-                      setFormData({ ...formData, amount: parseInt(e.target.value) })
-                    }
-                  />
+                  <>
+                    <Input
+                      type="number"
+                      value={formData.amount || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, amount: parseInt(e.target.value) })
+                      }
+                      disabled={subscription.type === "fixed"}
+                      className={subscription.type === "fixed" ? "opacity-60 cursor-not-allowed" : ""}
+                    />
+                    {subscription.type === "fixed" && (
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                        El monto no puede ser editado en suscripciones de monto fijo. 
+                        Use "Modificar Precio" para cambios de precio.
+                      </p>
+                    )}
+                  </>
                 ) : (
                   <p className="text-foreground font-bold text-lg text-primary">
                     {formatCurrency(subscription.amount)}
