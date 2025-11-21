@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Zap } from "lucide-react";
-import heroImage from "@/assets/hero-payment.jpg";
+import dashboardImage from "@/assets/dashboard-main.jpg";
 
 export const Hero = () => {
   return (
@@ -27,14 +27,14 @@ export const Hero = () => {
             </div>
             
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              <span className="text-primary-foreground">Registra tarjetas</span>
+              <span className="text-primary-foreground">Gestiona suscripciones</span>
               <br />
-              <span className="text-gradient">sin complicaciones</span>
+              <span className="text-gradient">y cobros recurrentes</span>
             </h1>
             
             <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-xl">
-              Envía links seguros a tus clientes para que registren sus tarjetas de débito y crédito. 
-              Cobra de forma simple, rápida y sin fricciones.
+              Plataforma completa B2B para gestionar suscripciones, cobros recurrentes y links de pago. 
+              Control total de tu flujo de ingresos con estadísticas en tiempo real.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -66,13 +66,12 @@ export const Hero = () => {
           
           {/* Right Image */}
           <div className="relative animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="relative rounded-2xl overflow-hidden shadow-strong">
+            <div className="relative rounded-2xl overflow-hidden shadow-strong border border-border/50">
               <img 
-                src={heroImage} 
-                alt="Plataforma de pagos digital" 
+                src={dashboardImage} 
+                alt="Dashboard de PayLink Pro mostrando estadísticas de suscripciones y transacciones" 
                 className="w-full h-auto"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent" />
             </div>
             
             {/* Floating Card */}

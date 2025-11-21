@@ -17,13 +17,13 @@ export const CTA = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center animate-slide-up">
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-primary-foreground">
-            ¿Listo para simplificar
+            Automatiza tus suscripciones
             <br />
-            <span className="text-gradient">tus cobros B2B?</span>
+            <span className="text-gradient">y cobros recurrentes</span>
           </h2>
           
           <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
-            Únete a cientos de empresas que ya están procesando pagos de forma más eficiente y segura
+            Más de 100 empresas ya gestionan sus suscripciones con PayLink Pro. Control total, análisis en tiempo real.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

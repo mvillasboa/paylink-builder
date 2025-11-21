@@ -1,24 +1,30 @@
 import { Card } from "@/components/ui/card";
-import { Send, CreditCard, CheckCircle2 } from "lucide-react";
+import { Send, CreditCard, Settings, CheckCircle2 } from "lucide-react";
 
 const steps = [
   {
     icon: Send,
     number: "01",
-    title: "Envía el Link",
-    description: "Genera un link seguro y personalizado desde tu dashboard. Envíalo por email, SMS o tu canal preferido.",
+    title: "Crea la Suscripción",
+    description: "Define el tipo (fija, variable o única), monto, frecuencia y envía el link de registro a tu cliente.",
   },
   {
     icon: CreditCard,
     number: "02",
-    title: "Cliente Registra Tarjeta",
-    description: "Tu cliente accede al link, ingresa los datos de su tarjeta en un formulario seguro y validado.",
+    title: "Cliente Registra",
+    description: "Tu cliente registra su tarjeta de forma segura una sola vez. Encriptación de extremo a extremo.",
+  },
+  {
+    icon: Settings,
+    number: "03",
+    title: "Gestiona y Modifica",
+    description: "Cambia precios con aprobación del cliente, pausa o cancela suscripciones desde el dashboard.",
   },
   {
     icon: CheckCircle2,
-    number: "03",
-    title: "Comienza a Cobrar",
-    description: "La tarjeta queda registrada de forma segura. Procesa pagos recurrentes o únicos cuando lo necesites.",
+    number: "04",
+    title: "Cobros Automáticos",
+    description: "Los cobros se ejecutan automáticamente según la programación. Notificaciones automáticas incluidas.",
   },
 ];
 
@@ -32,15 +38,15 @@ export const HowItWorks = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 animate-slide-up">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-foreground">
-            Tres pasos para
-            <span className="text-gradient"> empezar a cobrar</span>
+            Cuatro pasos para
+            <span className="text-gradient"> automatizar cobros</span>
           </h2>
           <p className="text-xl text-muted-foreground">
             Un proceso simple y transparente que tus clientes amarán
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {steps.map((step, index) => (
             <div key={index} className="relative animate-fade-in" style={{ animationDelay: `${index * 0.15}s` }}>
               {/* Connecting Line */}
