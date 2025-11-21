@@ -18,6 +18,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
 import { toast } from "sonner";
+import { parse, format } from "date-fns";
+import { es } from "date-fns/locale";
 
 // Schema de validación con zod
 const cardSchema = z.object({
@@ -274,11 +276,7 @@ export default function RegisterCardVariableExample() {
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Próximo cobro:</span>
                       <span className="font-medium text-foreground">
-                        {new Date(mockPaymentLink.nextChargeDate).toLocaleDateString('es-PY', { 
-                          day: '2-digit', 
-                          month: 'long', 
-                          year: 'numeric' 
-                        })}
+                        {format(parse(mockPaymentLink.nextChargeDate, 'yyyy-MM-dd', new Date()), "dd 'de' MMMM 'de' yyyy", { locale: es })}
                       </span>
                     </div>
 
