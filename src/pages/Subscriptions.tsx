@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Edit3, Eye, Plus, Receipt, TrendingUp, Infinity, Calendar, DollarSign } from "lucide-react";
+import { Search, Edit3, Eye, Plus, Receipt, TrendingUp, Infinity, Calendar, Clock } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/currency";
 import { Subscription } from "@/types/subscription";
 import { supabase } from "@/integrations/supabase/client";
@@ -352,31 +352,31 @@ export default function Subscriptions() {
     const isUnlimited = subscription.duration_type === 'unlimited';
     const isFixed = subscription.type === 'fixed';
 
-    if (isUnlimited && !isFixed) {
+    if (!isUnlimited && isFixed) {
       return {
-        label: 'Ilimitada - Variable',
+        label: 'Limitada - Fijo',
         color: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/30',
-        icon: TrendingUp,
+        icon: Calendar,
       };
     }
     if (isUnlimited && isFixed) {
       return {
         label: 'Ilimitada - Fijo',
-        color: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30',
+        color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
         icon: Infinity,
       };
     }
-    if (!isUnlimited && !isFixed) {
+    if (isUnlimited && !isFixed) {
       return {
-        label: 'Limitada - Variable',
-        color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
-        icon: Calendar,
+        label: 'Ilimitada - Variable',
+        color: 'bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/30',
+        icon: TrendingUp,
       };
     }
     return {
-      label: 'Limitada - Fijo',
-      color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30',
-      icon: DollarSign,
+      label: 'Limitada - Variable',
+      color: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30',
+      icon: Clock,
     };
   };
 

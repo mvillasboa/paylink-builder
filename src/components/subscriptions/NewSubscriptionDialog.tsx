@@ -12,7 +12,7 @@ import {
 import { Alert } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Infinity, Calendar, TrendingUp, DollarSign, AlertCircle, HelpCircle } from "lucide-react";
+import { ArrowLeft, Infinity, Calendar, TrendingUp, Clock, AlertCircle, HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Form,
@@ -150,7 +150,7 @@ const subscriptionTypes: SubscriptionTypeOption[] = [
     description: "Duración específica con monto constante",
     durationType: "limited",
     amountType: "fixed",
-    icon: DollarSign,
+    icon: Calendar,
     features: [
       "Pagos definidos",
       "Monto fijo",
@@ -189,7 +189,7 @@ const subscriptionTypes: SubscriptionTypeOption[] = [
     description: "Duración específica con montos diferenciados",
     durationType: "limited",
     amountType: "variable",
-    icon: Calendar,
+    icon: Clock,
     features: [
       "Pagos definidos",
       "Montos variables",
