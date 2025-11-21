@@ -327,7 +327,7 @@ export function NewSubscriptionDialog({
                       className="mt-3 text-xs text-primary hover:underline flex items-center gap-1 group/link"
                     >
                       <HelpCircle className="h-3 w-3 group-hover/link:scale-110 transition-transform" />
-                      Ver ejemplo detallado
+                      Ver guía de tipos de suscripción
                     </button>
                   </CardContent>
                 </Card>
