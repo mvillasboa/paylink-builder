@@ -42,8 +42,13 @@ export const Hero = () => {
                 Comenzar Ahora
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
-                Ver Demo
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
+                onClick={() => window.location.href = '/dashboard'}
+              >
+                Ver Dashboard Demo
               </Button>
             </div>
             
