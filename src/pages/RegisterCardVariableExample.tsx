@@ -68,9 +68,9 @@ const mockPaymentLink: {
 } = {
   id: "LNK-002",
   businessName: "Servicios Públicos SA",
-  amount: 0, // Monto variable
+  amount: 1850000, // Primera cuota
   concept: "Servicio de Electricidad",
-  description: "Suscripción mensual por consumo de energía eléctrica",
+  description: "Suscripción mensual de servicio eléctrico",
   subscriptionType: "variable",
   durationType: "unlimited",
   frequency: "monthly",
@@ -243,13 +243,14 @@ export default function RegisterCardVariableExample() {
                 
                 <Separator />
                 
-                <div className="bg-accent/5 rounded-lg p-4 border border-accent/20">
-                  <p className="text-sm text-muted-foreground mb-1">Tipo de Cobro</p>
-                  <p className="text-lg font-bold text-accent mb-2">
-                    Monto Variable
+                <div className="bg-primary/5 rounded-lg p-4">
+                  <p className="text-sm text-muted-foreground mb-1">Primera Cuota</p>
+                  <p className="text-3xl font-bold text-primary">
+                    ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
+                    <span className="text-base font-normal text-muted-foreground ml-2">PYG</span>
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    El monto se calculará según tu consumo mensual
+                  <p className="text-xs text-accent mt-2 font-medium">
+                    Monto variable según condiciones
                   </p>
                 </div>
 
@@ -297,7 +298,7 @@ export default function RegisterCardVariableExample() {
                             Información importante:
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            El monto de esta suscripción está sujeto a las condiciones contractuales establecidas con {mockPaymentLink.businessName}. El cobro mensual se determinará según tu consumo y las tarifas vigentes.
+                            El monto de esta suscripción está sujeto a las condiciones contractuales establecidas con {mockPaymentLink.businessName}.
                           </p>
                           <p className="text-xs text-muted-foreground">
                             Esta suscripción continuará indefinidamente hasta que decidas cancelarla.
