@@ -245,13 +245,13 @@ export default function RegisterCardVariableExample() {
                 
                 <Separator />
                 
-                <div className="bg-primary/5 rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Primera Cuota</p>
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                  <p className="text-sm text-foreground/80 mb-1">Primera Cuota</p>
                   <p className="text-3xl font-bold text-primary">
                     ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
-                    <span className="text-base font-normal text-muted-foreground ml-2">PYG</span>
+                    <span className="text-base font-normal text-foreground/70 ml-2">PYG</span>
                   </p>
-                  <p className="text-xs text-foreground/70 mt-2 font-medium">
+                  <p className="text-xs text-foreground/80 mt-2 font-medium">
                     Monto sujeto a condiciones contractuales
                   </p>
                 </div>
@@ -288,17 +288,17 @@ export default function RegisterCardVariableExample() {
                     <Separator className="my-2" />
                     
                     {/* Información específica para suscripción ilimitada con monto variable */}
-                    <div className="bg-accent/5 border border-accent/20 rounded-lg p-3">
+                    <div className="bg-accent/10 border border-accent/30 rounded-lg p-3">
                       <div className="flex gap-2">
                         <AlertCircle className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
                         <div className="space-y-2">
                           <p className="text-xs font-medium text-foreground">
                             Información importante:
                           </p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-foreground/80">
                             El monto de esta suscripción está sujeto a las condiciones contractuales establecidas con {mockPaymentLink.businessName}.
                           </p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-foreground/80">
                             Esta suscripción continuará indefinidamente hasta que decidas cancelarla.
                           </p>
                         </div>
@@ -307,11 +307,11 @@ export default function RegisterCardVariableExample() {
                   </div>
                 </div>
 
-                <div className="bg-accent/5 border border-accent/20 rounded-lg p-3 flex gap-3">
+                <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 flex gap-3">
                   <Shield className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-foreground">100% Seguro</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-foreground/80">
                       Tu información está protegida y encriptada
                     </p>
                   </div>
