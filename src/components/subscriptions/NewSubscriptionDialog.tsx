@@ -45,11 +45,11 @@ const subscriptionSchema = z.object({
   description: z.string().max(500, "Descripción es demasiado larga").optional(),
   amount: z.string().optional(),
   type: z.enum(["fixed", "variable", "single"]),
-  frequency: z.enum(["weekly", "monthly", "quarterly", "yearly"]),
-  billing_day: z.string().min(1, "El día de facturación es requerido"),
+  frequency: z.enum(["weekly", "monthly", "quarterly", "yearly"]).optional(),
+  billing_day: z.string().optional(),
   duration_type: z.enum(["unlimited", "limited"]),
   number_of_payments: z.string().optional(),
-  first_charge_type: z.enum(["immediate", "scheduled"]),
+  first_charge_type: z.enum(["immediate", "scheduled"]).optional(),
   first_charge_date: z.string().optional(),
 }).refine(
   (data) => {
@@ -62,6 +62,42 @@ const subscriptionSchema = z.object({
   {
     message: "El monto es requerido",
     path: ["amount"],
+  }
+).refine(
+  (data) => {
+    // Si NO es ilimitada variable, frecuencia es requerida
+    if (!(data.duration_type === "unlimited" && data.type === "variable")) {
+      return data.frequency && data.frequency.length > 0;
+    }
+    return true;
+  },
+  {
+    message: "La frecuencia de cobro es requerida",
+    path: ["frequency"],
+  }
+).refine(
+  (data) => {
+    // Si NO es ilimitada variable, billing_day es requerido
+    if (!(data.duration_type === "unlimited" && data.type === "variable")) {
+      return data.billing_day && data.billing_day.length > 0;
+    }
+    return true;
+  },
+  {
+    message: "El día de facturación es requerido",
+    path: ["billing_day"],
+  }
+).refine(
+  (data) => {
+    // Si NO es ilimitada variable, first_charge_type es requerido
+    if (!(data.duration_type === "unlimited" && data.type === "variable")) {
+      return data.first_charge_type && data.first_charge_type.length > 0;
+    }
+    return true;
+  },
+  {
+    message: "El tipo de primer cobro es requerido",
+    path: ["first_charge_type"],
   }
 ).refine(
   (data) => {
@@ -216,20 +252,25 @@ export function NewSubscriptionDialog({
         return;
       }
 
-      // Para suscripciones ilimitadas de monto variable, usar 0 como monto por defecto
+      // Para suscripciones ilimitadas de monto variable, usar valores por defecto
+      const isUnlimitedVariable = data.duration_type === "unlimited" && data.type === "variable";
       const amount = data.amount && data.amount.length > 0 ? parseInt(data.amount) : 0;
-      const billing_day = parseInt(data.billing_day);
+      const billing_day = data.billing_day ? parseInt(data.billing_day) : 1;
+      const frequency = data.frequency || "monthly";
+      const first_charge_type = data.first_charge_type || "immediate";
       const number_of_payments = data.number_of_payments ? parseInt(data.number_of_payments) : null;
 
       // Calculate next charge date
       const nextChargeDate = new Date();
-      if (data.first_charge_type === "scheduled" && data.first_charge_date) {
-        nextChargeDate.setTime(new Date(data.first_charge_date).getTime());
-      } else {
-        // Set to billing day of current month
-        nextChargeDate.setDate(billing_day);
-        if (nextChargeDate < new Date()) {
-          nextChargeDate.setMonth(nextChargeDate.getMonth() + 1);
+      if (!isUnlimitedVariable) {
+        if (first_charge_type === "scheduled" && data.first_charge_date) {
+          nextChargeDate.setTime(new Date(data.first_charge_date).getTime());
+        } else {
+          // Set to billing day of current month
+          nextChargeDate.setDate(billing_day);
+          if (nextChargeDate < new Date()) {
+            nextChargeDate.setMonth(nextChargeDate.getMonth() + 1);
+          }
         }
       }
 
@@ -243,11 +284,11 @@ export function NewSubscriptionDialog({
         description: data.description,
         amount,
         type: data.type,
-        frequency: data.frequency,
+        frequency,
         billing_day,
         duration_type: data.duration_type,
         number_of_payments,
-        first_charge_type: data.first_charge_type,
+        first_charge_type,
         first_charge_date: data.first_charge_date || null,
         next_charge_date: nextChargeDate.toISOString(),
         status: "active",
@@ -481,80 +522,80 @@ export function NewSubscriptionDialog({
                   </Badge>
                 )}
               </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                {/* Ocultar campo de monto para suscripciones ilimitadas de monto variable */}
-                {!(watchDurationType === "unlimited" && watchType === "variable") && (
+              {/* Ocultar todos los campos de facturación para suscripciones ilimitadas de monto variable */}
+              {!(watchDurationType === "unlimited" && watchType === "variable") ? (
+                <>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="amount"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            {watchType === "variable" ? "Monto Primera Cuota" : "Monto"}
+                          </FormLabel>
+                          <FormControl>
+                            <Input type="number" min="0" placeholder="150000" {...field} />
+                          </FormControl>
+                          <FormDescription>Monto en guaraníes (PYG)</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="billing_day"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Día de Facturación</FormLabel>
+                          <FormControl>
+                            <Input type="number" min="1" max="31" placeholder="1" {...field} />
+                          </FormControl>
+                          <FormDescription>Día del mes para el cobro</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField
                     control={form.control}
-                    name="amount"
+                    name="frequency"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          {watchType === "variable" ? "Monto Primera Cuota" : "Monto"}
-                        </FormLabel>
-                        <FormControl>
-                          <Input type="number" min="0" placeholder="150000" {...field} />
-                        </FormControl>
-                        <FormDescription>Monto en guaraníes (PYG)</FormDescription>
+                        <FormLabel>Frecuencia de Cobro</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="weekly">Semanal</SelectItem>
+                            <SelectItem value="monthly">Mensual</SelectItem>
+                            <SelectItem value="quarterly">Trimestral</SelectItem>
+                            <SelectItem value="yearly">Anual</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                )}
-                <FormField
-                  control={form.control}
-                  name="billing_day"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Día de Facturación</FormLabel>
-                      <FormControl>
-                        <Input type="number" min="1" max="31" placeholder="1" {...field} />
-                      </FormControl>
-                      <FormDescription>Día del mes para el cobro</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              {/* Mensaje informativo para suscripciones ilimitadas de monto variable */}
-              {watchDurationType === "unlimited" && watchType === "variable" && (
+                </>
+              ) : (
                 <Alert className="border-accent/30 bg-accent/5">
                   <AlertCircle className="h-4 w-4 text-accent" />
                   <div className="ml-2">
                     <p className="text-sm font-medium">
-                      Monto Variable
+                      Pagos a Solicitud del Comercio
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Para suscripciones ilimitadas de monto variable, el monto no está definido al momento de la creación. 
-                      El monto será determinado en cada período de facturación según las condiciones contractuales.
+                      Para suscripciones ilimitadas de monto variable, los pagos se procesarán a solicitud del comercio 
+                      de conformidad con las condiciones contractuales suscritas con el cliente. 
+                      No es necesario establecer monto, frecuencia ni día de facturación.
                     </p>
                   </div>
                 </Alert>
               )}
-              <FormField
-                control={form.control}
-                name="frequency"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Frecuencia de Cobro</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="weekly">Semanal</SelectItem>
-                        <SelectItem value="monthly">Mensual</SelectItem>
-                        <SelectItem value="quarterly">Trimestral</SelectItem>
-                        <SelectItem value="yearly">Anual</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               {watchDurationType === "limited" && (
                 <FormField
                   control={form.control}
@@ -573,48 +614,50 @@ export function NewSubscriptionDialog({
               )}
             </div>
 
-            {/* First Charge */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-foreground">Primer Cobro</h3>
-              <div className="grid gap-4 md:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="first_charge_type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tipo de Primer Cobro</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="immediate">Inmediato</SelectItem>
-                          <SelectItem value="scheduled">Programado</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {watchFirstChargeType === "scheduled" && (
+            {/* First Charge - Ocultar para suscripciones ilimitadas de monto variable */}
+            {!(watchDurationType === "unlimited" && watchType === "variable") && (
+              <div className="space-y-4">
+                <h3 className="text-sm font-semibold text-foreground">Primer Cobro</h3>
+                <div className="grid gap-4 md:grid-cols-2">
                   <FormField
                     control={form.control}
-                    name="first_charge_date"
+                    name="first_charge_type"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Fecha del Primer Cobro</FormLabel>
-                        <FormControl>
-                          <Input type="date" {...field} />
-                        </FormControl>
+                        <FormLabel>Tipo de Primer Cobro</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="immediate">Inmediato</SelectItem>
+                            <SelectItem value="scheduled">Programado</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                )}
+                  {watchFirstChargeType === "scheduled" && (
+                    <FormField
+                      control={form.control}
+                      name="first_charge_date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Fecha del Primer Cobro</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
               <div className="flex justify-end gap-3 pt-4">
                 <Button
