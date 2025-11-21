@@ -50,8 +50,8 @@ type CardFormData = z.infer<typeof cardSchema>;
 // Mock data del link de pago
 const mockPaymentLink = {
   id: "LNK-001",
-  businessName: "Empresa Demo S.A. de C.V.",
-  amount: 2500,
+  businessName: "Empresa Demo S.A.",
+  amount: 2500000,
   concept: "Pago Mensualidad Marzo 2024",
   description: "Pago correspondiente al servicio premium del mes de marzo",
 };
@@ -214,8 +214,8 @@ export default function RegisterCard() {
                 <div className="bg-primary/5 rounded-lg p-4">
                   <p className="text-sm text-muted-foreground mb-1">Monto a Cobrar</p>
                   <p className="text-3xl font-bold text-primary">
-                    ${mockPaymentLink.amount.toLocaleString('es-MX')}
-                    <span className="text-base font-normal text-muted-foreground ml-2">MXN</span>
+                    ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
+                    <span className="text-base font-normal text-muted-foreground ml-2">PYG</span>
                   </p>
                 </div>
 

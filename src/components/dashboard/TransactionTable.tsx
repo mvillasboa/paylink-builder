@@ -64,7 +64,7 @@ export function TransactionTable({ transactions, compact = false }: TransactionT
                   </div>
                 </TableCell>
                 <TableCell className="font-semibold text-foreground">
-                  ${transaction.amount.toLocaleString('es-MX')}
+                  ₲ {transaction.amount.toLocaleString('es-PY')}
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline" className="font-medium">

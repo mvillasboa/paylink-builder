@@ -15,12 +15,12 @@ export function StatCard({ title, value, change, icon: Icon, format = 'number' }
   
   const formattedValue = () => {
     if (format === 'currency') {
-      return `$${Number(value).toLocaleString('es-MX')}`;
+      return `₲ ${Number(value).toLocaleString('es-PY')}`;
     }
     if (format === 'percentage') {
       return `${value}%`;
     }
-    return value.toLocaleString('es-MX');
+    return value.toLocaleString('es-PY');
   };
 
   return (
