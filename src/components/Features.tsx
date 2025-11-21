@@ -61,7 +61,7 @@ export const Features = () => {
             <Card 
               key={index}
               className="p-8 bg-gradient-card border-border/50 hover:shadow-medium transition-all duration-300 hover:-translate-y-1 group animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
               <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
                 <feature.icon className="w-7 h-7 text-primary group-hover:text-secondary transition-colors" />
