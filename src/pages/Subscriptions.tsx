@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Edit3, Eye, Plus } from "lucide-react";
+import { Search, Edit3, Eye, Plus, Receipt } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/currency";
 import { Subscription } from "@/types/subscription";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { ModifySubscriptionAmountDialog } from "@/components/subscriptions/ModifySubscriptionAmountDialog";
 import { NewSubscriptionDialog } from "@/components/subscriptions/NewSubscriptionDialog";
 import { ViewEditSubscriptionDialog } from "@/components/subscriptions/ViewEditSubscriptionDialog";
+import { PaymentHistoryDialog } from "@/components/subscriptions/PaymentHistoryDialog";
 
 // Mock data for demonstration
 const MOCK_SUBSCRIPTIONS: Subscription[] = [
@@ -289,6 +290,7 @@ export default function Subscriptions() {
   const [modifyDialogOpen, setModifyDialogOpen] = useState(false);
   const [newSubscriptionDialogOpen, setNewSubscriptionDialogOpen] = useState(false);
   const [viewEditDialogOpen, setViewEditDialogOpen] = useState(false);
+  const [paymentHistoryDialogOpen, setPaymentHistoryDialogOpen] = useState(false);
 
   useEffect(() => {
     loadSubscriptions();
@@ -354,6 +356,11 @@ export default function Subscriptions() {
   const handleViewEdit = (subscription: Subscription) => {
     setSelectedSubscription(subscription);
     setViewEditDialogOpen(true);
+  };
+
+  const handleViewPaymentHistory = (subscription: Subscription) => {
+    setSelectedSubscription(subscription);
+    setPaymentHistoryDialogOpen(true);
   };
 
   if (loading) {
@@ -465,8 +472,8 @@ export default function Subscriptions() {
                   <TableHead>Monto</TableHead>
                   <TableHead>Frecuencia</TableHead>
                   <TableHead>Estado</TableHead>
-                  <TableHead>Próximo Cobro</TableHead>
-                  <TableHead className="text-right">Acciones</TableHead>
+                    <TableHead>Próximo Cobro</TableHead>
+                    <TableHead className="text-right" style={{ width: "180px" }}>Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -504,12 +511,21 @@ export default function Subscriptions() {
                       {new Date(subscription.next_charge_date).toLocaleDateString('es-PY')}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleViewPaymentHistory(subscription)}
+                          title="Ver historial de pagos"
+                        >
+                          <Receipt className="h-4 w-4" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleModifyPrice(subscription)}
                           disabled={subscription.status !== 'active'}
+                          title="Modificar precio"
                         >
                           <Edit3 className="h-4 w-4" />
                         </Button>
@@ -517,6 +533,7 @@ export default function Subscriptions() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleViewEdit(subscription)}
+                          title="Ver detalles"
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -553,6 +570,13 @@ export default function Subscriptions() {
         open={viewEditDialogOpen}
         onOpenChange={setViewEditDialogOpen}
         onSuccess={loadSubscriptions}
+      />
+
+      {/* Payment History Dialog */}
+      <PaymentHistoryDialog
+        subscription={selectedSubscription}
+        open={paymentHistoryDialogOpen}
+        onOpenChange={setPaymentHistoryDialogOpen}
       />
     </div>
   );
