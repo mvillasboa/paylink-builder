@@ -14,16 +14,275 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      notification_logs: {
+        Row: {
+          channel: string
+          cost_amount: number | null
+          currency: string | null
+          error_message: string | null
+          event: string
+          id: string
+          message: string
+          phone_number: string
+          sent_at: string
+          status: string
+          subscription_id: string
+        }
+        Insert: {
+          channel: string
+          cost_amount?: number | null
+          currency?: string | null
+          error_message?: string | null
+          event: string
+          id?: string
+          message: string
+          phone_number: string
+          sent_at?: string
+          status: string
+          subscription_id: string
+        }
+        Update: {
+          channel?: string
+          cost_amount?: number | null
+          currency?: string | null
+          error_message?: string | null
+          event?: string
+          id?: string
+          message?: string
+          phone_number?: string
+          sent_at?: string
+          status?: string
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_logs_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscription_price_changes: {
+        Row: {
+          application_type: Database["public"]["Enums"]["application_type"]
+          applied_at: string | null
+          approval_token: string | null
+          change_type: Database["public"]["Enums"]["price_change_type"]
+          changed_by: string | null
+          client_approval_date: string | null
+          client_approval_method: string | null
+          client_approval_status:
+            | Database["public"]["Enums"]["client_approval_status"]
+            | null
+          client_notified: boolean | null
+          client_notified_at: string | null
+          created_at: string
+          difference: number | null
+          id: string
+          internal_notes: string | null
+          new_amount: number
+          old_amount: number
+          percentage_change: number | null
+          reason: string
+          requires_client_approval: boolean | null
+          scheduled_date: string | null
+          status: string
+          subscription_id: string
+          updated_at: string
+        }
+        Insert: {
+          application_type: Database["public"]["Enums"]["application_type"]
+          applied_at?: string | null
+          approval_token?: string | null
+          change_type: Database["public"]["Enums"]["price_change_type"]
+          changed_by?: string | null
+          client_approval_date?: string | null
+          client_approval_method?: string | null
+          client_approval_status?:
+            | Database["public"]["Enums"]["client_approval_status"]
+            | null
+          client_notified?: boolean | null
+          client_notified_at?: string | null
+          created_at?: string
+          difference?: number | null
+          id?: string
+          internal_notes?: string | null
+          new_amount: number
+          old_amount: number
+          percentage_change?: number | null
+          reason: string
+          requires_client_approval?: boolean | null
+          scheduled_date?: string | null
+          status?: string
+          subscription_id: string
+          updated_at?: string
+        }
+        Update: {
+          application_type?: Database["public"]["Enums"]["application_type"]
+          applied_at?: string | null
+          approval_token?: string | null
+          change_type?: Database["public"]["Enums"]["price_change_type"]
+          changed_by?: string | null
+          client_approval_date?: string | null
+          client_approval_method?: string | null
+          client_approval_status?:
+            | Database["public"]["Enums"]["client_approval_status"]
+            | null
+          client_notified?: boolean | null
+          client_notified_at?: string | null
+          created_at?: string
+          difference?: number | null
+          id?: string
+          internal_notes?: string | null
+          new_amount?: number
+          old_amount?: number
+          percentage_change?: number | null
+          reason?: string
+          requires_client_approval?: boolean | null
+          scheduled_date?: string | null
+          status?: string
+          subscription_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_price_changes_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          allow_pause: boolean | null
+          amount: number
+          billing_day: number
+          client_email: string
+          client_name: string
+          concept: string
+          created_at: string
+          description: string | null
+          duration_type: Database["public"]["Enums"]["duration_type"]
+          first_charge_date: string | null
+          first_charge_type: Database["public"]["Enums"]["first_charge_type"]
+          first_payment_amount: number | null
+          first_payment_reason: string | null
+          frequency: Database["public"]["Enums"]["subscription_frequency"]
+          id: string
+          is_first_payment_completed: boolean | null
+          last_charge_date: string | null
+          last_price_change_date: string | null
+          next_charge_date: string
+          number_of_payments: number | null
+          payments_completed: number | null
+          pending_price_change_id: string | null
+          phone_number: string
+          price_change_history_count: number | null
+          reference: string
+          send_reminder_before_charge: boolean | null
+          status: Database["public"]["Enums"]["subscription_status"]
+          trial_period_days: number | null
+          type: Database["public"]["Enums"]["subscription_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allow_pause?: boolean | null
+          amount: number
+          billing_day: number
+          client_email: string
+          client_name: string
+          concept: string
+          created_at?: string
+          description?: string | null
+          duration_type: Database["public"]["Enums"]["duration_type"]
+          first_charge_date?: string | null
+          first_charge_type: Database["public"]["Enums"]["first_charge_type"]
+          first_payment_amount?: number | null
+          first_payment_reason?: string | null
+          frequency: Database["public"]["Enums"]["subscription_frequency"]
+          id?: string
+          is_first_payment_completed?: boolean | null
+          last_charge_date?: string | null
+          last_price_change_date?: string | null
+          next_charge_date: string
+          number_of_payments?: number | null
+          payments_completed?: number | null
+          pending_price_change_id?: string | null
+          phone_number: string
+          price_change_history_count?: number | null
+          reference: string
+          send_reminder_before_charge?: boolean | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          trial_period_days?: number | null
+          type?: Database["public"]["Enums"]["subscription_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allow_pause?: boolean | null
+          amount?: number
+          billing_day?: number
+          client_email?: string
+          client_name?: string
+          concept?: string
+          created_at?: string
+          description?: string | null
+          duration_type?: Database["public"]["Enums"]["duration_type"]
+          first_charge_date?: string | null
+          first_charge_type?: Database["public"]["Enums"]["first_charge_type"]
+          first_payment_amount?: number | null
+          first_payment_reason?: string | null
+          frequency?: Database["public"]["Enums"]["subscription_frequency"]
+          id?: string
+          is_first_payment_completed?: boolean | null
+          last_charge_date?: string | null
+          last_price_change_date?: string | null
+          next_charge_date?: string
+          number_of_payments?: number | null
+          payments_completed?: number | null
+          pending_price_change_id?: string | null
+          phone_number?: string
+          price_change_history_count?: number | null
+          reference?: string
+          send_reminder_before_charge?: boolean | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          trial_period_days?: number | null
+          type?: Database["public"]["Enums"]["subscription_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_approval_token: { Args: never; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      application_type: "immediate" | "next_cycle" | "scheduled"
+      client_approval_status:
+        | "pending"
+        | "approved"
+        | "rejected"
+        | "not_required"
+      duration_type: "unlimited" | "limited"
+      first_charge_type: "immediate" | "scheduled"
+      price_change_type: "upgrade" | "downgrade" | "inflation" | "custom"
+      subscription_frequency: "weekly" | "monthly" | "quarterly" | "yearly"
+      subscription_status:
+        | "active"
+        | "paused"
+        | "cancelled"
+        | "expired"
+        | "trial"
+      subscription_type: "fixed" | "variable" | "single"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +409,26 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      application_type: ["immediate", "next_cycle", "scheduled"],
+      client_approval_status: [
+        "pending",
+        "approved",
+        "rejected",
+        "not_required",
+      ],
+      duration_type: ["unlimited", "limited"],
+      first_charge_type: ["immediate", "scheduled"],
+      price_change_type: ["upgrade", "downgrade", "inflation", "custom"],
+      subscription_frequency: ["weekly", "monthly", "quarterly", "yearly"],
+      subscription_status: [
+        "active",
+        "paused",
+        "cancelled",
+        "expired",
+        "trial",
+      ],
+      subscription_type: ["fixed", "variable", "single"],
+    },
   },
 } as const
