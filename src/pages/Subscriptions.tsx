@@ -18,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ModifySubscriptionAmountDialog } from "@/components/subscriptions/ModifySubscriptionAmountDialog";
 import { NewSubscriptionDialog } from "@/components/subscriptions/NewSubscriptionDialog";
+import { ViewEditSubscriptionDialog } from "@/components/subscriptions/ViewEditSubscriptionDialog";
 
 // Mock data for demonstration
 const MOCK_SUBSCRIPTIONS: Subscription[] = [
@@ -287,6 +288,7 @@ export default function Subscriptions() {
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
   const [modifyDialogOpen, setModifyDialogOpen] = useState(false);
   const [newSubscriptionDialogOpen, setNewSubscriptionDialogOpen] = useState(false);
+  const [viewEditDialogOpen, setViewEditDialogOpen] = useState(false);
 
   useEffect(() => {
     loadSubscriptions();
@@ -347,6 +349,11 @@ export default function Subscriptions() {
   const handleModifyPrice = (subscription: Subscription) => {
     setSelectedSubscription(subscription);
     setModifyDialogOpen(true);
+  };
+
+  const handleViewEdit = (subscription: Subscription) => {
+    setSelectedSubscription(subscription);
+    setViewEditDialogOpen(true);
   };
 
   if (loading) {
@@ -509,6 +516,7 @@ export default function Subscriptions() {
                         <Button
                           variant="ghost"
                           size="sm"
+                          onClick={() => handleViewEdit(subscription)}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -536,6 +544,14 @@ export default function Subscriptions() {
       <NewSubscriptionDialog
         open={newSubscriptionDialogOpen}
         onOpenChange={setNewSubscriptionDialogOpen}
+        onSuccess={loadSubscriptions}
+      />
+
+      {/* View/Edit Subscription Dialog */}
+      <ViewEditSubscriptionDialog
+        subscription={selectedSubscription}
+        open={viewEditDialogOpen}
+        onOpenChange={setViewEditDialogOpen}
         onSuccess={loadSubscriptions}
       />
     </div>
