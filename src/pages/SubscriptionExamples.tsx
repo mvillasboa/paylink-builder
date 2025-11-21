@@ -7,7 +7,6 @@ import {
   TrendingUp, 
   Infinity, 
   Clock,
-  ArrowRight,
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
@@ -238,20 +237,6 @@ export default function SubscriptionExamples() {
                       ))}
                     </div>
                   </div>
-
-                  {/* Botón */}
-                  {sub.available ? (
-                    <Button asChild className="w-full group shadow-md hover:shadow-lg transition-all" variant="default" size="lg">
-                      <Link to={sub.link || "#"}>
-                        Ver Ejemplo
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-2 transition-transform duration-300" />
-                      </Link>
-                    </Button>
-                  ) : (
-                    <Button className="w-full" variant="outline" disabled size="lg">
-                      Ejemplo en Desarrollo
-                    </Button>
-                  )}
                 </CardContent>
               </Card>
             );
