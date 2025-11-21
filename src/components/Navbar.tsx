@@ -16,16 +16,16 @@ export const Navbar = () => {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-foreground/70 hover:text-foreground transition-colors">
+            <a href="/features" className="text-foreground/70 hover:text-foreground transition-colors">
               Características
             </a>
-            <a href="#how-it-works" className="text-foreground/70 hover:text-foreground transition-colors">
+            <a href="/how-it-works" className="text-foreground/70 hover:text-foreground transition-colors">
               Cómo Funciona
             </a>
-            <a href="#pricing" className="text-foreground/70 hover:text-foreground transition-colors">
+            <a href="/pricing" className="text-foreground/70 hover:text-foreground transition-colors">
               Precios
             </a>
-            <a href="#contact" className="text-foreground/70 hover:text-foreground transition-colors">
+            <a href="/contact" className="text-foreground/70 hover:text-foreground transition-colors">
               Contacto
             </a>
           </div>
