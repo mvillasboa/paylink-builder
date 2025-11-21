@@ -88,8 +88,8 @@ const subscriptionTypes = [
       "Modificación sujeta a condiciones",
       "Número de pagos establecido",
     ],
-    link: null,
-    available: false,
+    link: "/pay-limited-variable/demo-003",
+    available: true,
   },
   {
     id: 4,
@@ -114,8 +114,8 @@ const subscriptionTypes = [
       "Cobro automático periódico",
       "Cancelable en cualquier momento",
     ],
-    link: null,
-    available: false,
+    link: "/pay-unlimited-fixed/demo-004",
+    available: true,
   },
 ];
 

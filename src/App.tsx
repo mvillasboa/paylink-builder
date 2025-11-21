@@ -14,6 +14,8 @@ import DashboardReports from "./pages/DashboardReports";
 import DashboardSettings from "./pages/DashboardSettings";
 import RegisterCard from "./pages/RegisterCard";
 import RegisterCardVariableExample from "./pages/RegisterCardVariableExample";
+import RegisterCardLimitedVariable from "./pages/RegisterCardLimitedVariable";
+import RegisterCardUnlimitedFixed from "./pages/RegisterCardUnlimitedFixed";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import MyCards from "./pages/MyCards";
 import ApproveSubscriptionChange from "./pages/ApproveSubscriptionChange";
@@ -41,6 +43,8 @@ const App = () => (
           <Route path="/subscription-examples" element={<SubscriptionExamples />} />
           <Route path="/pay/:linkId" element={<RegisterCard />} />
           <Route path="/pay-variable-example/:linkId" element={<RegisterCardVariableExample />} />
+          <Route path="/pay-limited-variable/:linkId" element={<RegisterCardLimitedVariable />} />
+          <Route path="/pay-unlimited-fixed/:linkId" element={<RegisterCardUnlimitedFixed />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/my-cards" element={<MyCards />} />
           <Route path="/approve-change/:token" element={<ApproveSubscriptionChange />} />
