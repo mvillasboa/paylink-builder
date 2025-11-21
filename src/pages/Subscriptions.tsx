@@ -295,8 +295,11 @@ export default function Subscriptions() {
   const loadSubscriptions = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
+      
+      // Si no hay usuario, usar datos mock directamente
       if (!user) {
-        toast.error("Debes iniciar sesión");
+        setSubscriptions(MOCK_SUBSCRIPTIONS);
+        setLoading(false);
         return;
       }
 
@@ -308,12 +311,12 @@ export default function Subscriptions() {
 
       if (error) throw error;
 
-      // If no real data, use mock data for demonstration
+      // Si no hay datos reales, usar mock data
       const finalData = data && data.length > 0 ? data : MOCK_SUBSCRIPTIONS;
       setSubscriptions(finalData);
     } catch (error: any) {
       console.error("Error loading subscriptions:", error);
-      // On error, show mock data
+      // En caso de error, mostrar datos mock
       setSubscriptions(MOCK_SUBSCRIPTIONS);
     } finally {
       setLoading(false);
