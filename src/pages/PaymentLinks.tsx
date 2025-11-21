@@ -41,6 +41,10 @@ import {
   Receipt,
   CreditCard,
   ArrowRight,
+  Send,
+  MessageSquare,
+  Mail,
+  Phone,
 } from "lucide-react";
 import { mockPaymentLinks } from "@/data/mockDashboard";
 import { formatDistanceToNow } from "date-fns";
@@ -80,6 +84,8 @@ export default function PaymentLinks() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLinkTypeDialogOpen, setIsLinkTypeDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isSendChannelDialogOpen, setIsSendChannelDialogOpen] = useState(false);
+  const [selectedLink, setSelectedLink] = useState<typeof mockPaymentLinks[0] | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -110,6 +116,36 @@ export default function PaymentLinks() {
     const fullUrl = `${window.location.origin}/pay/${linkId}`;
     navigator.clipboard.writeText(fullUrl);
     toast.success('Link copiado al portapapeles');
+  };
+
+  const handleSendLink = (link: typeof mockPaymentLinks[0]) => {
+    setSelectedLink(link);
+    setIsSendChannelDialogOpen(true);
+  };
+
+  const handleSendViaChannel = (channel: 'sms' | 'whatsapp' | 'email') => {
+    if (!selectedLink) return;
+    
+    const fullUrl = `${window.location.origin}/pay/${selectedLink.id}`;
+    
+    switch (channel) {
+      case 'whatsapp':
+        const message = encodeURIComponent(
+          `Hola ${selectedLink.client.name}, te compartimos tu link de pago: ${fullUrl}`
+        );
+        // Usar un número de teléfono genérico o mostrar mensaje
+        toast.info('Por favor ingresa el número de teléfono del cliente');
+        break;
+      case 'sms':
+        toast.info('Funcionalidad de SMS próximamente');
+        break;
+      case 'email':
+        toast.info('Funcionalidad de Email próximamente');
+        break;
+    }
+    
+    setIsSendChannelDialogOpen(false);
+    toast.success(`Preparado para enviar por ${channel.toUpperCase()}`);
   };
 
   return (
@@ -325,6 +361,85 @@ export default function PaymentLinks() {
         </Dialog>
       </div>
 
+      {/* Diálogo de selección de canal de envío */}
+      <Dialog open={isSendChannelDialogOpen} onOpenChange={setIsSendChannelDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Selecciona el canal de envío</DialogTitle>
+            <DialogDescription>
+              Elige cómo deseas enviar el link de pago a {selectedLink?.client.name}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-6">
+            {/* WhatsApp */}
+            <Card 
+              className="cursor-pointer hover:border-accent transition-all hover:shadow-lg group"
+              onClick={() => handleSendViaChannel('whatsapp')}
+            >
+              <CardContent className="flex items-start gap-4 p-6">
+                <div className="p-3 rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                  <MessageSquare className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-2">WhatsApp</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Envía el link directamente al WhatsApp del cliente. El mensaje se abrirá automáticamente en la aplicación.
+                  </p>
+                  <div className="flex items-center text-sm text-accent font-medium group-hover:gap-2 transition-all">
+                    Enviar por WhatsApp
+                    <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* SMS */}
+            <Card 
+              className="cursor-pointer hover:border-primary transition-all hover:shadow-lg group"
+              onClick={() => handleSendViaChannel('sms')}
+            >
+              <CardContent className="flex items-start gap-4 p-6">
+                <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Phone className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-2">SMS</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Envía el link mediante mensaje de texto SMS al teléfono del cliente.
+                  </p>
+                  <div className="flex items-center text-sm text-primary font-medium group-hover:gap-2 transition-all">
+                    Enviar por SMS
+                    <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Email */}
+            <Card 
+              className="cursor-pointer hover:border-secondary transition-all hover:shadow-lg group"
+              onClick={() => handleSendViaChannel('email')}
+            >
+              <CardContent className="flex items-start gap-4 p-6">
+                <div className="p-3 rounded-lg bg-secondary/10 text-secondary group-hover:bg-secondary group-hover:text-secondary-foreground transition-colors">
+                  <Mail className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-2">Email</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Envía el link por correo electrónico a {selectedLink?.client.email}
+                  </p>
+                  <div className="flex items-center text-sm text-secondary font-medium group-hover:gap-2 transition-all">
+                    Enviar por Email
+                    <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Search & Filters */}
       <Card className="border-border/50 bg-card/50">
         <CardContent className="p-6">
@@ -407,16 +522,25 @@ export default function PaymentLinks() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleCopyLink(link.id)}
+                            title="Copiar link"
                           >
                             <Copy className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleSendLink(link)}
+                            title="Enviar link"
+                          >
+                            <Send className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" title="Editar">
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" title="Ver detalles">
                             <ExternalLink className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-destructive">
+                          <Button variant="ghost" size="sm" className="text-destructive" title="Eliminar">
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
