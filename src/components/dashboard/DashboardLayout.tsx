@@ -25,6 +25,7 @@ import {
   CreditCard,
   LogOut,
   Repeat,
+  Package,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +46,7 @@ const menuItems = [
   { title: "Links de Pago", url: "/dashboard/links", icon: Link2 },
   { title: "Transacciones", url: "/dashboard/transactions", icon: Receipt },
   { title: "Suscripciones", url: "/dashboard/subscriptions", icon: Repeat },
+  { title: "Productos", url: "/dashboard/products", icon: Package },
   { title: "Clientes", url: "/dashboard/clients", icon: Users },
   { title: "Reportes", url: "/dashboard/reports", icon: BarChart3 },
   { title: "Configuración", url: "/dashboard/settings", icon: Settings },
