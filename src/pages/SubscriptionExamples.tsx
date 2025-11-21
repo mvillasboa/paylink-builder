@@ -241,12 +241,12 @@ export default function SubscriptionExamples() {
 
                   {/* Botón */}
                   {sub.available ? (
-                    <Link to={sub.link || "#"}>
-                      <Button className="w-full group shadow-md hover:shadow-lg transition-all" variant="default" size="lg">
+                    <Button asChild className="w-full group shadow-md hover:shadow-lg transition-all" variant="default" size="lg">
+                      <Link to={sub.link || "#"}>
                         Ver Ejemplo
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-2 transition-transform duration-300" />
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   ) : (
                     <Button className="w-full" variant="outline" disabled size="lg">
                       Ejemplo en Desarrollo
