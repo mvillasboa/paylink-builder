@@ -48,7 +48,7 @@ export const HowItWorks = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {steps.map((step, index) => (
-            <div key={index} className="relative animate-fade-in" style={{ animationDelay: `${index * 0.15}s` }}>
+            <div key={index} className="relative animate-fade-in" style={{ animationDelay: `${index * 0.08}s` }}>
               {/* Connecting Line */}
               {index < steps.length - 1 && (
                 <div className="hidden lg:block absolute top-20 left-[calc(100%+1rem)] w-8 h-0.5 bg-gradient-to-r from-secondary to-transparent" />

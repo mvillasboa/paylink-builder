@@ -20,7 +20,7 @@ export const Hero = () => {
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
-          <div className="space-y-8 animate-slide-up">
+          <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0s' }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 backdrop-blur-sm border border-secondary/20 rounded-full text-sm font-medium text-secondary">
               <Zap className="w-4 h-4" />
               Plataforma de Pagos B2B
@@ -65,7 +65,7 @@ export const Hero = () => {
           </div>
           
           {/* Right Image */}
-          <div className="relative animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <div className="relative animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <div className="relative rounded-2xl overflow-hidden shadow-strong border border-border/50">
               <img 
                 src={dashboardImage} 
@@ -75,7 +75,7 @@ export const Hero = () => {
             </div>
             
             {/* Floating Card */}
-            <div className="absolute -bottom-6 -left-6 bg-card rounded-xl shadow-strong p-6 backdrop-blur-sm border border-border animate-scale-in" style={{ animationDelay: '0.5s' }}>
+            <div className="absolute -bottom-6 -left-6 bg-card rounded-xl shadow-strong p-6 backdrop-blur-sm border border-border animate-scale-in" style={{ animationDelay: '0.2s' }}>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
                   <Shield className="w-6 h-6 text-accent" />
