@@ -13,6 +13,7 @@ import DashboardClients from "./pages/DashboardClients";
 import DashboardReports from "./pages/DashboardReports";
 import DashboardSettings from "./pages/DashboardSettings";
 import RegisterCard from "./pages/RegisterCard";
+import RegisterCardVariableExample from "./pages/RegisterCardVariableExample";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import MyCards from "./pages/MyCards";
 import ApproveSubscriptionChange from "./pages/ApproveSubscriptionChange";
@@ -29,6 +30,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/pay/:linkId" element={<RegisterCard />} />
+          <Route path="/pay-variable-example/:linkId" element={<RegisterCardVariableExample />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/my-cards" element={<MyCards />} />
           <Route path="/approve-change/:token" element={<ApproveSubscriptionChange />} />
