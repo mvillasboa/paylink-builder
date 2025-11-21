@@ -27,7 +27,7 @@ export const Footer = () => {
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Características</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Precios</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Seguridad</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Integraciones</a></li>
+              <li><a href="/my-cards" className="hover:text-primary-foreground transition-colors">Mis Tarjetas</a></li>
             </ul>
           </div>
           

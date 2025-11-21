@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Download, Home, Mail } from "lucide-react";
+import { CheckCircle2, Download, Home, Mail, CreditCard } from "lucide-react";
 
 export default function PaymentSuccess() {
   return (
@@ -68,6 +68,12 @@ export default function PaymentSuccess() {
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <Button variant="outline" className="flex-1" asChild>
+                  <a href="/my-cards">
+                    <CreditCard className="h-4 w-4 mr-2" />
+                    Gestionar Tarjetas
+                  </a>
+                </Button>
                 <Button variant="outline" className="flex-1" asChild>
                   <a href="/">
                     <Home className="h-4 w-4 mr-2" />
