@@ -12,7 +12,8 @@ import {
 import { Alert } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Infinity, Calendar, TrendingUp, DollarSign, AlertCircle } from "lucide-react";
+import { ArrowLeft, Infinity, Calendar, TrendingUp, DollarSign, AlertCircle, HelpCircle } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Form,
   FormControl,
@@ -257,28 +258,51 @@ export function NewSubscriptionDialog({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center gap-2">
-            {step === "form" && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={handleBack}
-                className="h-8 w-8"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-            )}
-            <div>
-              <DialogTitle>
-                {step === "selection" ? "Selecciona el Tipo de Suscripción" : "Nueva Suscripción"}
-              </DialogTitle>
-              <DialogDescription>
-                {step === "selection"
-                  ? "Elige el tipo de suscripción que mejor se adapte a tus necesidades"
-                  : `Completa los datos para crear una suscripción ${selectedType?.title.toLowerCase()}`}
-              </DialogDescription>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center gap-2 flex-1">
+              {step === "form" && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleBack}
+                  className="h-8 w-8"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              )}
+              <div>
+                <DialogTitle>
+                  {step === "selection" ? "Selecciona el Tipo de Suscripción" : "Nueva Suscripción"}
+                </DialogTitle>
+                <DialogDescription>
+                  {step === "selection"
+                    ? "Elige el tipo de suscripción que mejor se adapte a tus necesidades"
+                    : `Completa los datos para crear una suscripción ${selectedType?.title.toLowerCase()}`}
+                </DialogDescription>
+              </div>
             </div>
+            
+            {step === "selection" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => window.open('/subscription-examples', '_blank')}
+                      className="h-9 w-9 shrink-0"
+                    >
+                      <HelpCircle className="h-5 w-5 text-muted-foreground" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Ver guía de tipos de suscripción</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </div>
         </DialogHeader>
 
