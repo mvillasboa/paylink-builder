@@ -463,7 +463,15 @@ export type Database = {
       duration_type: "unlimited" | "limited"
       first_charge_type: "immediate" | "scheduled"
       price_change_type: "upgrade" | "downgrade" | "inflation" | "custom"
-      subscription_frequency: "weekly" | "monthly" | "quarterly" | "yearly"
+      subscription_frequency:
+        | "weekly"
+        | "monthly"
+        | "quarterly"
+        | "yearly"
+        | "biweekly"
+        | "bimonthly"
+        | "semiannual"
+        | "annual"
       subscription_status:
         | "active"
         | "paused"
@@ -608,7 +616,16 @@ export const Constants = {
       duration_type: ["unlimited", "limited"],
       first_charge_type: ["immediate", "scheduled"],
       price_change_type: ["upgrade", "downgrade", "inflation", "custom"],
-      subscription_frequency: ["weekly", "monthly", "quarterly", "yearly"],
+      subscription_frequency: [
+        "weekly",
+        "monthly",
+        "quarterly",
+        "yearly",
+        "biweekly",
+        "bimonthly",
+        "semiannual",
+        "annual",
+      ],
       subscription_status: [
         "active",
         "paused",
