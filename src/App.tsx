@@ -19,6 +19,10 @@ import MyCards from "./pages/MyCards";
 import ApproveSubscriptionChange from "./pages/ApproveSubscriptionChange";
 import Subscriptions from "./pages/Subscriptions";
 import SubscriptionExamples from "./pages/SubscriptionExamples";
+import FeaturesPage from "./pages/FeaturesPage";
+import HowItWorksPage from "./pages/HowItWorksPage";
+import PricingPage from "./pages/PricingPage";
+import ContactPage from "./pages/ContactPage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +34,10 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/how-it-works" element={<HowItWorksPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/subscription-examples" element={<SubscriptionExamples />} />
           <Route path="/pay/:linkId" element={<RegisterCard />} />
           <Route path="/pay-variable-example/:linkId" element={<RegisterCardVariableExample />} />
