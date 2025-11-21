@@ -362,20 +362,20 @@ export default function Subscriptions() {
     if (isUnlimited && isFixed) {
       return {
         label: 'Ilimitada - Fijo',
-        color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
+        color: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30',
         icon: Infinity,
       };
     }
     if (isUnlimited && !isFixed) {
       return {
         label: 'Ilimitada - Variable',
-        color: 'bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/30',
+        color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
         icon: TrendingUp,
       };
     }
     return {
       label: 'Limitada - Variable',
-      color: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30',
+      color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30',
       icon: Clock,
     };
   };
