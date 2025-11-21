@@ -26,7 +26,7 @@ export const Hero = () => {
               Plataforma de Pagos B2B
             </div>
             
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
               <span className="text-primary-foreground">Gestiona suscripciones</span>
               <br />
               <span className="text-gradient">y cobros recurrentes</span>

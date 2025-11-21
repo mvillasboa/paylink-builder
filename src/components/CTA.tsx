@@ -18,7 +18,7 @@ export const CTA = () => {
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className={`max-w-4xl mx-auto text-center scroll-fade-up ${isInView ? 'in-view' : ''}`}>
+        <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-primary-foreground">
             Automatiza tus suscripciones
             <br />
