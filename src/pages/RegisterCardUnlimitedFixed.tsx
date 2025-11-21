@@ -14,6 +14,7 @@ import {
   Building2,
   AlertCircle,
   FileText,
+  Infinity,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
@@ -220,6 +221,16 @@ export default function RegisterCardUnlimitedFixed() {
                 <div>
                   <p className="text-sm text-muted-foreground">Empresa</p>
                   <p className="font-semibold text-foreground">{mockPaymentLink.businessName}</p>
+                </div>
+                
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                    <Infinity className="h-3 w-3 mr-1" />
+                    Ilimitada - Fijo
+                  </Badge>
+                  <Badge variant="secondary" className="text-xs">
+                    {getFrequencyText(mockPaymentLink.frequency)}
+                  </Badge>
                 </div>
                 
                 <Separator />

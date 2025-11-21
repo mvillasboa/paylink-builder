@@ -14,6 +14,7 @@ import {
   Building2,
   AlertCircle,
   FileText,
+  Calendar,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
@@ -221,6 +222,19 @@ export default function RegisterCardLimitedVariable() {
                 <div>
                   <p className="text-sm text-muted-foreground">Empresa</p>
                   <p className="font-semibold text-foreground">{mockPaymentLink.businessName}</p>
+                </div>
+                
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    Limitada - Variable
+                  </Badge>
+                  <Badge variant="secondary" className="text-xs">
+                    {mockPaymentLink.numberOfPayments} pagos
+                  </Badge>
+                  <Badge variant="secondary" className="text-xs">
+                    {getFrequencyText(mockPaymentLink.frequency)}
+                  </Badge>
                 </div>
                 
                 <Separator />
