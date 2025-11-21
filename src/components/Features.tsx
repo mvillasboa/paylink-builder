@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Link2, Lock, RefreshCw, BellRing, BarChart3, Settings } from "lucide-react";
+import { useInView } from "@/hooks/use-in-view";
 
 const features = [
   {
@@ -35,8 +36,10 @@ const features = [
 ];
 
 export const Features = () => {
+  const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 });
+  
   return (
-    <section className="py-24 bg-gradient-subtle relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 bg-gradient-subtle relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute inset-0" style={{
@@ -46,7 +49,7 @@ export const Features = () => {
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 animate-slide-up">
+        <div className={`text-center max-w-3xl mx-auto mb-16 scroll-fade-up ${isInView ? 'in-view' : ''}`}>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-foreground">
             Plataforma completa
             <span className="text-gradient"> para B2B</span>
@@ -60,8 +63,8 @@ export const Features = () => {
           {features.map((feature, index) => (
             <Card 
               key={index}
-              className="p-8 bg-gradient-card border-border/50 hover:shadow-medium transition-all duration-300 hover:-translate-y-1 group animate-fade-in"
-              style={{ animationDelay: `${index * 0.05}s` }}
+              className={`p-8 bg-gradient-card border-border/50 hover:shadow-medium transition-all duration-300 hover:-translate-y-1 group scroll-fade-up ${isInView ? 'in-view' : ''}`}
+              style={{ transitionDelay: isInView ? `${index * 0.1}s` : '0s' }}
             >
               <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
                 <feature.icon className="w-7 h-7 text-primary group-hover:text-secondary transition-colors" />

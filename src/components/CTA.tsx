@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail } from "lucide-react";
+import { useInView } from "@/hooks/use-in-view";
 
 export const CTA = () => {
+  const { ref: sectionRef, isInView } = useInView({ threshold: 0.2 });
+  
   return (
-    <section className="py-24 bg-gradient-hero relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 bg-gradient-hero relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0" style={{
@@ -15,7 +18,7 @@ export const CTA = () => {
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center animate-slide-up">
+        <div className={`max-w-4xl mx-auto text-center scroll-fade-up ${isInView ? 'in-view' : ''}`}>
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-primary-foreground">
             Automatiza tus suscripciones
             <br />
