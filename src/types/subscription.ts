@@ -1,4 +1,4 @@
-export type SubscriptionFrequency = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+export type SubscriptionFrequency = 'weekly' | 'biweekly' | 'monthly' | 'bimonthly' | 'quarterly' | 'semiannual' | 'annual' | 'yearly';
 export type SubscriptionType = 'fixed' | 'variable' | 'single';
 export type DurationType = 'unlimited' | 'limited';
 export type FirstChargeType = 'immediate' | 'scheduled';

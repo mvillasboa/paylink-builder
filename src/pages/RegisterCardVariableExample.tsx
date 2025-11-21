@@ -256,15 +256,19 @@ export default function RegisterCardVariableExample() {
                 
                 <Separator />
                 
-                <div className="bg-card/90 backdrop-blur-sm border-2 border-primary/30 rounded-lg p-4 shadow-medium">
-                  <p className="text-sm text-foreground/90 mb-1 font-medium">Primera Cuota</p>
-                  <p className="text-3xl font-bold text-primary">
-                    ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
-                    <span className="text-base font-normal text-foreground/80 ml-2">PYG</span>
-                  </p>
-                  <p className="text-xs text-foreground/90 mt-2 font-semibold">
-                    Monto sujeto a condiciones contractuales
-                  </p>
+                <div className="bg-card/90 backdrop-blur-sm border-2 border-accent/40 rounded-lg p-4 shadow-soft">
+                  <div className="flex gap-2">
+                    <AlertCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold text-foreground mb-1">
+                        Monto Variable
+                      </p>
+                      <p className="text-xs text-foreground/90 leading-relaxed">
+                        El monto mensual será determinado según tu consumo y las condiciones de la cobertura médica establecidas. 
+                        Recibirás una notificación antes de cada cobro con el monto correspondiente.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <Separator />
@@ -307,10 +311,10 @@ export default function RegisterCardVariableExample() {
                             Información importante:
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            El monto mensual puede variar según consumo y condiciones de la cobertura médica establecidas.
+                            Esta suscripción se renueva automáticamente cada mes hasta que decidas cancelarla.
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            Esta suscripción se renueva automáticamente cada mes hasta que decidas cancelarla.
+                            Recibirás un recordatorio antes de cada cobro con el monto que se cobrará según tu consumo y condiciones establecidas.
                           </p>
                         </div>
                       </div>

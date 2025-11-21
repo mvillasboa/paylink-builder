@@ -43,7 +43,7 @@ const subscriptionSchema = z.object({
   reference: z.string().min(3, "La referencia debe tener al menos 3 caracteres").max(50, "Referencia es demasiado larga"),
   concept: z.string().min(3, "El concepto debe tener al menos 3 caracteres").max(200, "Concepto es demasiado largo"),
   description: z.string().max(500, "Descripción es demasiado larga").optional(),
-  amount: z.string().min(1, "El monto es requerido"),
+  amount: z.string().optional(),
   type: z.enum(["fixed", "variable", "single"]),
   frequency: z.enum(["weekly", "monthly", "quarterly", "yearly"]),
   billing_day: z.string().min(1, "El día de facturación es requerido"),
@@ -52,6 +52,18 @@ const subscriptionSchema = z.object({
   first_charge_type: z.enum(["immediate", "scheduled"]),
   first_charge_date: z.string().optional(),
 }).refine(
+  (data) => {
+    // Si NO es ilimitada variable, el monto es requerido
+    if (!(data.duration_type === "unlimited" && data.type === "variable")) {
+      return data.amount && data.amount.length > 0;
+    }
+    return true;
+  },
+  {
+    message: "El monto es requerido",
+    path: ["amount"],
+  }
+).refine(
   (data) => {
     // Si es duración limitada, number_of_payments es requerido
     if (data.duration_type === "limited") {
@@ -204,7 +216,8 @@ export function NewSubscriptionDialog({
         return;
       }
 
-      const amount = parseInt(data.amount);
+      // Para suscripciones ilimitadas de monto variable, usar 0 como monto por defecto
+      const amount = data.amount && data.amount.length > 0 ? parseInt(data.amount) : 0;
       const billing_day = parseInt(data.billing_day);
       const number_of_payments = data.number_of_payments ? parseInt(data.number_of_payments) : null;
 
@@ -469,22 +482,25 @@ export function NewSubscriptionDialog({
                 )}
               </div>
               <div className="grid gap-4 md:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {watchType === "variable" ? "Monto Primera Cuota" : "Monto"}
-                      </FormLabel>
-                      <FormControl>
-                        <Input type="number" min="0" placeholder="150000" {...field} />
-                      </FormControl>
-                      <FormDescription>Monto en guaraníes (PYG)</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Ocultar campo de monto para suscripciones ilimitadas de monto variable */}
+                {!(watchDurationType === "unlimited" && watchType === "variable") && (
+                  <FormField
+                    control={form.control}
+                    name="amount"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {watchType === "variable" ? "Monto Primera Cuota" : "Monto"}
+                        </FormLabel>
+                        <FormControl>
+                          <Input type="number" min="0" placeholder="150000" {...field} />
+                        </FormControl>
+                        <FormDescription>Monto en guaraníes (PYG)</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name="billing_day"
@@ -500,6 +516,22 @@ export function NewSubscriptionDialog({
                   )}
                 />
               </div>
+              
+              {/* Mensaje informativo para suscripciones ilimitadas de monto variable */}
+              {watchDurationType === "unlimited" && watchType === "variable" && (
+                <Alert className="border-accent/30 bg-accent/5">
+                  <AlertCircle className="h-4 w-4 text-accent" />
+                  <div className="ml-2">
+                    <p className="text-sm font-medium">
+                      Monto Variable
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Para suscripciones ilimitadas de monto variable, el monto no está definido al momento de la creación. 
+                      El monto será determinado en cada período de facturación según las condiciones contractuales.
+                    </p>
+                  </div>
+                </Alert>
+              )}
               <FormField
                 control={form.control}
                 name="frequency"
