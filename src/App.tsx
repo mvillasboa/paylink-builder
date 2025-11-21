@@ -15,6 +15,8 @@ import DashboardSettings from "./pages/DashboardSettings";
 import RegisterCard from "./pages/RegisterCard";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import MyCards from "./pages/MyCards";
+import ApproveSubscriptionChange from "./pages/ApproveSubscriptionChange";
+import Subscriptions from "./pages/Subscriptions";
 
 const queryClient = new QueryClient();
 
@@ -29,10 +31,12 @@ const App = () => (
           <Route path="/pay/:linkId" element={<RegisterCard />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/my-cards" element={<MyCards />} />
+          <Route path="/approve-change/:token" element={<ApproveSubscriptionChange />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="links" element={<PaymentLinks />} />
             <Route path="transactions" element={<Transactions />} />
+            <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="clients" element={<DashboardClients />} />
             <Route path="reports" element={<DashboardReports />} />
             <Route path="settings" element={<DashboardSettings />} />
