@@ -246,8 +246,8 @@ export default function Dashboard() {
               {mockPaymentLinks.slice(0, 3).map((link) => (
                 <PaymentLinkCard key={link.id} link={link} />
               ))}
-              <Button variant="outline" className="w-full">
-                Ver Todos los Links
+              <Button variant="outline" className="w-full" asChild>
+                <a href="/dashboard/links">Ver Todos los Links</a>
               </Button>
             </CardContent>
           </Card>

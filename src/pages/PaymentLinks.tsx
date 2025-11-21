@@ -53,7 +53,8 @@ export default function PaymentLinks() {
   );
 
   const handleCopyLink = (linkId: string) => {
-    navigator.clipboard.writeText(`https://pay.empresa.com/${linkId}`);
+    const fullUrl = `${window.location.origin}/pay/${linkId}`;
+    navigator.clipboard.writeText(fullUrl);
     toast.success('Link copiado al portapapeles');
   };
 
