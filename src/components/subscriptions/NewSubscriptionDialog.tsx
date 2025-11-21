@@ -322,7 +322,11 @@ export function NewSubscriptionDialog({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        window.open('/subscription-examples', '_blank');
+                        const anchor = type.durationType === 'unlimited' && type.amountType === 'variable' ? 'unlimited-variable' :
+                                      type.durationType === 'unlimited' && type.amountType === 'fixed' ? 'unlimited-fixed' :
+                                      type.durationType === 'limited' && type.amountType === 'variable' ? 'limited-variable' :
+                                      'limited-fixed';
+                        window.open(`/subscription-examples#${anchor}`, '_blank');
                       }}
                       className="mt-3 text-xs text-primary hover:underline flex items-center gap-1 group/link"
                     >
