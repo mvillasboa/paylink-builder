@@ -52,9 +52,9 @@ const subscriptionTypes = [
     borderColor: "border-orange-200",
     badgeColor: "bg-orange-100 text-orange-700 border-orange-200",
     examples: [
-      "Servicio de electricidad",
-      "Agua potable",
-      "Plan de internet por uso",
+      "Servicios cooperativos",
+      "Servicios de pago por consumo",
+      "Seguro médico con renovación automática",
     ],
     features: [
       "Sin límite de tiempo",
@@ -78,9 +78,9 @@ const subscriptionTypes = [
     borderColor: "border-purple-200",
     badgeColor: "bg-purple-100 text-purple-700 border-purple-200",
     examples: [
-      "Plan fitness con ajuste de precio",
-      "Servicio premium con descuentos progresivos",
-      "Suscripción promocional limitada",
+      "Planes con descuentos en primeros pagos",
+      "Promociones con precios diferenciados",
+      "Servicios con bonificaciones iniciales",
     ],
     features: [
       "Duración definida",
@@ -104,9 +104,9 @@ const subscriptionTypes = [
     borderColor: "border-emerald-200",
     badgeColor: "bg-emerald-100 text-emerald-700 border-emerald-200",
     examples: [
-      "Netflix, Spotify, etc.",
-      "Seguro mensual",
-      "Membresía club social",
+      "Servicios con reconfirmación previa de tarifas",
+      "Membresías con acuerdo contractual",
+      "Seguros con renovación acordada",
     ],
     features: [
       "Sin fecha de finalización",
