@@ -18,6 +18,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import MyCards from "./pages/MyCards";
 import ApproveSubscriptionChange from "./pages/ApproveSubscriptionChange";
 import Subscriptions from "./pages/Subscriptions";
+import SubscriptionExamples from "./pages/SubscriptionExamples";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/subscription-examples" element={<SubscriptionExamples />} />
           <Route path="/pay/:linkId" element={<RegisterCard />} />
           <Route path="/pay-variable-example/:linkId" element={<RegisterCardVariableExample />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
