@@ -18,8 +18,9 @@ import RegisterCardLimitedVariable from "./pages/RegisterCardLimitedVariable";
 import RegisterCardUnlimitedFixed from "./pages/RegisterCardUnlimitedFixed";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import MyCards from "./pages/MyCards";
-import ApproveSubscriptionChange from "./pages/ApproveSubscriptionChange";
 import Subscriptions from "./pages/Subscriptions";
+import Products from "./pages/Products";
+import ApproveSubscriptionChange from "./pages/ApproveSubscriptionChange";
 import SubscriptionExamples from "./pages/SubscriptionExamples";
 import FeaturesPage from "./pages/FeaturesPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="links" element={<PaymentLinks />} />
             <Route path="transactions" element={<Transactions />} />
             <Route path="subscriptions" element={<Subscriptions />} />
+            <Route path="products" element={<Products />} />
             <Route path="clients" element={<DashboardClients />} />
             <Route path="reports" element={<DashboardReports />} />
             <Route path="settings" element={<DashboardSettings />} />

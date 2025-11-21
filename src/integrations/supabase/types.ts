@@ -64,6 +64,170 @@ export type Database = {
           },
         ]
       }
+      product_price_changes: {
+        Row: {
+          application_type: Database["public"]["Enums"]["application_type"]
+          applied_at: string | null
+          auto_suspend_fixed_until_approval: boolean | null
+          change_type: Database["public"]["Enums"]["price_change_type"]
+          changed_by: string | null
+          created_at: string | null
+          difference: number | null
+          id: string
+          internal_notes: string | null
+          new_base_amount: number
+          old_base_amount: number
+          percentage_change: number | null
+          product_id: string
+          reason: string
+          requires_approval_for_fixed: boolean | null
+          scheduled_date: string | null
+          status: string
+          subscriptions_applied: number | null
+          subscriptions_failed: number | null
+          subscriptions_pending_approval: number | null
+          total_subscriptions_affected: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          application_type: Database["public"]["Enums"]["application_type"]
+          applied_at?: string | null
+          auto_suspend_fixed_until_approval?: boolean | null
+          change_type: Database["public"]["Enums"]["price_change_type"]
+          changed_by?: string | null
+          created_at?: string | null
+          difference?: number | null
+          id?: string
+          internal_notes?: string | null
+          new_base_amount: number
+          old_base_amount: number
+          percentage_change?: number | null
+          product_id: string
+          reason: string
+          requires_approval_for_fixed?: boolean | null
+          scheduled_date?: string | null
+          status?: string
+          subscriptions_applied?: number | null
+          subscriptions_failed?: number | null
+          subscriptions_pending_approval?: number | null
+          total_subscriptions_affected?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          application_type?: Database["public"]["Enums"]["application_type"]
+          applied_at?: string | null
+          auto_suspend_fixed_until_approval?: boolean | null
+          change_type?: Database["public"]["Enums"]["price_change_type"]
+          changed_by?: string | null
+          created_at?: string | null
+          difference?: number | null
+          id?: string
+          internal_notes?: string | null
+          new_base_amount?: number
+          old_base_amount?: number
+          percentage_change?: number | null
+          product_id?: string
+          reason?: string
+          requires_approval_for_fixed?: boolean | null
+          scheduled_date?: string | null
+          status?: string
+          subscriptions_applied?: number | null
+          subscriptions_failed?: number | null
+          subscriptions_pending_approval?: number | null
+          total_subscriptions_affected?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_price_changes_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          active_subscriptions_count: number | null
+          allow_pause: boolean | null
+          allow_price_modification: boolean | null
+          auto_apply_price_changes: boolean | null
+          base_amount: number
+          created_at: string | null
+          description: string | null
+          duration_type: Database["public"]["Enums"]["duration_type"]
+          first_charge_type:
+            | Database["public"]["Enums"]["first_charge_type"]
+            | null
+          frequency: Database["public"]["Enums"]["subscription_frequency"]
+          id: string
+          internal_code: string | null
+          is_active: boolean | null
+          metadata: Json | null
+          name: string
+          number_of_payments: number | null
+          send_reminder_before_charge: boolean | null
+          total_subscriptions_count: number | null
+          trial_period_days: number | null
+          type: Database["public"]["Enums"]["subscription_type"]
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          active_subscriptions_count?: number | null
+          allow_pause?: boolean | null
+          allow_price_modification?: boolean | null
+          auto_apply_price_changes?: boolean | null
+          base_amount: number
+          created_at?: string | null
+          description?: string | null
+          duration_type: Database["public"]["Enums"]["duration_type"]
+          first_charge_type?:
+            | Database["public"]["Enums"]["first_charge_type"]
+            | null
+          frequency: Database["public"]["Enums"]["subscription_frequency"]
+          id?: string
+          internal_code?: string | null
+          is_active?: boolean | null
+          metadata?: Json | null
+          name: string
+          number_of_payments?: number | null
+          send_reminder_before_charge?: boolean | null
+          total_subscriptions_count?: number | null
+          trial_period_days?: number | null
+          type: Database["public"]["Enums"]["subscription_type"]
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          active_subscriptions_count?: number | null
+          allow_pause?: boolean | null
+          allow_price_modification?: boolean | null
+          auto_apply_price_changes?: boolean | null
+          base_amount?: number
+          created_at?: string | null
+          description?: string | null
+          duration_type?: Database["public"]["Enums"]["duration_type"]
+          first_charge_type?:
+            | Database["public"]["Enums"]["first_charge_type"]
+            | null
+          frequency?: Database["public"]["Enums"]["subscription_frequency"]
+          id?: string
+          internal_code?: string | null
+          is_active?: boolean | null
+          metadata?: Json | null
+          name?: string
+          number_of_payments?: number | null
+          send_reminder_before_charge?: boolean | null
+          total_subscriptions_count?: number | null
+          trial_period_days?: number | null
+          type?: Database["public"]["Enums"]["subscription_type"]
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscription_price_changes: {
         Row: {
           application_type: Database["public"]["Enums"]["application_type"]
@@ -85,6 +249,7 @@ export type Database = {
           new_amount: number
           old_amount: number
           percentage_change: number | null
+          product_price_change_id: string | null
           reason: string
           requires_client_approval: boolean | null
           scheduled_date: string | null
@@ -112,6 +277,7 @@ export type Database = {
           new_amount: number
           old_amount: number
           percentage_change?: number | null
+          product_price_change_id?: string | null
           reason: string
           requires_client_approval?: boolean | null
           scheduled_date?: string | null
@@ -139,6 +305,7 @@ export type Database = {
           new_amount?: number
           old_amount?: number
           percentage_change?: number | null
+          product_price_change_id?: string | null
           reason?: string
           requires_client_approval?: boolean | null
           scheduled_date?: string | null
@@ -147,6 +314,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "subscription_price_changes_product_price_change_id_fkey"
+            columns: ["product_price_change_id"]
+            isOneToOne: false
+            referencedRelation: "product_price_changes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "subscription_price_changes_subscription_id_fkey"
             columns: ["subscription_id"]
@@ -165,6 +339,7 @@ export type Database = {
           client_name: string
           concept: string
           created_at: string
+          created_from_product: boolean | null
           description: string | null
           duration_type: Database["public"]["Enums"]["duration_type"]
           first_charge_date: string | null
@@ -182,6 +357,7 @@ export type Database = {
           pending_price_change_id: string | null
           phone_number: string
           price_change_history_count: number | null
+          product_id: string | null
           reference: string
           send_reminder_before_charge: boolean | null
           status: Database["public"]["Enums"]["subscription_status"]
@@ -198,6 +374,7 @@ export type Database = {
           client_name: string
           concept: string
           created_at?: string
+          created_from_product?: boolean | null
           description?: string | null
           duration_type: Database["public"]["Enums"]["duration_type"]
           first_charge_date?: string | null
@@ -215,6 +392,7 @@ export type Database = {
           pending_price_change_id?: string | null
           phone_number: string
           price_change_history_count?: number | null
+          product_id?: string | null
           reference: string
           send_reminder_before_charge?: boolean | null
           status?: Database["public"]["Enums"]["subscription_status"]
@@ -231,6 +409,7 @@ export type Database = {
           client_name?: string
           concept?: string
           created_at?: string
+          created_from_product?: boolean | null
           description?: string | null
           duration_type?: Database["public"]["Enums"]["duration_type"]
           first_charge_date?: string | null
@@ -248,6 +427,7 @@ export type Database = {
           pending_price_change_id?: string | null
           phone_number?: string
           price_change_history_count?: number | null
+          product_id?: string | null
           reference?: string
           send_reminder_before_charge?: boolean | null
           status?: Database["public"]["Enums"]["subscription_status"]
@@ -256,7 +436,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
