@@ -69,10 +69,10 @@ const mockPaymentLink: {
   nextChargeDate: string;
 } = {
   id: "LNK-003",
-  businessName: "Fitness Pro Club",
-  amount: 380000,
-  concept: "Membresía Premium con Descuentos Progresivos",
-  description: "Plan de 12 meses con ajustes de precio según progreso",
+  businessName: "Academia Digital Plus",
+  amount: 280000,
+  concept: "Plan Anual con Descuentos Iniciales",
+  description: "Suscripción de 12 meses con descuentos especiales en los primeros pagos",
   subscriptionType: "variable",
   durationType: "limited",
   frequency: "monthly",
@@ -292,7 +292,7 @@ export default function RegisterCardLimitedVariable() {
                             Información importante:
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            La modificación del monto está sujeta a las condiciones comerciales acordadas con {mockPaymentLink.businessName}.
+                            Los primeros meses cuentan con descuentos especiales. El monto puede variar según el plan promocional.
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
                             Esta suscripción finalizará automáticamente después de {mockPaymentLink.numberOfPayments} pagos.

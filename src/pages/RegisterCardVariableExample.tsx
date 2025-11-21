@@ -69,10 +69,10 @@ const mockPaymentLink: {
   nextChargeDate: string;
 } = {
   id: "LNK-002",
-  businessName: "Servicios Públicos SA",
-  amount: 1850000, // Primera cuota
-  concept: "Servicio de Electricidad",
-  description: "Suscripción mensual de servicio eléctrico",
+  businessName: "Cooperativa de Salud Vida",
+  amount: 850000, // Primera cuota
+  concept: "Seguro Médico con Renovación Automática",
+  description: "Cobertura médica integral con renovación mensual automática",
   subscriptionType: "variable",
   durationType: "unlimited",
   frequency: "monthly",
@@ -296,10 +296,10 @@ export default function RegisterCardVariableExample() {
                             Información importante:
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            El monto de esta suscripción está sujeto a las condiciones contractuales establecidas con {mockPaymentLink.businessName}.
+                            El monto mensual puede variar según consumo y condiciones de la cobertura médica establecidas.
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            Esta suscripción continuará indefinidamente hasta que decidas cancelarla.
+                            Esta suscripción se renueva automáticamente cada mes hasta que decidas cancelarla.
                           </p>
                         </div>
                       </div>

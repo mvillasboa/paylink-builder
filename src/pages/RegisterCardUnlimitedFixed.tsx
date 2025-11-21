@@ -69,10 +69,10 @@ const mockPaymentLink: {
   nextChargeDate: string;
 } = {
   id: "LNK-004",
-  businessName: "StreamPro Entertainment",
-  amount: 45000,
-  concept: "Suscripción Premium Plus",
-  description: "Acceso ilimitado a todo el contenido premium",
+  businessName: "Asociación Profesional Nacional",
+  amount: 450000,
+  concept: "Membresía Anual con Reconfirmación",
+  description: "Membresía profesional con renovación sujeta a confirmación previa",
   subscriptionType: "fixed",
   durationType: "unlimited",
   frequency: "monthly",
@@ -287,7 +287,7 @@ export default function RegisterCardUnlimitedFixed() {
                             El monto de ₲ {mockPaymentLink.amount.toLocaleString('es-PY')} se cobrará automáticamente cada mes.
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            Esta suscripción continuará indefinidamente hasta que decidas cancelarla. Puedes cancelar en cualquier momento.
+                            Cualquier modificación de tarifas requerirá tu reconfirmación previa según condiciones contractuales.
                           </p>
                         </div>
                       </div>
