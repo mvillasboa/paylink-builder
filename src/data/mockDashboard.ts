@@ -1,7 +1,7 @@
 export const mockStats = {
   revenue: {
-    current: 145250,
-    previous: 132400,
+    current: 145250000,
+    previous: 132400000,
     change: 9.7,
   },
   transactions: {
@@ -45,7 +45,7 @@ export const mockTransactions = [
   {
     id: 'TRX-00123',
     client: { name: 'Juan Pérez', email: 'juan.perez@email.com' },
-    amount: 2500,
+    amount: 2500000,
     method: 'Visa',
     status: 'completed' as const,
     date: new Date(Date.now() - 2 * 60 * 60 * 1000),
@@ -53,7 +53,7 @@ export const mockTransactions = [
   {
     id: 'TRX-00122',
     client: { name: 'María González', email: 'maria.g@email.com' },
-    amount: 1800,
+    amount: 1800000,
     method: 'Mastercard',
     status: 'completed' as const,
     date: new Date(Date.now() - 5 * 60 * 60 * 1000),
@@ -61,7 +61,7 @@ export const mockTransactions = [
   {
     id: 'TRX-00121',
     client: { name: 'Carlos López', email: 'carlos.lopez@email.com' },
-    amount: 3200,
+    amount: 3200000,
     method: 'American Express',
     status: 'pending' as const,
     date: new Date(Date.now() - 8 * 60 * 60 * 1000),
@@ -69,7 +69,7 @@ export const mockTransactions = [
   {
     id: 'TRX-00120',
     client: { name: 'Ana Martínez', email: 'ana.martinez@email.com' },
-    amount: 950,
+    amount: 950000,
     method: 'Débito',
     status: 'completed' as const,
     date: new Date(Date.now() - 24 * 60 * 60 * 1000),
@@ -77,7 +77,7 @@ export const mockTransactions = [
   {
     id: 'TRX-00119',
     client: { name: 'Roberto Silva', email: 'roberto.silva@email.com' },
-    amount: 4500,
+    amount: 4500000,
     method: 'Visa',
     status: 'failed' as const,
     date: new Date(Date.now() - 36 * 60 * 60 * 1000),
@@ -85,7 +85,7 @@ export const mockTransactions = [
   {
     id: 'TRX-00118',
     client: { name: 'Laura Hernández', email: 'laura.h@email.com' },
-    amount: 1200,
+    amount: 1200000,
     method: 'Mastercard',
     status: 'completed' as const,
     date: new Date(Date.now() - 48 * 60 * 60 * 1000),
@@ -97,7 +97,7 @@ export const mockPaymentLinks = [
     id: 'LNK-001',
     name: 'Pago Mensualidad Marzo',
     client: { name: 'Juan Pérez', email: 'juan.perez@email.com' },
-    amount: 2500,
+    amount: 2500000,
     status: 'active' as const,
     views: 3,
     createdAt: new Date(Date.now() - 5 * 60 * 1000),
@@ -107,7 +107,7 @@ export const mockPaymentLinks = [
     id: 'LNK-002',
     name: 'Servicio Premium',
     client: { name: 'María González', email: 'maria.g@email.com' },
-    amount: 5000,
+    amount: 5000000,
     status: 'sent' as const,
     views: 1,
     createdAt: new Date(Date.now() - 15 * 60 * 1000),
@@ -117,7 +117,7 @@ export const mockPaymentLinks = [
     id: 'LNK-003',
     name: 'Consultoría Febrero',
     client: { name: 'Carlos López', email: 'carlos.lopez@email.com' },
-    amount: 8500,
+    amount: 8500000,
     status: 'viewed' as const,
     views: 5,
     createdAt: new Date(Date.now() - 60 * 60 * 1000),
@@ -127,7 +127,7 @@ export const mockPaymentLinks = [
     id: 'LNK-004',
     name: 'Paquete Anual',
     client: { name: 'Ana Martínez', email: 'ana.martinez@email.com' },
-    amount: 12000,
+    amount: 12000000,
     status: 'active' as const,
     views: 8,
     createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000),
@@ -137,7 +137,7 @@ export const mockPaymentLinks = [
     id: 'LNK-005',
     name: 'Servicio de Diseño',
     client: { name: 'Roberto Silva', email: 'roberto.silva@email.com' },
-    amount: 3500,
+    amount: 3500000,
     status: 'not_viewed' as const,
     views: 0,
     createdAt: new Date(Date.now() - 30 * 60 * 1000),
@@ -161,7 +161,7 @@ export const mockActivity = [
   {
     id: 3,
     type: 'payment_completed' as const,
-    message: 'Pago completado por $2,500 MXN',
+    message: 'Pago completado por ₲ 2.500.000 PYG',
     time: new Date(Date.now() - 60 * 60 * 1000),
   },
   {

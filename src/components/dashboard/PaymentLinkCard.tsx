@@ -55,9 +55,9 @@ export function PaymentLinkCard({ link }: PaymentLinkCardProps) {
 
           <div className="flex items-baseline gap-1">
             <span className="text-2xl font-bold text-foreground">
-              ${link.amount.toLocaleString('es-MX')}
+              ₲ {link.amount.toLocaleString('es-PY')}
             </span>
-            <span className="text-sm text-muted-foreground">MXN</span>
+            <span className="text-sm text-muted-foreground">PYG</span>
           </div>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">

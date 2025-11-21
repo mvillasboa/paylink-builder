@@ -94,7 +94,7 @@ export default function Transactions() {
           <CardContent className="p-6">
             <p className="text-sm font-medium text-muted-foreground">Total Procesado</p>
             <p className="text-3xl font-bold text-foreground mt-2">
-              ${totalAmount.toLocaleString('es-MX')}
+              ₲ {totalAmount.toLocaleString('es-PY')}
             </p>
           </CardContent>
         </Card>
@@ -110,7 +110,7 @@ export default function Transactions() {
           <CardContent className="p-6">
             <p className="text-sm font-medium text-muted-foreground">Ticket Promedio</p>
             <p className="text-3xl font-bold text-foreground mt-2">
-              ${Math.round(totalAmount / Math.max(filteredTransactions.filter(t => t.status === "completed").length, 1)).toLocaleString('es-MX')}
+              ₲ {Math.round(totalAmount / Math.max(filteredTransactions.filter(t => t.status === "completed").length, 1)).toLocaleString('es-PY')}
             </p>
           </CardContent>
         </Card>
@@ -197,7 +197,7 @@ export default function Transactions() {
                         {transaction.client.email}
                       </TableCell>
                       <TableCell className="font-semibold text-foreground">
-                        ${transaction.amount.toLocaleString('es-MX')}
+                        ₲ {transaction.amount.toLocaleString('es-PY')}
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className="font-medium">

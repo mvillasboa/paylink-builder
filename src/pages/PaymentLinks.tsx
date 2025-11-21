@@ -94,8 +94,8 @@ export default function PaymentLinks() {
                   <Input id="client-email" type="email" placeholder="cliente@email.com" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="amount">Monto (MXN)</Label>
-                  <Input id="amount" type="number" placeholder="0.00" />
+                  <Label htmlFor="amount">Monto (₲ PYG)</Label>
+                  <Input id="amount" type="number" placeholder="0" />
                 </div>
               </div>
               <div className="space-y-2">
@@ -183,7 +183,7 @@ export default function PaymentLinks() {
                         <p className="text-sm text-muted-foreground">{link.client.email}</p>
                       </TableCell>
                       <TableCell className="font-semibold text-foreground">
-                        ${link.amount.toLocaleString('es-MX')}
+                        ₲ {link.amount.toLocaleString('es-PY')}
                       </TableCell>
                       <TableCell>
                         <Badge className={statusInfo.className}>
