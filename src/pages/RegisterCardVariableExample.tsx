@@ -279,20 +279,8 @@ export default function RegisterCardVariableExample() {
                   
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Frecuencia:</span>
-                      <span className="font-medium text-foreground">{getFrequencyText(mockPaymentLink.frequency)}</span>
-                    </div>
-                    
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Día de cobro:</span>
-                      <span className="font-medium text-foreground">Día {mockPaymentLink.billingDay}</span>
-                    </div>
-
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Próximo cobro:</span>
-                      <span className="font-medium text-foreground">
-                        {format(parse(mockPaymentLink.nextChargeDate, 'yyyy-MM-dd', new Date()), "dd 'de' MMMM 'de' yyyy", { locale: es })}
-                      </span>
+                      <span className="text-muted-foreground">Tipo:</span>
+                      <span className="font-medium text-foreground">Ilimitada - Variable</span>
                     </div>
 
                     <div className="flex justify-between text-sm">
@@ -308,13 +296,14 @@ export default function RegisterCardVariableExample() {
                         <AlertCircle className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
                         <div className="space-y-2">
                           <p className="text-xs font-semibold text-foreground">
-                            Información importante:
+                            Pagos a Solicitud
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            Esta suscripción se renueva automáticamente cada mes hasta que decidas cancelarla.
+                            Los pagos se procesarán a solicitud de {mockPaymentLink.businessName} de conformidad con las condiciones 
+                            contractuales suscritas.
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            Recibirás un recordatorio antes de cada cobro con el monto que se cobrará según tu consumo y condiciones establecidas.
+                            Recibirás un recordatorio antes de cada cobro con el monto correspondiente según tu consumo.
                           </p>
                         </div>
                       </div>
