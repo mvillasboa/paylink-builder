@@ -1,36 +1,36 @@
 import { Card } from "@/components/ui/card";
-import { Link2, Lock, Zap, CheckCircle, TrendingUp, Smartphone } from "lucide-react";
+import { Link2, Lock, RefreshCw, BellRing, BarChart3, Settings } from "lucide-react";
 
 const features = [
   {
+    icon: RefreshCw,
+    title: "Suscripciones Recurrentes",
+    description: "Gestiona suscripciones fijas, variables o únicas. Cobros automáticos programados con total flexibilidad.",
+  },
+  {
     icon: Link2,
-    title: "Links Personalizados",
-    description: "Crea y envía links únicos para cada cliente. Controla el acceso y monitorea cada transacción en tiempo real.",
+    title: "Links de Pago",
+    description: "Crea links personalizados para tus clientes. Registran su tarjeta una vez y cobras cuando necesites.",
+  },
+  {
+    icon: Settings,
+    title: "Cambios de Precio",
+    description: "Modifica precios de suscripciones con aprobación del cliente. Todo documentado y transparente.",
+  },
+  {
+    icon: BellRing,
+    title: "Notificaciones Automáticas",
+    description: "WhatsApp y email automáticos para cambios, cobros y confirmaciones. Mantén informados a tus clientes.",
+  },
+  {
+    icon: BarChart3,
+    title: "Analytics en Tiempo Real",
+    description: "Dashboard completo con métricas de ingresos, conversión, transacciones y estado de suscripciones.",
   },
   {
     icon: Lock,
-    title: "Seguridad Bancaria",
-    description: "Encriptación de nivel bancario y certificación PCI DSS. Tus clientes confían en la protección de sus datos.",
-  },
-  {
-    icon: Zap,
-    title: "Integración Rápida",
-    description: "API moderna y documentación completa. Integra en minutos con tu sistema existente sin complicaciones.",
-  },
-  {
-    icon: CheckCircle,
-    title: "Validación Instantánea",
-    description: "Verifica tarjetas al momento del registro. Reduce fraudes y rechazos antes de procesar pagos.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Dashboard Analítico",
-    description: "Visualiza métricas clave, tasas de conversión y comportamiento de pagos en tiempo real.",
-  },
-  {
-    icon: Smartphone,
-    title: "Experiencia Mobile",
-    description: "Diseño responsive optimizado. Tus clientes registran sus tarjetas desde cualquier dispositivo.",
+    title: "Seguridad Total",
+    description: "Certificación PCI DSS Nivel 1 y encriptación de extremo a extremo. Tus datos y los de tus clientes protegidos.",
   },
 ];
 
@@ -48,11 +48,11 @@ export const Features = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 animate-slide-up">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-foreground">
-            Todo lo que necesitas para
-            <span className="text-gradient"> procesar pagos</span>
+            Plataforma completa
+            <span className="text-gradient"> para B2B</span>
           </h2>
           <p className="text-xl text-muted-foreground">
-            Una plataforma completa para gestionar el registro de tarjetas y pagos de tus clientes B2B
+            Todo lo que necesitas para gestionar suscripciones, cobros recurrentes y pagos en un solo lugar
           </p>
         </div>
         
