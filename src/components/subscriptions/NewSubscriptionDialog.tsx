@@ -72,58 +72,54 @@ type SubscriptionTypeOption = {
 const subscriptionTypes: SubscriptionTypeOption[] = [
   {
     id: "unlimited-variable",
-    title: "Ilimitada - Monto Variable",
-    description: "Suscripción continua con montos que pueden cambiar cada período",
+    title: "Ilimitada - Variable",
+    description: "Renovación automática con montos ajustables",
     durationType: "unlimited",
     amountType: "variable",
     icon: TrendingUp,
     features: [
-      "Renovación automática indefinida",
-      "Monto ajustable según consumo",
-      "Ideal para servicios cooperativos",
-      "Seguros con renovación automática",
+      "Renovación automática",
+      "Monto según consumo",
+      "Servicios cooperativos",
     ],
   },
   {
     id: "unlimited-fixed",
-    title: "Ilimitada - Monto Fijo",
-    description: "Suscripción continua con monto constante y reconfirmación para cambios",
+    title: "Ilimitada - Fijo",
+    description: "Renovación continua con monto constante",
     durationType: "unlimited",
     amountType: "fixed",
     icon: Infinity,
     features: [
-      "Renovación automática indefinida",
-      "Monto fijo constante",
-      "Cambios requieren reconfirmación previa",
-      "Ideal para membresías y asociaciones",
+      "Renovación automática",
+      "Monto fijo",
+      "Reconfirmación para cambios",
     ],
   },
   {
     id: "limited-variable",
-    title: "Limitada - Monto Variable",
-    description: "Duración específica con montos diferenciados por período",
+    title: "Limitada - Variable",
+    description: "Duración específica con montos diferenciados",
     durationType: "limited",
     amountType: "variable",
     icon: Calendar,
     features: [
-      "Número definido de pagos",
-      "Montos variables por período",
-      "Ideal para planes con descuentos iniciales",
-      "Promociones con precios diferenciados",
+      "Pagos definidos",
+      "Montos variables",
+      "Descuentos iniciales",
     ],
   },
   {
     id: "limited-fixed",
-    title: "Limitada - Monto Fijo",
-    description: "Duración específica con monto constante en todos los pagos",
+    title: "Limitada - Fijo",
+    description: "Duración específica con monto constante",
     durationType: "limited",
     amountType: "fixed",
     icon: DollarSign,
     features: [
-      "Número definido de pagos",
-      "Monto fijo constante",
-      "Ideal para cursos y programas",
-      "Planes con duración determinada",
+      "Pagos definidos",
+      "Monto fijo",
+      "Cursos y programas",
     ],
   },
 ];
@@ -262,43 +258,37 @@ export function NewSubscriptionDialog({
         </DialogHeader>
 
         {step === "selection" ? (
-          <div className="grid gap-4 py-4">
-            {subscriptionTypes.map((type) => {
+          <div className="grid md:grid-cols-2 gap-3 py-4">
+            {subscriptionTypes.map((type, index) => {
               const Icon = type.icon;
+              const colors = [
+                { bg: "bg-blue-500/10", border: "border-blue-500/30", icon: "text-blue-600 dark:text-blue-400", hover: "hover:border-blue-500" },
+                { bg: "bg-purple-500/10", border: "border-purple-500/30", icon: "text-purple-600 dark:text-purple-400", hover: "hover:border-purple-500" },
+                { bg: "bg-emerald-500/10", border: "border-emerald-500/30", icon: "text-emerald-600 dark:text-emerald-400", hover: "hover:border-emerald-500" },
+                { bg: "bg-amber-500/10", border: "border-amber-500/30", icon: "text-amber-600 dark:text-amber-400", hover: "hover:border-amber-500" },
+              ];
+              const color = colors[index];
+              
               return (
                 <Card
                   key={type.id}
-                  className="cursor-pointer transition-all hover:border-primary hover:shadow-md"
+                  className={`cursor-pointer transition-all ${color.hover} hover:shadow-lg border-2 ${color.border} group`}
                   onClick={() => handleTypeSelection(type)}
                 >
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <Icon className="h-5 w-5 text-primary" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-base">{type.title}</CardTitle>
-                          <CardDescription className="text-sm mt-1">
-                            {type.description}
-                          </CardDescription>
-                        </div>
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className={`p-2.5 rounded-lg ${color.bg} group-hover:scale-110 transition-transform`}>
+                        <Icon className={`h-5 w-5 ${color.icon}`} />
                       </div>
-                      <div className="flex gap-2">
-                        <Badge variant="outline" className="text-xs">
-                          {type.durationType === "unlimited" ? "Ilimitada" : "Limitada"}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {type.amountType === "fixed" ? "Fijo" : "Variable"}
-                        </Badge>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-base mb-1">{type.title}</h3>
+                        <p className="text-xs text-muted-foreground">{type.description}</p>
                       </div>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-1.5">
+                    <ul className="space-y-1 ml-1">
                       {type.features.map((feature, idx) => (
-                        <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
-                          <span className="text-primary mt-1">•</span>
+                        <li key={idx} className="text-xs text-muted-foreground flex items-center gap-1.5">
+                          <div className={`w-1 h-1 rounded-full ${color.bg}`} />
                           <span>{feature}</span>
                         </li>
                       ))}
