@@ -303,7 +303,7 @@ export default function RegisterCardVariableExample() {
                             contractuales suscritas.
                           </p>
                           <p className="text-xs text-foreground/90 leading-relaxed">
-                            Recibirás un recordatorio antes de cada cobro con el monto correspondiente según tu consumo.
+                            Recibirás una notificación después de cada pago confirmando el monto cobrado.
                           </p>
                         </div>
                       </div>
