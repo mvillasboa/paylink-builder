@@ -145,16 +145,16 @@ type SubscriptionTypeOption = {
 
 const subscriptionTypes: SubscriptionTypeOption[] = [
   {
-    id: "unlimited-variable",
-    title: "Ilimitada - Variable",
-    description: "Renovación automática con montos ajustables",
-    durationType: "unlimited",
-    amountType: "variable",
-    icon: TrendingUp,
+    id: "limited-fixed",
+    title: "Limitada - Fijo",
+    description: "Duración específica con monto constante",
+    durationType: "limited",
+    amountType: "fixed",
+    icon: DollarSign,
     features: [
-      "Renovación automática",
-      "Monto según consumo",
-      "Servicios cooperativos",
+      "Pagos definidos",
+      "Monto fijo",
+      "Cursos y programas",
     ],
   },
   {
@@ -171,6 +171,19 @@ const subscriptionTypes: SubscriptionTypeOption[] = [
     ],
   },
   {
+    id: "unlimited-variable",
+    title: "Ilimitada - Variable",
+    description: "Renovación automática con montos ajustables",
+    durationType: "unlimited",
+    amountType: "variable",
+    icon: TrendingUp,
+    features: [
+      "Renovación automática",
+      "Monto según consumo",
+      "Servicios cooperativos",
+    ],
+  },
+  {
     id: "limited-variable",
     title: "Limitada - Variable",
     description: "Duración específica con montos diferenciados",
@@ -181,19 +194,6 @@ const subscriptionTypes: SubscriptionTypeOption[] = [
       "Pagos definidos",
       "Montos variables",
       "Descuentos iniciales",
-    ],
-  },
-  {
-    id: "limited-fixed",
-    title: "Limitada - Fijo",
-    description: "Duración específica con monto constante",
-    durationType: "limited",
-    amountType: "fixed",
-    icon: DollarSign,
-    features: [
-      "Pagos definidos",
-      "Monto fijo",
-      "Cursos y programas",
     ],
   },
 ];
