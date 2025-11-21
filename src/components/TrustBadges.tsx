@@ -1,4 +1,5 @@
 import { Shield, Award, Lock, Clock } from "lucide-react";
+import { useInView } from "@/hooks/use-in-view";
 
 const badges = [
   {
@@ -24,15 +25,17 @@ const badges = [
 ];
 
 export const TrustBadges = () => {
+  const { ref: sectionRef, isInView } = useInView({ threshold: 0.2 });
+  
   return (
-    <section className="py-20 bg-primary/5 border-y border-border/50">
+    <section ref={sectionRef} className="py-20 bg-primary/5 border-y border-border/50">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {badges.map((badge, index) => (
             <div 
               key={index}
-              className="flex flex-col items-center text-center gap-4 animate-fade-in"
-              style={{ animationDelay: `${index * 0.05}s` }}
+              className={`flex flex-col items-center text-center gap-4 scroll-fade-up ${isInView ? 'in-view' : ''}`}
+              style={{ transitionDelay: isInView ? `${index * 0.1}s` : '0s' }}
             >
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
                 <badge.icon className="w-8 h-8 text-primary" />

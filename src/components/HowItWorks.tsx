@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Send, CreditCard, Settings, CheckCircle2 } from "lucide-react";
+import { useInView } from "@/hooks/use-in-view";
 
 const steps = [
   {
@@ -29,14 +30,16 @@ const steps = [
 ];
 
 export const HowItWorks = () => {
+  const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 });
+  
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-1/2 left-0 w-72 h-72 bg-secondary/5 rounded-full blur-3xl" />
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 animate-slide-up">
+        <div className={`text-center max-w-3xl mx-auto mb-16 scroll-fade-up ${isInView ? 'in-view' : ''}`}>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-foreground">
             Cuatro pasos para
             <span className="text-gradient"> automatizar cobros</span>
@@ -48,7 +51,11 @@ export const HowItWorks = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {steps.map((step, index) => (
-            <div key={index} className="relative animate-fade-in" style={{ animationDelay: `${index * 0.08}s` }}>
+            <div 
+              key={index} 
+              className={`relative scroll-fade-up ${isInView ? 'in-view' : ''}`}
+              style={{ transitionDelay: isInView ? `${index * 0.1}s` : '0s' }}
+            >
               {/* Connecting Line */}
               {index < steps.length - 1 && (
                 <div className="hidden lg:block absolute top-20 left-[calc(100%+1rem)] w-8 h-0.5 bg-gradient-to-r from-secondary to-transparent" />
