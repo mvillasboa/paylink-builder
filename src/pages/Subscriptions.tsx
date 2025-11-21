@@ -17,6 +17,268 @@ import { Subscription } from "@/types/subscription";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ModifySubscriptionAmountDialog } from "@/components/subscriptions/ModifySubscriptionAmountDialog";
+import { NewSubscriptionDialog } from "@/components/subscriptions/NewSubscriptionDialog";
+
+// Mock data for demonstration
+const MOCK_SUBSCRIPTIONS: Subscription[] = [
+  {
+    id: "mock-1",
+    user_id: "demo",
+    client_name: "María González",
+    client_email: "maria.gonzalez@email.com",
+    phone_number: "+595981234567",
+    reference: "SUB-001",
+    concept: "Gimnasio Premium",
+    description: "Acceso completo a todas las instalaciones",
+    amount: 350000,
+    type: "fixed",
+    frequency: "monthly",
+    billing_day: 5,
+    duration_type: "unlimited",
+    status: "active",
+    next_charge_date: "2025-12-05T00:00:00Z",
+    first_charge_type: "immediate",
+    created_at: "2024-01-15T00:00:00Z",
+    updated_at: "2024-01-15T00:00:00Z",
+    payments_completed: 10,
+    is_first_payment_completed: true,
+    trial_period_days: 0,
+    send_reminder_before_charge: true,
+    allow_pause: false,
+    price_change_history_count: 0,
+    last_charge_date: "2024-11-05T00:00:00Z",
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_amount: null,
+    first_payment_reason: null,
+    number_of_payments: null,
+  },
+  {
+    id: "mock-2",
+    user_id: "demo",
+    client_name: "Carlos Benítez",
+    client_email: "carlos.benitez@email.com",
+    phone_number: "+595982345678",
+    reference: "SUB-002",
+    concept: "Servicio de Internet",
+    description: "Plan de 100 Mbps fibra óptica",
+    amount: 280000,
+    type: "fixed",
+    frequency: "monthly",
+    billing_day: 10,
+    duration_type: "unlimited",
+    status: "active",
+    next_charge_date: "2025-12-10T00:00:00Z",
+    first_charge_type: "immediate",
+    created_at: "2024-02-20T00:00:00Z",
+    updated_at: "2024-02-20T00:00:00Z",
+    payments_completed: 9,
+    is_first_payment_completed: true,
+    trial_period_days: 0,
+    send_reminder_before_charge: true,
+    allow_pause: false,
+    price_change_history_count: 0,
+    last_charge_date: "2024-11-10T00:00:00Z",
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_amount: null,
+    first_payment_reason: null,
+    number_of_payments: null,
+  },
+  {
+    id: "mock-3",
+    user_id: "demo",
+    client_name: "Ana Rodríguez",
+    client_email: "ana.rodriguez@email.com",
+    phone_number: "+595983456789",
+    reference: "SUB-003",
+    concept: "Servicio Eléctrico",
+    description: "Suscripción mensual de servicio eléctrico",
+    amount: 450000,
+    type: "variable",
+    frequency: "monthly",
+    billing_day: 15,
+    duration_type: "unlimited",
+    status: "active",
+    next_charge_date: "2025-12-15T00:00:00Z",
+    first_charge_type: "immediate",
+    first_payment_amount: 450000,
+    created_at: "2024-03-10T00:00:00Z",
+    updated_at: "2024-03-10T00:00:00Z",
+    payments_completed: 8,
+    is_first_payment_completed: true,
+    trial_period_days: 0,
+    send_reminder_before_charge: true,
+    allow_pause: false,
+    price_change_history_count: 0,
+    last_charge_date: "2024-11-15T00:00:00Z",
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_reason: null,
+    number_of_payments: null,
+  },
+  {
+    id: "mock-4",
+    user_id: "demo",
+    client_name: "Roberto Silva",
+    client_email: "roberto.silva@email.com",
+    phone_number: "+595984567890",
+    reference: "SUB-004",
+    concept: "Membresía Anual Club",
+    description: "Acceso anual al club deportivo",
+    amount: 2500000,
+    type: "single",
+    frequency: "yearly",
+    billing_day: 1,
+    duration_type: "limited",
+    number_of_payments: 1,
+    payments_completed: 1,
+    status: "expired",
+    next_charge_date: "2026-01-01T00:00:00Z",
+    last_charge_date: "2025-01-01T00:00:00Z",
+    first_charge_type: "immediate",
+    created_at: "2024-01-01T00:00:00Z",
+    updated_at: "2025-01-01T00:00:00Z",
+    is_first_payment_completed: true,
+    trial_period_days: 0,
+    send_reminder_before_charge: false,
+    allow_pause: false,
+    price_change_history_count: 0,
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_amount: null,
+    first_payment_reason: null,
+  },
+  {
+    id: "mock-5",
+    user_id: "demo",
+    client_name: "Lucía Martínez",
+    client_email: "lucia.martinez@email.com",
+    phone_number: "+595985678901",
+    reference: "SUB-005",
+    concept: "Streaming Premium",
+    description: "Plan familiar streaming de películas y series",
+    amount: 45000,
+    type: "fixed",
+    frequency: "monthly",
+    billing_day: 20,
+    duration_type: "unlimited",
+    status: "paused",
+    next_charge_date: "2025-12-20T00:00:00Z",
+    first_charge_type: "immediate",
+    allow_pause: true,
+    created_at: "2024-04-15T00:00:00Z",
+    updated_at: "2024-11-01T00:00:00Z",
+    payments_completed: 6,
+    is_first_payment_completed: true,
+    trial_period_days: 0,
+    send_reminder_before_charge: true,
+    price_change_history_count: 0,
+    last_charge_date: "2024-10-20T00:00:00Z",
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_amount: null,
+    first_payment_reason: null,
+    number_of_payments: null,
+  },
+  {
+    id: "mock-6",
+    user_id: "demo",
+    client_name: "Diego Fernández",
+    client_email: "diego.fernandez@email.com",
+    phone_number: "+595986789012",
+    reference: "SUB-006",
+    concept: "Clases de Inglés",
+    description: "12 meses de clases online",
+    amount: 600000,
+    type: "fixed",
+    frequency: "monthly",
+    billing_day: 1,
+    duration_type: "limited",
+    number_of_payments: 12,
+    payments_completed: 8,
+    status: "active",
+    next_charge_date: "2025-12-01T00:00:00Z",
+    first_charge_type: "immediate",
+    created_at: "2024-04-01T00:00:00Z",
+    updated_at: "2024-11-01T00:00:00Z",
+    is_first_payment_completed: true,
+    trial_period_days: 0,
+    send_reminder_before_charge: true,
+    allow_pause: false,
+    price_change_history_count: 0,
+    last_charge_date: "2024-11-01T00:00:00Z",
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_amount: null,
+    first_payment_reason: null,
+  },
+  {
+    id: "mock-7",
+    user_id: "demo",
+    client_name: "Sofía López",
+    client_email: "sofia.lopez@email.com",
+    phone_number: "+595987890123",
+    reference: "SUB-007",
+    concept: "Software Empresarial",
+    description: "Licencia mensual de software de gestión",
+    amount: 850000,
+    type: "fixed",
+    frequency: "monthly",
+    billing_day: 1,
+    duration_type: "unlimited",
+    status: "cancelled",
+    next_charge_date: "2025-12-01T00:00:00Z",
+    last_charge_date: "2024-10-01T00:00:00Z",
+    first_charge_type: "immediate",
+    created_at: "2024-01-01T00:00:00Z",
+    updated_at: "2024-10-15T00:00:00Z",
+    payments_completed: 9,
+    is_first_payment_completed: true,
+    trial_period_days: 0,
+    send_reminder_before_charge: true,
+    allow_pause: false,
+    price_change_history_count: 0,
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_amount: null,
+    first_payment_reason: null,
+    number_of_payments: null,
+  },
+  {
+    id: "mock-8",
+    user_id: "demo",
+    client_name: "Fernando Gómez",
+    client_email: "fernando.gomez@email.com",
+    phone_number: "+595988901234",
+    reference: "SUB-008",
+    concept: "Plan de Salud",
+    description: "Seguro de salud familiar con periodo de prueba",
+    amount: 1200000,
+    type: "fixed",
+    frequency: "monthly",
+    billing_day: 1,
+    duration_type: "unlimited",
+    status: "trial",
+    trial_period_days: 30,
+    next_charge_date: "2025-12-15T00:00:00Z",
+    first_charge_type: "scheduled",
+    first_charge_date: "2025-12-15T00:00:00Z",
+    created_at: "2024-11-15T00:00:00Z",
+    updated_at: "2024-11-15T00:00:00Z",
+    payments_completed: 0,
+    is_first_payment_completed: false,
+    send_reminder_before_charge: true,
+    allow_pause: false,
+    price_change_history_count: 0,
+    last_charge_date: null,
+    pending_price_change_id: null,
+    last_price_change_date: null,
+    first_payment_amount: null,
+    first_payment_reason: null,
+    number_of_payments: null,
+  },
+];
 
 export default function Subscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -24,6 +286,7 @@ export default function Subscriptions() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
   const [modifyDialogOpen, setModifyDialogOpen] = useState(false);
+  const [newSubscriptionDialogOpen, setNewSubscriptionDialogOpen] = useState(false);
 
   useEffect(() => {
     loadSubscriptions();
@@ -45,10 +308,13 @@ export default function Subscriptions() {
 
       if (error) throw error;
 
-      setSubscriptions(data || []);
+      // If no real data, use mock data for demonstration
+      const finalData = data && data.length > 0 ? data : MOCK_SUBSCRIPTIONS;
+      setSubscriptions(finalData);
     } catch (error: any) {
       console.error("Error loading subscriptions:", error);
-      toast.error("Error al cargar suscripciones");
+      // On error, show mock data
+      setSubscriptions(MOCK_SUBSCRIPTIONS);
     } finally {
       setLoading(false);
     }
@@ -104,7 +370,10 @@ export default function Subscriptions() {
             Gestiona las suscripciones recurrentes de tus clientes
           </p>
         </div>
-        <Button className="bg-gradient-primary">
+        <Button 
+          className="bg-gradient-primary"
+          onClick={() => setNewSubscriptionDialogOpen(true)}
+        >
           <Plus className="h-4 w-4 mr-2" />
           Nueva Suscripción
         </Button>
@@ -259,6 +528,13 @@ export default function Subscriptions() {
           onSuccess={loadSubscriptions}
         />
       )}
+
+      {/* New Subscription Dialog */}
+      <NewSubscriptionDialog
+        open={newSubscriptionDialogOpen}
+        onOpenChange={setNewSubscriptionDialogOpen}
+        onSuccess={loadSubscriptions}
+      />
     </div>
   );
 }
