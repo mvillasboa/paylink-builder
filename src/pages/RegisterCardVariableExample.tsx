@@ -249,8 +249,8 @@ export default function RegisterCardVariableExample() {
                     ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
                     <span className="text-base font-normal text-muted-foreground ml-2">PYG</span>
                   </p>
-                  <p className="text-xs text-accent mt-2 font-medium">
-                    Monto variable según condiciones
+                  <p className="text-xs text-foreground/70 mt-2 font-medium">
+                    Monto sujeto a condiciones contractuales
                   </p>
                 </div>
 
