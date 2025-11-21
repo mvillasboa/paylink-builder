@@ -9,9 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Alert } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Infinity, Calendar, TrendingUp, DollarSign } from "lucide-react";
+import { ArrowLeft, Infinity, Calendar, TrendingUp, DollarSign, AlertCircle } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -35,12 +36,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const subscriptionSchema = z.object({
-  client_name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
-  client_email: z.string().email("Email inválido"),
-  phone_number: z.string().min(10, "Teléfono inválido"),
-  reference: z.string().min(3, "La referencia debe tener al menos 3 caracteres"),
-  concept: z.string().min(3, "El concepto debe tener al menos 3 caracteres"),
-  description: z.string().optional(),
+  client_name: z.string().min(2, "El nombre debe tener al menos 2 caracteres").max(100, "El nombre es demasiado largo"),
+  client_email: z.string().email("Email inválido").max(255, "Email es demasiado largo"),
+  phone_number: z.string().min(10, "Teléfono inválido").max(20, "Teléfono es demasiado largo"),
+  reference: z.string().min(3, "La referencia debe tener al menos 3 caracteres").max(50, "Referencia es demasiado larga"),
+  concept: z.string().min(3, "El concepto debe tener al menos 3 caracteres").max(200, "Concepto es demasiado largo"),
+  description: z.string().max(500, "Descripción es demasiado larga").optional(),
   amount: z.string().min(1, "El monto es requerido"),
   type: z.enum(["fixed", "variable", "single"]),
   frequency: z.enum(["weekly", "monthly", "quarterly", "yearly"]),
@@ -49,7 +50,31 @@ const subscriptionSchema = z.object({
   number_of_payments: z.string().optional(),
   first_charge_type: z.enum(["immediate", "scheduled"]),
   first_charge_date: z.string().optional(),
-});
+}).refine(
+  (data) => {
+    // Si es duración limitada, number_of_payments es requerido
+    if (data.duration_type === "limited") {
+      return data.number_of_payments && data.number_of_payments.length > 0;
+    }
+    return true;
+  },
+  {
+    message: "El número de pagos es requerido para suscripciones limitadas",
+    path: ["number_of_payments"],
+  }
+).refine(
+  (data) => {
+    // Si es primer cobro programado, first_charge_date es requerido
+    if (data.first_charge_type === "scheduled") {
+      return data.first_charge_date && data.first_charge_date.length > 0;
+    }
+    return true;
+  },
+  {
+    message: "La fecha del primer cobro es requerida",
+    path: ["first_charge_date"],
+  }
+);
 
 type SubscriptionFormData = z.infer<typeof subscriptionSchema>;
 
@@ -301,6 +326,27 @@ export function NewSubscriptionDialog({
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Info Alert */}
+            {selectedType && (
+              <Alert className="border-primary/30 bg-primary/5">
+                <AlertCircle className="h-4 w-4 text-primary" />
+                <div className="ml-2">
+                  <p className="text-sm font-medium">
+                    Tipo de suscripción: {selectedType.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {selectedType.durationType === "unlimited" 
+                      ? "Esta suscripción continuará indefinidamente hasta ser cancelada."
+                      : "Esta suscripción finalizará automáticamente después del número de pagos especificado."}
+                    {" "}
+                    {selectedType.amountType === "variable"
+                      ? "El monto puede variar en cada período de facturación."
+                      : "El monto permanecerá constante en cada cobro."}
+                  </p>
+                </div>
+              </Alert>
+            )}
+            
             {/* Client Information */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-foreground">Información del Cliente</h3>
@@ -399,30 +445,15 @@ export function NewSubscriptionDialog({
 
             {/* Pricing and Type */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-foreground">Facturación</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-foreground">Facturación</h3>
+                {selectedType && (
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                    {selectedType.title}
+                  </Badge>
+                )}
+              </div>
               <div className="grid gap-4 md:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tipo de Suscripción</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="fixed">Monto Fijo</SelectItem>
-                          <SelectItem value="variable">Monto Variable</SelectItem>
-                          <SelectItem value="single">Pago Único</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 <FormField
                   control={form.control}
                   name="amount"
@@ -432,34 +463,9 @@ export function NewSubscriptionDialog({
                         {watchType === "variable" ? "Monto Primera Cuota" : "Monto"}
                       </FormLabel>
                       <FormControl>
-                        <Input type="number" placeholder="150000" {...field} />
+                        <Input type="number" min="0" placeholder="150000" {...field} />
                       </FormControl>
                       <FormDescription>Monto en guaraníes (PYG)</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="frequency"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Frecuencia</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="weekly">Semanal</SelectItem>
-                          <SelectItem value="monthly">Mensual</SelectItem>
-                          <SelectItem value="quarterly">Trimestral</SelectItem>
-                          <SelectItem value="yearly">Anual</SelectItem>
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -479,49 +485,45 @@ export function NewSubscriptionDialog({
                   )}
                 />
               </div>
-            </div>
-
-            {/* Duration */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-foreground">Duración</h3>
-              <div className="grid gap-4 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="frequency"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Frecuencia de Cobro</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="weekly">Semanal</SelectItem>
+                        <SelectItem value="monthly">Mensual</SelectItem>
+                        <SelectItem value="quarterly">Trimestral</SelectItem>
+                        <SelectItem value="yearly">Anual</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {watchDurationType === "limited" && (
                 <FormField
                   control={form.control}
-                  name="duration_type"
+                  name="number_of_payments"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tipo de Duración</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="unlimited">Ilimitada</SelectItem>
-                          <SelectItem value="limited">Limitada</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <FormLabel>Número de Pagos</FormLabel>
+                      <FormControl>
+                        <Input type="number" min="1" max="999" placeholder="12" {...field} />
+                      </FormControl>
+                      <FormDescription>Total de pagos antes de finalizar la suscripción</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                {watchDurationType === "limited" && (
-                  <FormField
-                    control={form.control}
-                    name="number_of_payments"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Número de Pagos</FormLabel>
-                        <FormControl>
-                          <Input type="number" min="1" placeholder="12" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-              </div>
+              )}
             </div>
 
             {/* First Charge */}
