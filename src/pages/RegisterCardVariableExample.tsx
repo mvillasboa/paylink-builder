@@ -201,15 +201,15 @@ export default function RegisterCardVariableExample() {
           
           {/* Security Badges */}
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Badge className="bg-accent/10 text-accent border-accent/20 px-4 py-2">
+            <Badge className="bg-card/90 backdrop-blur-sm text-accent border-2 border-accent/40 px-4 py-2 shadow-soft">
               <Lock className="h-3 w-3 mr-2" />
               Conexión Segura SSL
             </Badge>
-            <Badge className="bg-primary/10 text-primary border-primary/20 px-4 py-2">
+            <Badge className="bg-card/90 backdrop-blur-sm text-primary border-2 border-primary/30 px-4 py-2 shadow-soft">
               <Shield className="h-3 w-3 mr-2" />
               Certificado PCI DSS
             </Badge>
-            <Badge className="bg-secondary/10 text-secondary border-secondary/20 px-4 py-2">
+            <Badge className="bg-card/90 backdrop-blur-sm text-secondary border-2 border-secondary/30 px-4 py-2 shadow-soft">
               Encriptación 256-bit
             </Badge>
           </div>
@@ -218,7 +218,7 @@ export default function RegisterCardVariableExample() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Payment Details - Left Column */}
           <div className="lg:col-span-1 space-y-6">
-            <Card className="border-border/50 bg-card/50 backdrop-blur animate-slide-up">
+            <Card className="border-2 border-border/50 bg-card/90 backdrop-blur-sm shadow-medium animate-slide-up">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Building2 className="h-5 w-5 text-primary" />
@@ -322,7 +322,7 @@ export default function RegisterCardVariableExample() {
 
           {/* Card Registration Form - Right Column */}
           <div className="lg:col-span-2">
-            <Card className="border-border/50 bg-card/50 backdrop-blur animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <Card className="border-2 border-border/50 bg-card/90 backdrop-blur-sm shadow-medium animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CreditCard className="h-5 w-5 text-primary" />
@@ -485,14 +485,14 @@ export default function RegisterCardVariableExample() {
                     </div>
 
                     {/* Security Notice */}
-                    <div className="bg-muted/50 rounded-lg p-4 border border-border/50">
+                    <div className="bg-card/90 backdrop-blur-sm rounded-lg p-4 border-2 border-accent/40 shadow-soft">
                       <div className="flex gap-3">
                         <Lock className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
                         <div className="space-y-1">
-                          <p className="text-sm font-medium text-foreground">
+                          <p className="text-sm font-semibold text-foreground">
                             Tu información está protegida
                           </p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-foreground/90 leading-relaxed">
                             Todos los datos son encriptados con tecnología de última generación. 
                             Nunca almacenamos tu CVV y cumplimos con los estándares PCI DSS.
                           </p>
@@ -520,7 +520,7 @@ export default function RegisterCardVariableExample() {
                     )}
                   </Button>
 
-                  <p className="text-xs text-center text-muted-foreground">
+                  <p className="text-xs text-center text-foreground/80 font-medium">
                     No se realizará ningún cargo sin tu autorización explícita.
                   </p>
                 </form>
