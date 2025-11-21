@@ -13,7 +13,10 @@ import {
   CreditCard,
   Building2,
   AlertCircle,
+  Calendar,
+  FileText,
 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -43,17 +46,38 @@ const cardSchema = z.object({
   cvv: z
     .string()
     .regex(/^\d{3,4}$/, "CVV debe tener 3 o 4 dígitos"),
+  acceptTerms: z
+    .boolean()
+    .refine((val) => val === true, "Debes aceptar los términos y condiciones"),
 });
 
 type CardFormData = z.infer<typeof cardSchema>;
 
 // Mock data del link de pago
-const mockPaymentLink = {
+const mockPaymentLink: {
+  id: string;
+  businessName: string;
+  amount: number;
+  concept: string;
+  description: string;
+  subscriptionType: "fixed" | "variable";
+  durationType: "limited" | "unlimited";
+  frequency: "monthly" | "biweekly" | "weekly";
+  numberOfPayments?: number;
+  billingDay: number;
+  nextChargeDate: string;
+} = {
   id: "LNK-001",
   businessName: "Empresa Demo S.A.",
   amount: 2500000,
-  concept: "Pago Mensualidad Marzo 2024",
-  description: "Pago correspondiente al servicio premium del mes de marzo",
+  concept: "Servicio Premium Mensual",
+  description: "Suscripción al servicio premium",
+  subscriptionType: "fixed", // "fixed" | "variable"
+  durationType: "limited", // "limited" | "unlimited"
+  frequency: "monthly", // "monthly" | "biweekly" | "weekly"
+  numberOfPayments: 12, // Solo para durationType "limited"
+  billingDay: 15,
+  nextChargeDate: "2024-03-15",
 };
 
 export default function RegisterCard() {
@@ -69,6 +93,7 @@ export default function RegisterCard() {
     expiryMonth: "",
     expiryYear: "",
     cvv: "",
+    acceptTerms: false,
   });
 
   const formatCardNumber = (value: string) => {
@@ -77,12 +102,28 @@ export default function RegisterCard() {
     return chunks ? chunks.join(" ") : cleaned;
   };
 
-  const handleInputChange = (field: keyof CardFormData, value: string) => {
+  const handleInputChange = (field: keyof CardFormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     // Limpiar error del campo cuando el usuario escribe
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
+  };
+
+  const getFrequencyText = (frequency: string) => {
+    const frequencies: Record<string, string> = {
+      monthly: "Mensual",
+      biweekly: "Quincenal",
+      weekly: "Semanal",
+    };
+    return frequencies[frequency] || frequency;
+  };
+
+  const getTotalAmount = () => {
+    if (mockPaymentLink.durationType === "limited" && mockPaymentLink.numberOfPayments) {
+      return mockPaymentLink.amount * mockPaymentLink.numberOfPayments;
+    }
+    return null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -217,6 +258,83 @@ export default function RegisterCard() {
                     ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
                     <span className="text-base font-normal text-muted-foreground ml-2">PYG</span>
                   </p>
+                </div>
+
+                <Separator />
+
+                {/* Subscription Details */}
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold text-foreground">Detalles de la Suscripción</p>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Frecuencia:</span>
+                      <span className="font-medium text-foreground">{getFrequencyText(mockPaymentLink.frequency)}</span>
+                    </div>
+                    
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Día de cobro:</span>
+                      <span className="font-medium text-foreground">Día {mockPaymentLink.billingDay}</span>
+                    </div>
+
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Próximo cobro:</span>
+                      <span className="font-medium text-foreground">
+                        {new Date(mockPaymentLink.nextChargeDate).toLocaleDateString('es-PY', { 
+                          day: '2-digit', 
+                          month: 'long', 
+                          year: 'numeric' 
+                        })}
+                      </span>
+                    </div>
+
+                    {/* Conditional information based on subscription type */}
+                    {mockPaymentLink.durationType === "limited" && mockPaymentLink.subscriptionType === "fixed" && (
+                      <>
+                        <Separator className="my-2" />
+                        <div className="bg-primary/5 rounded-lg p-3 space-y-1">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Número de cuotas:</span>
+                            <span className="font-semibold text-foreground">{mockPaymentLink.numberOfPayments}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-muted-foreground">Monto total:</span>
+                            <span className="font-bold text-primary">
+                              ₲ {getTotalAmount()?.toLocaleString('es-PY')}
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {mockPaymentLink.durationType === "unlimited" && mockPaymentLink.subscriptionType === "variable" && (
+                      <>
+                        <Separator className="my-2" />
+                        <div className="bg-accent/5 border border-accent/20 rounded-lg p-3">
+                          <div className="flex gap-2">
+                            <AlertCircle className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
+                            <p className="text-xs text-muted-foreground">
+                              El monto de esta suscripción está sujeto a las condiciones contractuales establecidas con {mockPaymentLink.businessName}.
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {mockPaymentLink.durationType === "limited" && mockPaymentLink.subscriptionType === "variable" && (
+                      <>
+                        <Separator className="my-2" />
+                        <div className="bg-accent/5 border border-accent/20 rounded-lg p-3">
+                          <div className="flex gap-2">
+                            <AlertCircle className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
+                            <p className="text-xs text-muted-foreground">
+                              La modificación del monto está sujeta a las condiciones comerciales acordadas con {mockPaymentLink.businessName}.
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <div className="bg-accent/5 border border-accent/20 rounded-lg p-3 flex gap-3">
@@ -361,18 +479,54 @@ export default function RegisterCard() {
 
                   <Separator />
 
-                  {/* Security Notice */}
-                  <div className="bg-muted/50 rounded-lg p-4 border border-border/50">
-                    <div className="flex gap-3">
-                      <Lock className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium text-foreground">
-                          Tu información está protegida
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Todos los datos son encriptados con tecnología de última generación. 
-                          Nunca almacenamos tu CVV y cumplimos con los estándares PCI DSS.
-                        </p>
+                  {/* Terms and Conditions */}
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <Checkbox
+                        id="acceptTerms"
+                        checked={formData.acceptTerms}
+                        onCheckedChange={(checked) => handleInputChange("acceptTerms", checked as boolean)}
+                        className={errors.acceptTerms ? "border-destructive" : ""}
+                      />
+                      <div className="space-y-1 flex-1">
+                        <Label
+                          htmlFor="acceptTerms"
+                          className="text-sm font-normal cursor-pointer leading-relaxed"
+                        >
+                          He leído y acepto los{" "}
+                          <a
+                            href="https://paylink.com.py/terminos"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline font-medium inline-flex items-center gap-1"
+                          >
+                            términos y condiciones
+                            <FileText className="h-3 w-3" />
+                          </a>
+                          {" "}del servicio de Paylink
+                        </Label>
+                        {errors.acceptTerms && (
+                          <p className="text-sm text-destructive flex items-center gap-1">
+                            <AlertCircle className="h-3 w-3" />
+                            {errors.acceptTerms}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Security Notice */}
+                    <div className="bg-muted/50 rounded-lg p-4 border border-border/50">
+                      <div className="flex gap-3">
+                        <Lock className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-foreground">
+                            Tu información está protegida
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Todos los datos son encriptados con tecnología de última generación. 
+                            Nunca almacenamos tu CVV y cumplimos con los estándares PCI DSS.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -397,7 +551,6 @@ export default function RegisterCard() {
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground">
-                    Al registrar tu tarjeta, aceptas nuestros términos y condiciones. 
                     No se realizará ningún cargo sin tu autorización explícita.
                   </p>
                 </form>
