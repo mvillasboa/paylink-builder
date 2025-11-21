@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +38,9 @@ import {
   Edit,
   Trash2,
   ExternalLink,
+  Receipt,
+  CreditCard,
+  ArrowRight,
 } from "lucide-react";
 import { mockPaymentLinks } from "@/data/mockDashboard";
 import { formatDistanceToNow } from "date-fns";
@@ -62,13 +66,6 @@ const formSchema = z.object({
   phoneNumber: z.string().min(1, "El teléfono es requerido"),
   concept: z.string().min(1, "El concepto es requerido"),
   description: z.string().optional(),
-  subscriptionType: z.enum(["fixed", "variable", "single"]),
-  durationType: z.enum(["unlimited", "limited"]),
-  numberOfPayments: z.string().optional(),
-  frequency: z.enum(["weekly", "monthly", "quarterly", "yearly"]),
-  billingDay: z.string().min(1, "El día de cobro es requerido"),
-  firstChargeType: z.enum(["immediate", "scheduled"]),
-  firstChargeDate: z.string().optional(),
 });
 
 const statusConfig = {
@@ -79,7 +76,9 @@ const statusConfig = {
 };
 
 export default function PaymentLinks() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLinkTypeDialogOpen, setIsLinkTypeDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -91,23 +90,12 @@ export default function PaymentLinks() {
       phoneNumber: "",
       concept: "",
       description: "",
-      subscriptionType: "fixed",
-      durationType: "unlimited",
-      numberOfPayments: "",
-      frequency: "monthly",
-      billingDay: "1",
-      firstChargeType: "immediate",
-      firstChargeDate: "",
     },
   });
 
-  const watchSubscriptionType = form.watch("subscriptionType");
-  const watchDurationType = form.watch("durationType");
-  const watchFirstChargeType = form.watch("firstChargeType");
-
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    toast.success("Link de pago creado exitosamente");
+    toast.success("Link de pago único creado exitosamente");
     setIsCreateDialogOpen(false);
     form.reset();
   };
@@ -135,18 +123,82 @@ export default function PaymentLinks() {
           </p>
         </div>
 
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+        {/* Diálogo de selección de tipo de link */}
+        <Dialog open={isLinkTypeDialogOpen} onOpenChange={setIsLinkTypeDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-gradient-primary">
               <Plus className="h-4 w-4 mr-2" />
               Crear Link
             </Button>
           </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>¿Qué tipo de link deseas crear?</DialogTitle>
+              <DialogDescription>
+                Selecciona el tipo de link de pago según tu necesidad
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-6">
+              {/* Opción 1: Pago Único */}
+              <Card 
+                className="cursor-pointer hover:border-primary transition-all hover:shadow-lg group"
+                onClick={() => {
+                  setIsLinkTypeDialogOpen(false);
+                  setIsCreateDialogOpen(true);
+                }}
+              >
+                <CardContent className="flex items-start gap-4 p-6">
+                  <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <Receipt className="h-6 w-6" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-2">Pago Único</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Crea un link para un pago único sin suscripción asociada. Ideal para cobros ocasionales o servicios puntuales.
+                    </p>
+                    <div className="flex items-center text-sm text-primary font-medium group-hover:gap-2 transition-all">
+                      Crear pago único
+                      <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Opción 2: Link de Suscripción */}
+              <Card 
+                className="cursor-pointer hover:border-primary transition-all hover:shadow-lg group"
+                onClick={() => {
+                  setIsLinkTypeDialogOpen(false);
+                  navigate('/dashboard/subscriptions');
+                }}
+              >
+                <CardContent className="flex items-start gap-4 p-6">
+                  <div className="p-3 rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                    <CreditCard className="h-6 w-6" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-2">Link de Suscripción</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Genera un link de pago para una suscripción existente o crea una nueva. Útil cuando una tarjeta vence o necesitas registrar una nueva.
+                    </p>
+                    <div className="flex items-center text-sm text-accent font-medium group-hover:gap-2 transition-all">
+                      Ir a suscripciones
+                      <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Diálogo de creación de pago único */}
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Crear Nuevo Link de Pago</DialogTitle>
+              <DialogTitle>Crear Link de Pago Único</DialogTitle>
               <DialogDescription>
-                Configura la suscripción y genera el link de pago personalizado
+                Configura el pago único y genera el link personalizado
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -217,7 +269,7 @@ export default function PaymentLinks() {
                   />
                 </div>
 
-                {/* Concepto */}
+                {/* Concepto y Descripción */}
                 <div className="space-y-4">
                   <FormField
                     control={form.control}
@@ -226,7 +278,7 @@ export default function PaymentLinks() {
                       <FormItem>
                         <FormLabel>Concepto</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="ej: Mensualidad Servicio Premium" />
+                          <Input {...field} placeholder="ej: Consultoría profesional" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -242,7 +294,7 @@ export default function PaymentLinks() {
                           <Textarea
                             {...field}
                             placeholder="Detalles adicionales del pago..."
-                            rows={2}
+                            rows={3}
                           />
                         </FormControl>
                         <FormMessage />
@@ -251,200 +303,10 @@ export default function PaymentLinks() {
                   />
                 </div>
 
-                {/* Configuración de Suscripción */}
-                <div className="space-y-4 p-4 rounded-lg border border-border/50 bg-muted/20">
-                  <h3 className="font-semibold text-foreground">Configuración de Suscripción</h3>
-                  
-                  {/* Tipo de Suscripción */}
-                  <FormField
-                    control={form.control}
-                    name="subscriptionType"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3">
-                        <FormLabel>Tipo de Monto</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="grid grid-cols-3 gap-4"
-                          >
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="fixed" id="fixed" />
-                              <Label htmlFor="fixed" className="font-normal cursor-pointer">
-                                Monto Fijo
-                              </Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="variable" id="variable" />
-                              <Label htmlFor="variable" className="font-normal cursor-pointer">
-                                Monto Variable
-                              </Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="single" id="single" />
-                              <Label htmlFor="single" className="font-normal cursor-pointer">
-                                Pago Único
-                              </Label>
-                            </div>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {watchSubscriptionType !== "single" && (
-                    <>
-                      {/* Duración */}
-                      <FormField
-                        control={form.control}
-                        name="durationType"
-                        render={({ field }) => (
-                          <FormItem className="space-y-3">
-                            <FormLabel>Duración</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="grid grid-cols-2 gap-4"
-                              >
-                                <div className="flex items-center space-x-2">
-                                  <RadioGroupItem value="unlimited" id="unlimited" />
-                                  <Label htmlFor="unlimited" className="font-normal cursor-pointer">
-                                    Ilimitada
-                                  </Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                  <RadioGroupItem value="limited" id="limited" />
-                                  <Label htmlFor="limited" className="font-normal cursor-pointer">
-                                    Limitada
-                                  </Label>
-                                </div>
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      {watchDurationType === "limited" && (
-                        <FormField
-                          control={form.control}
-                          name="numberOfPayments"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Número de Pagos</FormLabel>
-                              <FormControl>
-                                <Input {...field} type="number" placeholder="12" min="1" />
-                              </FormControl>
-                              <FormDescription>
-                                Cantidad total de pagos antes de finalizar la suscripción
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      )}
-
-                      {/* Frecuencia y Día de Cobro */}
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="frequency"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Frecuencia</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Selecciona frecuencia" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="weekly">Semanal</SelectItem>
-                                  <SelectItem value="monthly">Mensual</SelectItem>
-                                  <SelectItem value="quarterly">Trimestral</SelectItem>
-                                  <SelectItem value="yearly">Anual</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="billingDay"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Día de Cobro</FormLabel>
-                              <FormControl>
-                                <Input {...field} type="number" placeholder="1" min="1" max="31" />
-                              </FormControl>
-                              <FormDescription className="text-xs">
-                                Día del mes para el cobro
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-
-                      {/* Primer Cobro */}
-                      <FormField
-                        control={form.control}
-                        name="firstChargeType"
-                        render={({ field }) => (
-                          <FormItem className="space-y-3">
-                            <FormLabel>Primer Cobro</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="grid grid-cols-2 gap-4"
-                              >
-                                <div className="flex items-center space-x-2">
-                                  <RadioGroupItem value="immediate" id="immediate" />
-                                  <Label htmlFor="immediate" className="font-normal cursor-pointer">
-                                    Inmediato
-                                  </Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                  <RadioGroupItem value="scheduled" id="scheduled" />
-                                  <Label htmlFor="scheduled" className="font-normal cursor-pointer">
-                                    Programado
-                                  </Label>
-                                </div>
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      {watchFirstChargeType === "scheduled" && (
-                        <FormField
-                          control={form.control}
-                          name="firstChargeDate"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Fecha del Primer Cobro</FormLabel>
-                              <FormControl>
-                                <Input {...field} type="date" />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      )}
-                    </>
-                  )}
-                </div>
-
                 {/* Botones */}
                 <div className="flex gap-2 pt-4">
                   <Button type="submit" className="flex-1 bg-gradient-primary">
-                    Crear Link de Pago
+                    Crear Link de Pago Único
                   </Button>
                   <Button
                     type="button"
