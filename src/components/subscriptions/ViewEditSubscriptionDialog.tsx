@@ -267,15 +267,45 @@ export function ViewEditSubscriptionDialog({
                 )}
               </div>
               <div className="space-y-2">
+                <Label className="text-foreground/80">Tipo de Monto</Label>
+                <Badge 
+                  variant="outline" 
+                  className={
+                    subscription.type === "fixed" 
+                      ? "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/30"
+                      : subscription.type === "variable"
+                      ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30"
+                      : "bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30"
+                  }
+                >
+                  {typeLabels[subscription.type]}
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-foreground/80">Tipo de Plazo</Label>
+                <Badge 
+                  variant="outline" 
+                  className={
+                    subscription.duration_type === "unlimited"
+                      ? "bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30"
+                      : "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30"
+                  }
+                >
+                  {subscription.duration_type === "unlimited" ? "Plazo Ilimitado" : "Plazo Limitado"}
+                </Badge>
+              </div>
+              {subscription.duration_type === "limited" && subscription.number_of_payments && (
+                <div className="space-y-2">
+                  <Label className="text-foreground/80">Número de Pagos</Label>
+                  <p className="text-foreground font-medium">
+                    {subscription.number_of_payments} cuotas
+                  </p>
+                </div>
+              )}
+              <div className="space-y-2">
                 <Label className="text-foreground/80">Frecuencia</Label>
                 <p className="text-foreground font-medium">
                   {frequencyLabels[subscription.frequency]}
-                </p>
-              </div>
-              <div className="space-y-2">
-                <Label className="text-foreground/80">Tipo</Label>
-                <p className="text-foreground font-medium">
-                  {typeLabels[subscription.type]}
                 </p>
               </div>
               <div className="space-y-2">
@@ -292,6 +322,48 @@ export function ViewEditSubscriptionDialog({
                     locale: es,
                   })}
                 </p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-foreground/80">Tipo de Primer Cobro</Label>
+                <Badge variant="secondary">
+                  {subscription.first_charge_type === "immediate" ? "Inmediato" : "Programado"}
+                </Badge>
+              </div>
+              {subscription.first_charge_date && (
+                <div className="space-y-2">
+                  <Label className="text-foreground/80">Fecha de Primer Cobro</Label>
+                  <p className="text-foreground font-medium">
+                    {format(new Date(subscription.first_charge_date), "dd/MM/yyyy", { locale: es })}
+                  </p>
+                </div>
+              )}
+              {subscription.first_payment_amount && (
+                <div className="space-y-2">
+                  <Label className="text-foreground/80">Monto de Primer Pago</Label>
+                  <p className="text-foreground font-medium">
+                    {formatCurrency(subscription.first_payment_amount)}
+                  </p>
+                </div>
+              )}
+              {subscription.first_payment_reason && (
+                <div className="md:col-span-2 space-y-2">
+                  <Label className="text-foreground/80">Razón del Monto de Primer Pago</Label>
+                  <p className="text-foreground/90 text-sm">
+                    {subscription.first_payment_reason}
+                  </p>
+                </div>
+              )}
+              <div className="space-y-2">
+                <Label className="text-foreground/80">Recordatorio Antes del Cobro</Label>
+                <Badge variant={subscription.send_reminder_before_charge ? "default" : "secondary"}>
+                  {subscription.send_reminder_before_charge ? "Activado" : "Desactivado"}
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-foreground/80">Permite Pausa</Label>
+                <Badge variant={subscription.allow_pause ? "default" : "secondary"}>
+                  {subscription.allow_pause ? "Sí" : "No"}
+                </Badge>
               </div>
               {isEditing && (
                 <div className="md:col-span-2 space-y-2">
@@ -330,6 +402,12 @@ export function ViewEditSubscriptionDialog({
                     {subscription.payments_completed}
                   </p>
                 </div>
+                <div className="space-y-1">
+                  <Label className="text-foreground/80 text-sm">Primer Pago Completado</Label>
+                  <Badge variant={subscription.is_first_payment_completed ? "default" : "secondary"}>
+                    {subscription.is_first_payment_completed ? "Sí" : "No"}
+                  </Badge>
+                </div>
                 {subscription.last_charge_date && (
                   <div className="space-y-1">
                     <Label className="text-foreground/80 text-sm">Último Pago</Label>
@@ -346,6 +424,23 @@ export function ViewEditSubscriptionDialog({
                     <p className="text-foreground font-medium">
                       {subscription.payments_completed} / {subscription.number_of_payments} cuotas
                     </p>
+                  </div>
+                )}
+                {subscription.last_price_change_date && (
+                  <div className="space-y-1">
+                    <Label className="text-foreground/80 text-sm">Último Cambio de Precio</Label>
+                    <p className="text-foreground font-medium">
+                      {format(new Date(subscription.last_price_change_date), "dd/MM/yyyy", {
+                        locale: es,
+                      })}
+                    </p>
+                  </div>
+                )}
+                {subscription.pending_price_change_id && (
+                  <div className="md:col-span-3">
+                    <Badge variant="outline" className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30">
+                      Tiene un cambio de precio pendiente de aprobación
+                    </Badge>
                   </div>
                 )}
               </div>
