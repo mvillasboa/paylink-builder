@@ -19,15 +19,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import {
   Download,
   Search,
   Filter,
   Eye,
   RefreshCw,
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+  X,
 } from "lucide-react";
 import { mockTransactions } from "@/data/mockDashboard";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
 import { es } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 const statusConfig = {
   completed: { label: 'Completado', className: 'bg-accent/10 text-accent border-accent/20' },
@@ -45,10 +56,15 @@ const expandedTransactions = [
   })),
 ];
 
+const ITEMS_PER_PAGE = 25;
+
 export default function Transactions() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [methodFilter, setMethodFilter] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
 
   const filteredTransactions = expandedTransactions.filter((transaction) => {
     const matchesSearch =
@@ -59,8 +75,42 @@ export default function Transactions() {
     const matchesStatus = statusFilter === "all" || transaction.status === statusFilter;
     const matchesMethod = methodFilter === "all" || transaction.method === methodFilter;
 
-    return matchesSearch && matchesStatus && matchesMethod;
+    // Filtro por rango de fechas
+    const matchesDateRange = (() => {
+      if (!dateFrom && !dateTo) return true;
+      const transactionDate = startOfDay(new Date(transaction.date));
+      
+      if (dateFrom && dateTo) {
+        return isWithinInterval(transactionDate, {
+          start: startOfDay(dateFrom),
+          end: endOfDay(dateTo),
+        });
+      }
+      
+      if (dateFrom) {
+        return transactionDate >= startOfDay(dateFrom);
+      }
+      
+      if (dateTo) {
+        return transactionDate <= endOfDay(dateTo);
+      }
+      
+      return true;
+    })();
+
+    return matchesSearch && matchesStatus && matchesMethod && matchesDateRange;
   });
+
+  // Calcular paginación
+  const totalPages = Math.ceil(filteredTransactions.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex);
+
+  // Reset a página 1 cuando cambian los filtros
+  const handleFilterChange = () => {
+    setCurrentPage(1);
+  };
 
   const totalAmount = filteredTransactions
     .filter((t) => t.status === "completed")
@@ -126,11 +176,20 @@ export default function Transactions() {
                 placeholder="Buscar por ID, cliente o email..."
                 className="pl-9"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  handleFilterChange();
+                }}
               />
             </div>
 
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select 
+              value={statusFilter} 
+              onValueChange={(value) => {
+                setStatusFilter(value);
+                handleFilterChange();
+              }}
+            >
               <SelectTrigger className="w-[180px]">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Estado" />
@@ -143,7 +202,13 @@ export default function Transactions() {
               </SelectContent>
             </Select>
 
-            <Select value={methodFilter} onValueChange={setMethodFilter}>
+            <Select 
+              value={methodFilter} 
+              onValueChange={(value) => {
+                setMethodFilter(value);
+                handleFilterChange();
+              }}
+            >
               <SelectTrigger className="w-[180px]">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Método" />
@@ -153,9 +218,82 @@ export default function Transactions() {
                 <SelectItem value="Visa">Visa</SelectItem>
                 <SelectItem value="Mastercard">Mastercard</SelectItem>
                 <SelectItem value="American Express">American Express</SelectItem>
-                <SelectItem value="Débito">Débito</SelectItem>
               </SelectContent>
             </Select>
+
+            {/* Filtro por Fecha Desde */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !dateFrom && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  {dateFrom ? format(dateFrom, "dd/MM/yyyy") : "Fecha desde"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={dateFrom}
+                  onSelect={(date) => {
+                    setDateFrom(date);
+                    handleFilterChange();
+                  }}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {/* Filtro por Fecha Hasta */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !dateTo && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  {dateTo ? format(dateTo, "dd/MM/yyyy") : "Fecha hasta"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={dateTo}
+                  onSelect={(date) => {
+                    setDateTo(date);
+                    handleFilterChange();
+                  }}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                  disabled={(date) => dateFrom ? date < dateFrom : false}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {/* Botón para limpiar filtros de fecha */}
+            {(dateFrom || dateTo) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setDateFrom(undefined);
+                  setDateTo(undefined);
+                  handleFilterChange();
+                }}
+                className="h-10"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Limpiar fechas
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -163,9 +301,14 @@ export default function Transactions() {
       {/* Transactions Table */}
       <Card className="border-border/50 bg-card/50">
         <CardHeader>
-          <CardTitle>
-            {filteredTransactions.length} Transacciones
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>
+              {filteredTransactions.length} Transacciones
+              <span className="text-sm font-normal text-muted-foreground ml-2">
+                (Mostrando {startIndex + 1}-{Math.min(endIndex, filteredTransactions.length)} de {filteredTransactions.length})
+              </span>
+            </CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="rounded-lg border border-border/50 overflow-hidden">
@@ -183,47 +326,84 @@ export default function Transactions() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredTransactions.map((transaction) => {
-                  const statusInfo = statusConfig[transaction.status];
-                  return (
-                    <TableRow key={transaction.id} className="hover:bg-muted/30 transition-colors">
-                      <TableCell className="font-mono text-sm text-muted-foreground">
-                        {transaction.id}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {transaction.client.name}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {transaction.client.email}
-                      </TableCell>
-                      <TableCell className="font-semibold text-foreground">
-                        ₲ {transaction.amount.toLocaleString('es-PY')}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="font-medium">
-                          {transaction.method}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={statusInfo.className}>
-                          {statusInfo.label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {formatDistanceToNow(transaction.date, { addSuffix: true, locale: es })}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" className="h-8">
-                          <Eye className="h-4 w-4 mr-1" />
-                          Ver
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {paginatedTransactions.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
+                      No se encontraron transacciones con los filtros aplicados
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  paginatedTransactions.map((transaction) => {
+                    const statusInfo = statusConfig[transaction.status];
+                    return (
+                      <TableRow key={transaction.id} className="hover:bg-muted/30 transition-colors">
+                        <TableCell className="font-mono text-sm text-muted-foreground">
+                          {transaction.id}
+                        </TableCell>
+                        <TableCell className="font-medium text-foreground">
+                          {transaction.client.name}
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {transaction.client.email}
+                        </TableCell>
+                        <TableCell className="font-semibold text-foreground">
+                          ₲ {transaction.amount.toLocaleString('es-PY')}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="font-medium">
+                            {transaction.method}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={statusInfo.className}>
+                            {statusInfo.label}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {formatDistanceToNow(transaction.date, { addSuffix: true, locale: es })}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm" className="h-8">
+                            <Eye className="h-4 w-4 mr-1" />
+                            Ver
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
               </TableBody>
             </Table>
           </div>
+
+          {/* Paginación */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mt-4">
+              <p className="text-sm text-muted-foreground">
+                Página {currentPage} de {totalPages}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Siguiente
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
