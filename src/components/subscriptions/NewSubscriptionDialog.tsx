@@ -51,6 +51,8 @@ const subscriptionSchema = z.object({
   number_of_payments: z.string().optional(),
   first_charge_type: z.enum(["immediate", "scheduled"]).optional(),
   first_charge_date: z.string().optional(),
+  first_payment_amount: z.string().optional(),
+  first_payment_reason: z.string().max(200, "El motivo es demasiado largo").optional(),
 }).refine(
   (data) => {
     // Si NO es ilimitada variable, el monto es requerido
@@ -259,6 +261,8 @@ export function NewSubscriptionDialog({
       const frequency = data.frequency || "monthly";
       const first_charge_type = data.first_charge_type || "immediate";
       const number_of_payments = data.number_of_payments ? parseInt(data.number_of_payments) : null;
+      const first_payment_amount = data.first_payment_amount && data.first_payment_amount.length > 0 ? parseInt(data.first_payment_amount) : null;
+      const first_payment_reason = data.first_payment_reason || null;
 
       // Calculate next charge date
       const nextChargeDate = new Date();
@@ -290,6 +294,8 @@ export function NewSubscriptionDialog({
         number_of_payments,
         first_charge_type,
         first_charge_date: data.first_charge_date || null,
+        first_payment_amount,
+        first_payment_reason,
         next_charge_date: nextChargeDate.toISOString(),
         status: "active",
       });
@@ -655,6 +661,57 @@ export function NewSubscriptionDialog({
                       )}
                     />
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Precio Promocional Inicial - Solo para limited-variable */}
+            {watchDurationType === "limited" && watchType === "variable" && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-foreground">Precio Promocional Inicial</h3>
+                  <Badge variant="secondary" className="text-xs">Opcional</Badge>
+                </div>
+                <Alert className="border-amber-500/30 bg-amber-500/5">
+                  <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                  <div className="ml-2">
+                    <p className="text-sm font-medium">
+                      Primera Cuota Diferenciada
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Si deseas aplicar un precio especial para la primera cuota (descuento, promoción, costo de inscripción), puedes definirlo aquí.
+                    </p>
+                  </div>
+                </Alert>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="first_payment_amount"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Monto Primera Cuota (Opcional)</FormLabel>
+                        <FormControl>
+                          <Input type="number" min="0" placeholder="50000" {...field} />
+                        </FormControl>
+                        <FormDescription>Monto especial para el primer pago</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="first_payment_reason"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Motivo (Opcional)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Promoción de lanzamiento" {...field} />
+                        </FormControl>
+                        <FormDescription>Razón del precio diferenciado</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
             )}
