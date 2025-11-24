@@ -446,6 +446,42 @@ export type Database = {
           },
         ]
       }
+      transactions: {
+        Row: {
+          amount: number
+          client_email: string
+          client_name: string
+          created_at: string
+          id: string
+          method: string
+          status: Database["public"]["Enums"]["transaction_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          client_email: string
+          client_name: string
+          created_at?: string
+          id: string
+          method: string
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          client_email?: string
+          client_name?: string
+          created_at?: string
+          id?: string
+          method?: string
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -479,6 +515,7 @@ export type Database = {
         | "expired"
         | "trial"
       subscription_type: "fixed" | "variable" | "single"
+      transaction_status: "completed" | "pending" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -634,6 +671,7 @@ export const Constants = {
         "trial",
       ],
       subscription_type: ["fixed", "variable", "single"],
+      transaction_status: ["completed", "pending", "failed"],
     },
   },
 } as const
