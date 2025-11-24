@@ -255,23 +255,6 @@ export default function RegisterCardVariableExample() {
                 </div>
                 
                 <Separator />
-                
-                <div className="bg-card/90 backdrop-blur-sm border-2 border-accent/40 rounded-lg p-4 shadow-soft">
-                  <div className="flex gap-2">
-                    <AlertCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-sm font-semibold text-foreground mb-1">
-                        Monto Variable
-                      </p>
-                      <p className="text-xs text-foreground/90 leading-relaxed">
-                        El monto mensual será determinado según tu consumo y las condiciones de la cobertura médica establecidas. 
-                        Recibirás una notificación antes de cada cobro con el monto correspondiente.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
 
                 {/* Subscription Details */}
                 <div className="space-y-3">
