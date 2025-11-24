@@ -22,7 +22,6 @@ const methodDistribution = [
   { method: 'Visa', transactions: 142, amount: 358500000, avgTicket: 2524648, color: 'hsl(217, 91%, 60%)' },
   { method: 'Mastercard', transactions: 89, amount: 189200000, avgTicket: 2125843, color: 'hsl(271, 76%, 53%)' },
   { method: 'American Express', transactions: 34, amount: 145800000, avgTicket: 4288235, color: 'hsl(142, 76%, 36%)' },
-  { method: 'Débito', transactions: 58, amount: 87450000, avgTicket: 1507758, color: 'hsl(38, 92%, 50%)' },
 ];
 
 // Success rate by method
@@ -30,7 +29,6 @@ const successRates = [
   { method: 'Visa', successRate: 89.4, failureRate: 10.6 },
   { method: 'Mastercard', successRate: 86.5, failureRate: 13.5 },
   { method: 'American Express', successRate: 76.5, failureRate: 23.5 },
-  { method: 'Débito', successRate: 82.8, failureRate: 17.2 },
 ];
 
 // Monthly trends by method
@@ -41,7 +39,6 @@ const monthlyTrends = Array.from({ length: 6 }, (_, i) => {
     Visa: 120000000 + Math.floor(Math.random() * 40000000),
     Mastercard: 80000000 + Math.floor(Math.random() * 30000000),
     AmEx: 50000000 + Math.floor(Math.random() * 20000000),
-    Débito: 40000000 + Math.floor(Math.random() * 15000000),
   };
 });
 
@@ -50,21 +47,19 @@ const processingTimes = [
   { method: 'Visa', avgTime: 2.3, p95Time: 4.5 },
   { method: 'Mastercard', avgTime: 2.8, p95Time: 5.2 },
   { method: 'American Express', avgTime: 3.2, p95Time: 6.1 },
-  { method: 'Débito', avgTime: 1.9, p95Time: 3.8 },
 ];
 
 // Customer preferences
 const customerPreferences = [
-  { segment: 'Empresas', Visa: 45, Mastercard: 30, AmEx: 20, Débito: 5 },
-  { segment: 'Profesionales', Visa: 50, Mastercard: 25, AmEx: 15, Débito: 10 },
-  { segment: 'Individuos', Visa: 40, Mastercard: 35, AmEx: 5, Débito: 20 },
+  { segment: 'Empresas', Visa: 45, Mastercard: 30, AmEx: 25 },
+  { segment: 'Profesionales', Visa: 50, Mastercard: 30, AmEx: 20 },
+  { segment: 'Individuos', Visa: 40, Mastercard: 40, AmEx: 20 },
 ];
 
 const COLORS = {
   Visa: 'hsl(217, 91%, 60%)',
   Mastercard: 'hsl(271, 76%, 53%)',
   AmEx: 'hsl(142, 76%, 36%)',
-  Débito: 'hsl(38, 92%, 50%)',
 };
 
 export function PaymentMethodReport() {
@@ -229,13 +224,6 @@ export function PaymentMethodReport() {
                 strokeWidth={2}
                 dot={{ r: 4 }}
               />
-              <Line
-                type="monotone"
-                dataKey="Débito"
-                stroke={COLORS.Débito}
-                strokeWidth={2}
-                dot={{ r: 4 }}
-              />
             </LineChart>
           </ResponsiveContainer>
         </CardContent>
@@ -337,8 +325,7 @@ export function PaymentMethodReport() {
               <Legend />
               <Bar dataKey="Visa" stackId="a" fill={COLORS.Visa} radius={[0, 0, 0, 0]} />
               <Bar dataKey="Mastercard" stackId="a" fill={COLORS.Mastercard} radius={[0, 0, 0, 0]} />
-              <Bar dataKey="AmEx" stackId="a" fill={COLORS.AmEx} radius={[0, 0, 0, 0]} />
-              <Bar dataKey="Débito" stackId="a" fill={COLORS.Débito} radius={[8, 8, 0, 0]} />
+              <Bar dataKey="AmEx" stackId="a" fill={COLORS.AmEx} radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
@@ -365,11 +352,11 @@ export function PaymentMethodReport() {
                 ₲ 4.3M promedio por transacción
               </p>
             </div>
-            <div className="p-4 rounded-lg" style={{ backgroundColor: 'hsl(38, 92%, 50%, 0.1)', borderColor: 'hsl(38, 92%, 50%, 0.2)', border: '1px solid' }}>
-              <p className="text-sm font-medium mb-1" style={{ color: 'hsl(38, 92%, 50%)' }}>Más Rápido</p>
-              <p className="text-2xl font-bold">Débito</p>
+            <div className="p-4 rounded-lg" style={{ backgroundColor: 'hsl(217, 91%, 60%, 0.1)', borderColor: 'hsl(217, 91%, 60%, 0.2)', border: '1px solid' }}>
+              <p className="text-sm font-medium mb-1" style={{ color: 'hsl(217, 91%, 60%)' }}>Más Rápido</p>
+              <p className="text-2xl font-bold">Visa</p>
               <p className="text-xs text-muted-foreground mt-1">
-                1.9s promedio de procesamiento
+                2.3s promedio de procesamiento
               </p>
             </div>
           </div>
@@ -378,9 +365,9 @@ export function PaymentMethodReport() {
               Recomendaciones Estratégicas
             </p>
             <ul className="text-xs text-muted-foreground space-y-1">
-              <li>• Visa tiene el mejor balance entre volumen y tasa de éxito - priorizar como método principal</li>
+              <li>• Visa tiene el mejor balance entre volumen, rapidez y tasa de éxito - priorizar como método principal</li>
               <li>• AmEx tiene alto ticket pero baja tasa de éxito - mejorar validaciones para reducir fallos</li>
-              <li>• Débito es el más rápido - promover para transacciones de bajo monto</li>
+              <li>• Mastercard muestra estabilidad constante - promover como alternativa secundaria</li>
               <li>• Segmento Empresas prefiere Visa - enfocarse en esta combinación para B2B</li>
             </ul>
           </div>

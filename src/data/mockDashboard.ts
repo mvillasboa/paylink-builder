@@ -31,7 +31,6 @@ export const mockPaymentMethods = [
   { name: 'Visa', transactions: 142, color: 'hsl(var(--primary))' },
   { name: 'Mastercard', transactions: 89, color: 'hsl(var(--secondary))' },
   { name: 'American Express', transactions: 34, color: 'hsl(var(--accent))' },
-  { name: 'Débito', transactions: 58, color: 'hsl(var(--muted-foreground))' },
 ];
 
 export const mockLinkStatus = [
@@ -65,14 +64,6 @@ export const mockTransactions = [
     method: 'American Express',
     status: 'pending' as const,
     date: new Date(Date.now() - 8 * 60 * 60 * 1000),
-  },
-  {
-    id: 'TRX-00120',
-    client: { name: 'Ana Martínez', email: 'ana.martinez@email.com' },
-    amount: 950000,
-    method: 'Débito',
-    status: 'completed' as const,
-    date: new Date(Date.now() - 24 * 60 * 60 * 1000),
   },
   {
     id: 'TRX-00119',
