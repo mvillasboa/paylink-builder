@@ -46,16 +46,6 @@ const statusConfig = {
   failed: { label: 'Fallido', className: 'bg-destructive/10 text-destructive border-destructive/20' },
 };
 
-// Expandimos los datos de mock para tener más transacciones
-const expandedTransactions = [
-  ...mockTransactions,
-  ...Array.from({ length: 20 }, (_, i) => ({
-    ...mockTransactions[i % mockTransactions.length],
-    id: `TRX-${String(100 + i).padStart(5, '0')}`,
-    date: new Date(Date.now() - (i + 7) * 24 * 60 * 60 * 1000),
-  })),
-];
-
 const ITEMS_PER_PAGE = 25;
 
 export default function Transactions() {
@@ -66,7 +56,7 @@ export default function Transactions() {
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
 
-  const filteredTransactions = expandedTransactions.filter((transaction) => {
+  const filteredTransactions = mockTransactions.filter((transaction) => {
     const matchesSearch =
       transaction.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       transaction.client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -40,48 +40,45 @@ export const mockLinkStatus = [
   { name: 'Cancelados', value: 12, color: 'hsl(var(--destructive))' },
 ];
 
-export const mockTransactions = [
-  {
-    id: 'TRX-00123',
-    client: { name: 'Juan Pérez', email: 'juan.perez@email.com' },
-    amount: 2500000,
-    method: 'Visa',
-    status: 'completed' as const,
-    date: new Date(Date.now() - 2 * 60 * 60 * 1000),
-  },
-  {
-    id: 'TRX-00122',
-    client: { name: 'María González', email: 'maria.g@email.com' },
-    amount: 1800000,
-    method: 'Mastercard',
-    status: 'completed' as const,
-    date: new Date(Date.now() - 5 * 60 * 60 * 1000),
-  },
-  {
-    id: 'TRX-00121',
-    client: { name: 'Carlos López', email: 'carlos.lopez@email.com' },
-    amount: 3200000,
-    method: 'American Express',
-    status: 'pending' as const,
-    date: new Date(Date.now() - 8 * 60 * 60 * 1000),
-  },
-  {
-    id: 'TRX-00119',
-    client: { name: 'Roberto Silva', email: 'roberto.silva@email.com' },
-    amount: 4500000,
-    method: 'Visa',
-    status: 'failed' as const,
-    date: new Date(Date.now() - 36 * 60 * 60 * 1000),
-  },
-  {
-    id: 'TRX-00118',
-    client: { name: 'Laura Hernández', email: 'laura.h@email.com' },
-    amount: 1200000,
-    method: 'Mastercard',
-    status: 'completed' as const,
-    date: new Date(Date.now() - 48 * 60 * 60 * 1000),
-  },
+const names = [
+  'Juan Pérez', 'María González', 'Carlos López', 'Roberto Silva', 'Laura Hernández',
+  'Ana Martínez', 'Pedro Ramírez', 'Sofía Torres', 'Diego Flores', 'Carmen Ruiz',
+  'Luis Mendoza', 'Patricia Castro', 'Jorge Vargas', 'Isabel Morales', 'Fernando Ortiz',
+  'Gabriela Rojas', 'Miguel Sosa', 'Valentina Núñez', 'Andrés Guzmán', 'Daniela Reyes',
+  'Ricardo Vega', 'Lucía Díaz', 'Javier Cruz', 'Natalia Herrera', 'Pablo Jiménez',
+  'Camila Medina', 'Sebastián Romero', 'Alejandra Aguilar', 'Martín Cortés', 'Victoria Muñoz',
+  'Emilio Sánchez', 'Carolina Paredes', 'Rodrigo Peña', 'Mariana Cabrera', 'Ángel Fuentes',
+  'Fernanda Rivas', 'Nicolás Molina', 'Juliana Campos', 'Francisco Gil', 'Paola Méndez',
+  'Gustavo Navarro', 'Andrea León', 'Santiago Vázquez', 'Valeria Delgado', 'Omar Castillo'
 ];
+
+const methods = ['Visa', 'Mastercard', 'American Express'];
+const statuses: Array<'completed' | 'pending' | 'failed'> = ['completed', 'pending', 'failed'];
+
+export const mockTransactions = Array.from({ length: 50 }, (_, i) => {
+  const name = names[i % names.length];
+  const email = name.toLowerCase().replace(' ', '.') + '@email.com';
+  const method = methods[Math.floor(Math.random() * methods.length)];
+  const statusWeights = [0.7, 0.2, 0.1]; // 70% completed, 20% pending, 10% failed
+  const random = Math.random();
+  let status: 'completed' | 'pending' | 'failed';
+  if (random < statusWeights[0]) status = 'completed';
+  else if (random < statusWeights[0] + statusWeights[1]) status = 'pending';
+  else status = 'failed';
+  
+  const daysAgo = Math.floor(Math.random() * 30);
+  const hoursAgo = Math.floor(Math.random() * 24);
+  const date = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000 - hoursAgo * 60 * 60 * 1000);
+  
+  return {
+    id: `TRX-${String(150 - i).padStart(5, '0')}`,
+    client: { name, email },
+    amount: Math.floor(Math.random() * 8000000) + 500000,
+    method,
+    status,
+    date,
+  };
+});
 
 export const mockPaymentLinks = [
   {
