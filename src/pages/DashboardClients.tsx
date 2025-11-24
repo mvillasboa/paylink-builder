@@ -16,8 +16,31 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Calendar as CalendarIcon,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { formatCurrency } from "@/lib/utils/currency";
+import { format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
+import { es } from "date-fns/locale";
+import { cn } from "@/lib/utils";
+import { ExportDropdown } from "@/components/ExportDropdown";
+import { ExportColumn } from "@/lib/utils/export";
 
 type SubscriptionStatus = "active" | "paused" | "cancelled" | "expired";
 
@@ -202,15 +225,97 @@ const MOCK_CLIENTS: Client[] = [
   },
 ];
 
+const ITEMS_PER_PAGE = 25;
+
+const clientColumns: ExportColumn[] = [
+  { label: 'ID Cliente', key: 'id' },
+  { label: 'Nombre', key: 'name' },
+  { label: 'Email', key: 'email' },
+  { label: 'Teléfono', key: 'phone' },
+  { 
+    label: 'Fecha de Registro', 
+    key: 'joinDate', 
+    formatter: (date: string) => format(new Date(date), 'dd/MM/yyyy', { locale: es }) 
+  },
+  { 
+    label: 'Suscripciones Activas', 
+    key: 'subscriptions', 
+    formatter: (subs: ClientSubscription[]) => subs.filter(s => s.status === 'active').length.toString()
+  },
+  { 
+    label: 'Suscripciones Totales', 
+    key: 'subscriptions', 
+    formatter: (subs: ClientSubscription[]) => subs.length.toString()
+  },
+  { 
+    label: 'Ingresos Mensuales', 
+    key: 'subscriptions', 
+    formatter: (subs: ClientSubscription[]) => {
+      const mrr = subs
+        .filter(s => s.status === 'active' && s.frequency === 'Mensual')
+        .reduce((sum, s) => sum + s.amount, 0);
+      return formatCurrency(mrr);
+    }
+  },
+];
+
 export default function DashboardClients() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedClient, setExpandedClient] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
 
-  const filteredClients = MOCK_CLIENTS.filter(
-    (client) =>
+  const filteredClients = MOCK_CLIENTS.filter((client) => {
+    const matchesSearch =
       client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      client.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      client.email.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus = (() => {
+      if (statusFilter === "all") return true;
+      const stats = getSubscriptionStats(client.subscriptions);
+      if (statusFilter === "active") return stats.active > 0;
+      if (statusFilter === "paused") return stats.paused > 0;
+      if (statusFilter === "no-active") return stats.active === 0;
+      return true;
+    })();
+
+    const matchesDateRange = (() => {
+      if (!dateFrom && !dateTo) return true;
+      const joinDate = startOfDay(new Date(client.joinDate));
+      
+      if (dateFrom && dateTo) {
+        return isWithinInterval(joinDate, {
+          start: startOfDay(dateFrom),
+          end: endOfDay(dateTo),
+        });
+      }
+      
+      if (dateFrom) {
+        return joinDate >= startOfDay(dateFrom);
+      }
+      
+      if (dateTo) {
+        return joinDate <= endOfDay(dateTo);
+      }
+      
+      return true;
+    })();
+
+    return matchesSearch && matchesStatus && matchesDateRange;
+  });
+
+  // Calcular paginación
+  const totalPages = Math.ceil(filteredClients.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedClients = filteredClients.slice(startIndex, endIndex);
+
+  // Reset a página 1 cuando cambian los filtros
+  const handleFilterChange = () => {
+    setCurrentPage(1);
+  };
 
   const getInitials = (name: string) => {
     return name
@@ -278,10 +383,19 @@ export default function DashboardClients() {
             Gestiona tu base de clientes y sus suscripciones
           </p>
         </div>
-        <Button className="bg-gradient-primary">
-          <Plus className="h-4 w-4 mr-2" />
-          Agregar Cliente
-        </Button>
+        <div className="flex gap-2">
+          <ExportDropdown
+            data={filteredClients}
+            columns={clientColumns}
+            filename="clientes"
+            title="Reporte de Clientes"
+            recordCount={filteredClients.length}
+          />
+          <Button className="bg-gradient-primary">
+            <Plus className="h-4 w-4 mr-2" />
+            Agregar Cliente
+          </Button>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -345,24 +459,129 @@ export default function DashboardClients() {
         </Card>
       </div>
 
-      {/* Search Bar */}
+      {/* Filters */}
       <Card className="border-border/50 bg-card/50">
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar por nombre o email..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
-            />
+        <CardContent className="p-6">
+          <div className="flex flex-wrap gap-4">
+            <div className="relative flex-1 min-w-[300px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nombre o email..."
+                className="pl-9"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  handleFilterChange();
+                }}
+              />
+            </div>
+
+            <Select 
+              value={statusFilter} 
+              onValueChange={(value) => {
+                setStatusFilter(value);
+                handleFilterChange();
+              }}
+            >
+              <SelectTrigger className="w-[220px]">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Estado de suscripción" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos los estados</SelectItem>
+                <SelectItem value="active">Con activas</SelectItem>
+                <SelectItem value="paused">Con pausadas</SelectItem>
+                <SelectItem value="no-active">Sin suscripciones activas</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Filtro por Fecha Desde */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !dateFrom && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  {dateFrom ? format(dateFrom, "dd/MM/yyyy") : "Registro desde"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarComponent
+                  mode="single"
+                  selected={dateFrom}
+                  onSelect={(date) => {
+                    setDateFrom(date);
+                    handleFilterChange();
+                  }}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {/* Filtro por Fecha Hasta */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !dateTo && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  {dateTo ? format(dateTo, "dd/MM/yyyy") : "Registro hasta"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarComponent
+                  mode="single"
+                  selected={dateTo}
+                  onSelect={(date) => {
+                    setDateTo(date);
+                    handleFilterChange();
+                  }}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                  disabled={(date) => dateFrom ? date < dateFrom : false}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {/* Botón para limpiar filtros de fecha */}
+            {(dateFrom || dateTo) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setDateFrom(undefined);
+                  setDateTo(undefined);
+                  handleFilterChange();
+                }}
+                className="h-10"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Limpiar fechas
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
 
       {/* Clients List */}
       <div className="grid gap-4">
-        {filteredClients.map((client, index) => {
+        {paginatedClients.length === 0 ? (
+          <Card className="border-border/50 bg-card/50">
+            <CardContent className="p-12 text-center text-muted-foreground">
+              No se encontraron clientes con los filtros aplicados
+            </CardContent>
+          </Card>
+        ) : (
+          paginatedClients.map((client, index) => {
           const stats = getSubscriptionStats(client.subscriptions);
           const isExpanded = expandedClient === client.id;
           const avatarColor = avatarColors[index % avatarColors.length];
@@ -547,16 +766,38 @@ export default function DashboardClients() {
               </CardContent>
             </Card>
           );
-        })}
-
-        {filteredClients.length === 0 && (
-          <Card className="border-border/50 bg-card/50">
-            <CardContent className="p-12 text-center text-muted-foreground">
-              No se encontraron clientes
-            </CardContent>
-          </Card>
+        })
         )}
       </div>
+
+      {/* Paginación */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Página {currentPage} de {totalPages} · Mostrando {paginatedClients.length} de {filteredClients.length} clientes
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Anterior
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

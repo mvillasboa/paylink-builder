@@ -51,6 +51,8 @@ import { ModifySubscriptionAmountDialog } from "@/components/subscriptions/Modif
 import { NewSubscriptionDialog } from "@/components/subscriptions/NewSubscriptionDialog";
 import { ViewEditSubscriptionDialog } from "@/components/subscriptions/ViewEditSubscriptionDialog";
 import { PaymentHistoryDialog } from "@/components/subscriptions/PaymentHistoryDialog";
+import { ExportDropdown } from "@/components/ExportDropdown";
+import { ExportColumn } from "@/lib/utils/export";
 
 // Mock data for demonstration
 const MOCK_SUBSCRIPTIONS: Subscription[] = [
@@ -315,6 +317,61 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
 
 const ITEMS_PER_PAGE = 25;
 
+const subscriptionColumns: ExportColumn[] = [
+  { label: 'ID Suscripción', key: 'reference' },
+  { label: 'Cliente', key: 'client_name' },
+  { label: 'Email', key: 'client_email' },
+  { label: 'Concepto', key: 'concept' },
+  { label: 'Monto', key: 'amount', formatter: (amount: number) => formatCurrency(amount) },
+  { 
+    label: 'Frecuencia', 
+    key: 'frequency', 
+    formatter: (freq: string) => {
+      const labels: Record<string, string> = {
+        weekly: 'Semanal',
+        monthly: 'Mensual',
+        quarterly: 'Trimestral',
+        yearly: 'Anual',
+      };
+      return labels[freq] || freq;
+    }
+  },
+  { 
+    label: 'Tipo de Suscripción', 
+    key: 'type', 
+    formatter: (value: any, row?: any) => {
+      const type = typeof value === 'string' ? value : row?.type;
+      const durationType = row?.duration_type;
+      const isFixed = type === 'fixed';
+      const isUnlimited = durationType === 'unlimited';
+      if (type === 'single') return 'Pago Único';
+      if (isFixed && isUnlimited) return 'Ilimitada - Fijo';
+      if (isFixed && !isUnlimited) return 'Limitada - Fijo';
+      if (!isFixed && isUnlimited) return 'Ilimitada - Variable';
+      return 'Limitada - Variable';
+    }
+  },
+  { 
+    label: 'Estado', 
+    key: 'status', 
+    formatter: (status: string) => {
+      const labels: Record<string, string> = {
+        active: 'Activa',
+        paused: 'Pausada',
+        cancelled: 'Cancelada',
+        expired: 'Expirada',
+        trial: 'Prueba',
+      };
+      return labels[status] || status;
+    }
+  },
+  { 
+    label: 'Próximo Cobro', 
+    key: 'next_charge_date', 
+    formatter: (date: string) => format(new Date(date), 'dd/MM/yyyy', { locale: es }) 
+  },
+];
+
 export default function Subscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
@@ -508,13 +565,22 @@ export default function Subscriptions() {
             Gestiona las suscripciones recurrentes de tus clientes
           </p>
         </div>
-        <Button 
-          className="bg-gradient-primary"
-          onClick={() => setNewSubscriptionDialogOpen(true)}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Nueva Suscripción
-        </Button>
+        <div className="flex gap-2">
+          <ExportDropdown
+            data={filteredSubscriptions}
+            columns={subscriptionColumns}
+            filename="suscripciones"
+            title="Reporte de Suscripciones"
+            recordCount={filteredSubscriptions.length}
+          />
+          <Button 
+            className="bg-gradient-primary"
+            onClick={() => setNewSubscriptionDialogOpen(true)}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Nueva Suscripción
+          </Button>
+        </div>
       </div>
 
       {/* Stats Cards */}

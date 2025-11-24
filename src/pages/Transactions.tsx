@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import {
-  Download,
   Search,
   Filter,
   Eye,
@@ -39,6 +38,9 @@ import { mockTransactions } from "@/data/mockDashboard";
 import { formatDistanceToNow, format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
 import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { ExportDropdown } from "@/components/ExportDropdown";
+import { ExportColumn } from "@/lib/utils/export";
+import { formatCurrency } from "@/lib/utils/currency";
 
 const statusConfig = {
   completed: { label: 'Completado', className: 'bg-accent/10 text-accent border-accent/20' },
@@ -47,6 +49,24 @@ const statusConfig = {
 };
 
 const ITEMS_PER_PAGE = 25;
+
+const transactionColumns: ExportColumn[] = [
+  { label: 'ID Transacción', key: 'id' },
+  { label: 'Cliente', key: 'client', formatter: (client: any) => client.name },
+  { label: 'Email', key: 'client', formatter: (client: any) => client.email },
+  { label: 'Monto', key: 'amount', formatter: (amount: number) => formatCurrency(amount) },
+  { label: 'Método de Pago', key: 'method' },
+  { 
+    label: 'Estado', 
+    key: 'status', 
+    formatter: (status: keyof typeof statusConfig) => statusConfig[status].label 
+  },
+  { 
+    label: 'Fecha', 
+    key: 'date', 
+    formatter: (date: Date) => format(new Date(date), 'dd/MM/yyyy HH:mm', { locale: es }) 
+  },
+];
 
 export default function Transactions() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -121,10 +141,13 @@ export default function Transactions() {
             <RefreshCw className="h-4 w-4 mr-2" />
             Actualizar
           </Button>
-          <Button className="bg-gradient-primary">
-            <Download className="h-4 w-4 mr-2" />
-            Exportar
-          </Button>
+          <ExportDropdown
+            data={filteredTransactions}
+            columns={transactionColumns}
+            filename="transacciones"
+            title="Reporte de Transacciones"
+            recordCount={filteredTransactions.length}
+          />
         </div>
       </div>
 
