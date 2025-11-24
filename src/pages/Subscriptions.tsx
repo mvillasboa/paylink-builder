@@ -11,7 +11,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Edit3, Eye, Plus, Receipt, TrendingUp, Infinity, Calendar, Clock } from "lucide-react";
+import { 
+  Search, 
+  Edit3, 
+  Eye, 
+  Plus, 
+  Receipt, 
+  TrendingUp, 
+  Infinity, 
+  Calendar, 
+  Clock, 
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Calendar as CalendarIcon 
+} from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
+import { es } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/utils/currency";
 import { Subscription } from "@/types/subscription";
 import { supabase } from "@/integrations/supabase/client";
@@ -282,10 +313,18 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
   },
 ];
 
+const ITEMS_PER_PAGE = 25;
+
 export default function Subscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [frequencyFilter, setFrequencyFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
   const [modifyDialogOpen, setModifyDialogOpen] = useState(false);
   const [newSubscriptionDialogOpen, setNewSubscriptionDialogOpen] = useState(false);
@@ -327,11 +366,61 @@ export default function Subscriptions() {
     }
   };
 
-  const filteredSubscriptions = subscriptions.filter(sub =>
-    sub.client_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    sub.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    sub.concept.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredSubscriptions = subscriptions.filter((sub) => {
+    const matchesSearch =
+      sub.client_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      sub.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      sub.concept.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      sub.client_email.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus = statusFilter === "all" || sub.status === statusFilter;
+    const matchesFrequency = frequencyFilter === "all" || sub.frequency === frequencyFilter;
+    
+    const matchesType = (() => {
+      if (typeFilter === "all") return true;
+      if (typeFilter === "fixed-unlimited") return sub.type === "fixed" && sub.duration_type === "unlimited";
+      if (typeFilter === "fixed-limited") return sub.type === "fixed" && sub.duration_type === "limited";
+      if (typeFilter === "variable-unlimited") return sub.type === "variable" && sub.duration_type === "unlimited";
+      if (typeFilter === "variable-limited") return sub.type === "variable" && sub.duration_type === "limited";
+      if (typeFilter === "single") return sub.type === "single";
+      return true;
+    })();
+
+    const matchesDateRange = (() => {
+      if (!dateFrom && !dateTo) return true;
+      const nextChargeDate = startOfDay(new Date(sub.next_charge_date));
+      
+      if (dateFrom && dateTo) {
+        return isWithinInterval(nextChargeDate, {
+          start: startOfDay(dateFrom),
+          end: endOfDay(dateTo),
+        });
+      }
+      
+      if (dateFrom) {
+        return nextChargeDate >= startOfDay(dateFrom);
+      }
+      
+      if (dateTo) {
+        return nextChargeDate <= endOfDay(dateTo);
+      }
+      
+      return true;
+    })();
+
+    return matchesSearch && matchesStatus && matchesFrequency && matchesType && matchesDateRange;
+  });
+
+  // Calcular paginación
+  const totalPages = Math.ceil(filteredSubscriptions.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedSubscriptions = filteredSubscriptions.slice(startIndex, endIndex);
+
+  // Reset a página 1 cuando cambian los filtros
+  const handleFilterChange = () => {
+    setCurrentPage(1);
+  };
 
   const statusConfig = {
     active: { label: 'Activa', className: 'bg-green-500/10 text-green-700 dark:text-green-400' },
@@ -474,28 +563,183 @@ export default function Subscriptions() {
 
       {/* Search and Filters */}
       <Card className="border-border/50 bg-card/50">
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar por cliente, referencia o concepto..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
-            />
+        <CardContent className="p-6">
+          <div className="flex flex-wrap gap-4">
+            <div className="relative flex-1 min-w-[300px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por cliente, referencia o concepto..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  handleFilterChange();
+                }}
+                className="pl-9"
+              />
+            </div>
+
+            <Select 
+              value={statusFilter} 
+              onValueChange={(value) => {
+                setStatusFilter(value);
+                handleFilterChange();
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Estado" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos los estados</SelectItem>
+                <SelectItem value="active">Activa</SelectItem>
+                <SelectItem value="paused">Pausada</SelectItem>
+                <SelectItem value="cancelled">Cancelada</SelectItem>
+                <SelectItem value="expired">Expirada</SelectItem>
+                <SelectItem value="trial">Prueba</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select 
+              value={frequencyFilter} 
+              onValueChange={(value) => {
+                setFrequencyFilter(value);
+                handleFilterChange();
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Frecuencia" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas las frecuencias</SelectItem>
+                <SelectItem value="weekly">Semanal</SelectItem>
+                <SelectItem value="monthly">Mensual</SelectItem>
+                <SelectItem value="quarterly">Trimestral</SelectItem>
+                <SelectItem value="yearly">Anual</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select 
+              value={typeFilter} 
+              onValueChange={(value) => {
+                setTypeFilter(value);
+                handleFilterChange();
+              }}
+            >
+              <SelectTrigger className="w-[200px]">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos los tipos</SelectItem>
+                <SelectItem value="fixed-unlimited">Ilimitada - Fijo</SelectItem>
+                <SelectItem value="fixed-limited">Limitada - Fijo</SelectItem>
+                <SelectItem value="variable-unlimited">Ilimitada - Variable</SelectItem>
+                <SelectItem value="variable-limited">Limitada - Variable</SelectItem>
+                <SelectItem value="single">Único Pago</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Filtro por Fecha Desde */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !dateFrom && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  {dateFrom ? format(dateFrom, "dd/MM/yyyy") : "Fecha desde"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarComponent
+                  mode="single"
+                  selected={dateFrom}
+                  onSelect={(date) => {
+                    setDateFrom(date);
+                    handleFilterChange();
+                  }}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {/* Filtro por Fecha Hasta */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !dateTo && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="h-4 w-4 mr-2" />
+                  {dateTo ? format(dateTo, "dd/MM/yyyy") : "Fecha hasta"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarComponent
+                  mode="single"
+                  selected={dateTo}
+                  onSelect={(date) => {
+                    setDateTo(date);
+                    handleFilterChange();
+                  }}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                  disabled={(date) => dateFrom ? date < dateFrom : false}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {/* Botón para limpiar filtros de fecha */}
+            {(dateFrom || dateTo) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setDateFrom(undefined);
+                  setDateTo(undefined);
+                  handleFilterChange();
+                }}
+                className="h-10"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Limpiar fechas
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
 
       {/* Subscriptions Table */}
       <Card className="border-border/50 bg-card/50">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>
+              {filteredSubscriptions.length} Suscripciones
+              <span className="text-sm font-normal text-muted-foreground ml-2">
+                (Mostrando {startIndex + 1}-{Math.min(endIndex, filteredSubscriptions.length)} de {filteredSubscriptions.length})
+              </span>
+            </CardTitle>
+          </div>
+        </CardHeader>
         <CardContent className="p-6">
           {filteredSubscriptions.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
-              {searchQuery ? "No se encontraron suscripciones" : "No hay suscripciones aún"}
+              {searchQuery || statusFilter !== "all" || frequencyFilter !== "all" || typeFilter !== "all" || dateFrom || dateTo
+                ? "No se encontraron suscripciones con los filtros aplicados"
+                : "No hay suscripciones aún"}
             </div>
           ) : (
-            <Table>
+            <>
+            <div className="rounded-lg border border-border/50 overflow-hidden">
+              <Table>
               <TableHeader>
                   <TableRow>
                     <TableHead>Cliente</TableHead>
@@ -510,7 +754,7 @@ export default function Subscriptions() {
                   </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredSubscriptions.map((subscription) => {
+                {paginatedSubscriptions.map((subscription) => {
                   const typeConfig = getSubscriptionTypeConfig(subscription);
                   const TypeIcon = typeConfig.icon;
                   
@@ -582,11 +826,42 @@ export default function Subscriptions() {
                         </Button>
                       </div>
                     </TableCell>
-                  </TableRow>
-                  );
-                })}
+                   </TableRow>
+                 );
+                 })}
               </TableBody>
             </Table>
+            </div>
+
+            {/* Paginación */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between mt-4">
+                <p className="text-sm text-muted-foreground">
+                  Página {currentPage} de {totalPages}
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4 mr-1" />
+                    Anterior
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Siguiente
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            )}
+            </>
           )}
         </CardContent>
       </Card>
