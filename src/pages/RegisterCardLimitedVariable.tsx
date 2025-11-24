@@ -259,11 +259,13 @@ export default function RegisterCardLimitedVariable() {
                 {mockPaymentLink.first_payment_amount ? (
                   <div className="space-y-3">
                     {/* Precio Promocional Primera Cuota */}
-                    <div className="bg-gradient-to-br from-accent/20 to-accent/5 border-2 border-accent/50 rounded-lg p-4 shadow-strong relative overflow-hidden">
-                      <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground border-0 shadow-soft">
-                        🎉 Oferta Especial
-                      </Badge>
-                      <p className="text-sm text-foreground/90 mb-1 font-medium">Primera Cuota Promocional</p>
+                    <div className="bg-gradient-to-br from-accent/20 to-accent/5 border-2 border-accent/50 rounded-lg p-4 shadow-strong">
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <p className="text-sm text-foreground/90 font-medium">Primera Cuota Promocional</p>
+                        <Badge className="bg-accent text-accent-foreground border-0 shadow-soft shrink-0">
+                          🎉 Oferta
+                        </Badge>
+                      </div>
                       <p className="text-3xl font-bold text-accent">
                         ₲ {mockPaymentLink.first_payment_amount.toLocaleString('es-PY')}
                         <span className="text-base font-normal text-foreground/80 ml-2">PYG</span>
