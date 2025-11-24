@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle2, XCircle, Calendar, Loader2 } from "lucide-react";
+import { CheckCircle2, XCircle, Calendar, Loader2, User, Mail, Phone, FileText, Clock, CreditCard } from "lucide-react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 import { formatCurrency } from "@/lib/utils/currency";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -35,11 +37,30 @@ export default function ApproveSubscriptionChange() {
         .select(`
           *,
           subscriptions (
-            client_name,
+            id,
             reference,
+            client_name,
+            client_email,
+            phone_number,
             concept,
+            description,
+            amount,
+            type,
             frequency,
-            next_charge_date
+            billing_day,
+            duration_type,
+            number_of_payments,
+            payments_completed,
+            trial_period_days,
+            first_charge_type,
+            first_charge_date,
+            is_first_payment_completed,
+            first_payment_amount,
+            first_payment_reason,
+            next_charge_date,
+            last_charge_date,
+            status,
+            created_at
           )
         `)
         .eq('approval_token', token)
@@ -171,9 +192,26 @@ export default function ApproveSubscriptionChange() {
     );
   }
 
+  const frequencyLabels = {
+    weekly: "Semanal",
+    biweekly: "Quincenal",
+    monthly: "Mensual",
+    bimonthly: "Bimensual",
+    quarterly: "Trimestral",
+    semiannual: "Semestral",
+    annual: "Anual",
+    yearly: "Anual",
+  };
+
+  const typeLabels = {
+    fixed: "Monto Fijo",
+    variable: "Monto Variable",
+    single: "Pago Único",
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-muted/30">
-      <Card className="max-w-2xl w-full">
+      <Card className="max-w-3xl w-full">
         <CardHeader>
           <CardTitle>Aprobación de Cambio de Plan</CardTitle>
           <CardDescription>
@@ -181,11 +219,105 @@ export default function ApproveSubscriptionChange() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Información de la suscripción */}
-          <div>
-            <Label className="text-sm text-muted-foreground">Suscripción</Label>
-            <p className="font-semibold text-lg">{subscription.concept}</p>
-            <p className="text-sm text-muted-foreground">{subscription.reference}</p>
+          {/* Información del Cliente */}
+          <div className="bg-card/90 border-2 border-border/50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <User className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold text-foreground">Información del Cliente</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-3 text-sm">
+              <div>
+                <Label className="text-xs text-muted-foreground">Nombre</Label>
+                <p className="font-medium">{subscription.client_name}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">
+                  <Mail className="h-3 w-3 inline mr-1" />
+                  Email
+                </Label>
+                <p className="font-medium">{subscription.client_email}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">
+                  <Phone className="h-3 w-3 inline mr-1" />
+                  Teléfono
+                </Label>
+                <p className="font-medium">{subscription.phone_number}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Referencia</Label>
+                <p className="font-mono text-xs bg-muted px-2 py-1 rounded">{subscription.reference}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Detalles de la Suscripción */}
+          <div className="bg-card/90 border-2 border-border/50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <FileText className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold text-foreground">Detalles de la Suscripción</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-3 text-sm">
+              <div>
+                <Label className="text-xs text-muted-foreground">Concepto</Label>
+                <p className="font-medium">{subscription.concept}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Tipo</Label>
+                <p className="font-medium">{typeLabels[subscription.type as keyof typeof typeLabels]}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Frecuencia</Label>
+                <p className="font-medium">{frequencyLabels[subscription.frequency as keyof typeof frequencyLabels]}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">
+                  <Calendar className="h-3 w-3 inline mr-1" />
+                  Día de Cobro
+                </Label>
+                <p className="font-medium">Día {subscription.billing_day}</p>
+              </div>
+              {subscription.description && (
+                <div className="md:col-span-2">
+                  <Label className="text-xs text-muted-foreground">Descripción</Label>
+                  <p className="text-muted-foreground text-xs">{subscription.description}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Información de Pagos */}
+          <div className="bg-card/90 border-2 border-border/50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <CreditCard className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold text-foreground">Historial de Pagos</h3>
+            </div>
+            <div className="grid md:grid-cols-3 gap-3 text-sm">
+              <div>
+                <Label className="text-xs text-muted-foreground">Pagos Completados</Label>
+                <p className="font-bold text-lg">{subscription.payments_completed}</p>
+              </div>
+              {subscription.duration_type === 'limited' && subscription.number_of_payments && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Total de Cuotas</Label>
+                  <p className="font-medium">{subscription.number_of_payments}</p>
+                </div>
+              )}
+              <div>
+                <Label className="text-xs text-muted-foreground">Próximo Cobro</Label>
+                <p className="font-medium">
+                  {format(new Date(subscription.next_charge_date), "dd/MM/yyyy", { locale: es })}
+                </p>
+              </div>
+              {subscription.last_charge_date && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Último Cobro</Label>
+                  <p className="font-medium">
+                    {format(new Date(subscription.last_charge_date), "dd/MM/yyyy", { locale: es })}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           <Separator />
