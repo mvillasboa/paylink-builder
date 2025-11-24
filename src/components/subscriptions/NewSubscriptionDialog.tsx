@@ -538,12 +538,16 @@ export function NewSubscriptionDialog({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            {watchType === "variable" ? "Monto Primera Cuota" : "Monto"}
+                            {watchDurationType === "limited" && watchType === "variable" ? "Monto de Cuota" : watchType === "variable" ? "Monto Primera Cuota" : "Monto"}
                           </FormLabel>
                           <FormControl>
                             <Input type="number" min="0" placeholder="150000" {...field} />
                           </FormControl>
-                          <FormDescription>Monto en guaraníes (PYG)</FormDescription>
+                          <FormDescription>
+                            {watchDurationType === "limited" && watchType === "variable" 
+                              ? "Monto regular de cada cuota (PYG)" 
+                              : "Monto en guaraníes (PYG)"}
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -665,35 +669,49 @@ export function NewSubscriptionDialog({
               </div>
             )}
 
-            {/* Precio Promocional Inicial - Solo para limited-variable */}
+            {/* Precio Promocional - Solo para limited-variable */}
             {watchDurationType === "limited" && watchType === "variable" && (
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">Precio Promocional Inicial</h3>
+                  <h3 className="text-sm font-semibold text-foreground">Precio Promocional</h3>
                   <Badge variant="secondary" className="text-xs">Opcional</Badge>
                 </div>
                 <Alert className="border-amber-500/30 bg-amber-500/5">
                   <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                   <div className="ml-2">
                     <p className="text-sm font-medium">
-                      Primera Cuota Diferenciada
+                      Cuotas con Precio Diferenciado
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Si deseas aplicar un precio especial para la primera cuota (descuento, promoción, costo de inscripción), puedes definirlo aquí.
+                      Si deseas aplicar un precio especial para varias cuotas iniciales (descuento, promoción, costo de inscripción), puedes definirlo aquí. Este precio se aplicará durante la cantidad de cuotas especificada.
                     </p>
                   </div>
                 </Alert>
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-3">
                   <FormField
                     control={form.control}
                     name="first_payment_amount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Monto Primera Cuota (Opcional)</FormLabel>
+                        <FormLabel>Precio Promocional (Opcional)</FormLabel>
                         <FormControl>
                           <Input type="number" min="0" placeholder="50000" {...field} />
                         </FormControl>
-                        <FormDescription>Monto especial para el primer pago</FormDescription>
+                        <FormDescription>Monto especial</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="number_of_payments"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Cant. de Cuotas (Opcional)</FormLabel>
+                        <FormControl>
+                          <Input type="number" min="1" placeholder="3" {...field} />
+                        </FormControl>
+                        <FormDescription>Cuotas con precio promo</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -705,9 +723,9 @@ export function NewSubscriptionDialog({
                       <FormItem>
                         <FormLabel>Motivo (Opcional)</FormLabel>
                         <FormControl>
-                          <Input placeholder="Promoción de lanzamiento" {...field} />
+                          <Input placeholder="Promoción" {...field} />
                         </FormControl>
-                        <FormDescription>Razón del precio diferenciado</FormDescription>
+                        <FormDescription>Razón del precio</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}

@@ -261,7 +261,7 @@ export default function RegisterCardLimitedVariable() {
                     {/* Precio Promocional Primera Cuota */}
                     <div className="bg-gradient-to-br from-accent/20 to-accent/5 border-2 border-accent/50 rounded-lg p-4 shadow-strong">
                       <div className="flex items-start justify-between gap-3 mb-2">
-                        <p className="text-sm text-foreground/90 font-medium">Primera Cuota Promocional</p>
+                        <p className="text-sm text-foreground/90 font-medium">Cuota Promocional</p>
                         <Badge className="bg-accent text-accent-foreground border-0 shadow-soft shrink-0">
                           🎉 Oferta
                         </Badge>
