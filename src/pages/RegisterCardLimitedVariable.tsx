@@ -68,6 +68,8 @@ const mockPaymentLink: {
   numberOfPayments?: number;
   billingDay: number;
   nextChargeDate: string;
+  first_payment_amount?: number;
+  first_payment_reason?: string;
 } = {
   id: "LNK-003",
   businessName: "Academia Digital Plus",
@@ -80,6 +82,8 @@ const mockPaymentLink: {
   numberOfPayments: 12,
   billingDay: 1,
   nextChargeDate: "2024-04-01",
+  first_payment_amount: 150000,
+  first_payment_reason: "Promoción de lanzamiento - 46% de descuento",
 };
 
 export default function RegisterCardLimitedVariable() {
@@ -251,16 +255,51 @@ export default function RegisterCardLimitedVariable() {
                 
                 <Separator />
                 
-                <div className="bg-card/90 backdrop-blur-sm border-2 border-primary/30 rounded-lg p-4 shadow-medium">
-                  <p className="text-sm text-foreground/90 mb-1 font-medium">Primera Cuota</p>
-                  <p className="text-3xl font-bold text-primary">
-                    ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
-                    <span className="text-base font-normal text-foreground/80 ml-2">PYG</span>
-                  </p>
-                  <p className="text-xs text-foreground/90 mt-2 font-semibold">
-                    Monto sujeto a condiciones contractuales
-                  </p>
-                </div>
+                {/* Precio Promocional o Regular */}
+                {mockPaymentLink.first_payment_amount ? (
+                  <div className="space-y-3">
+                    {/* Precio Promocional Primera Cuota */}
+                    <div className="bg-gradient-to-br from-accent/20 to-accent/5 border-2 border-accent/50 rounded-lg p-4 shadow-strong relative overflow-hidden">
+                      <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground border-0 shadow-soft">
+                        🎉 Oferta Especial
+                      </Badge>
+                      <p className="text-sm text-foreground/90 mb-1 font-medium">Primera Cuota Promocional</p>
+                      <p className="text-3xl font-bold text-accent">
+                        ₲ {mockPaymentLink.first_payment_amount.toLocaleString('es-PY')}
+                        <span className="text-base font-normal text-foreground/80 ml-2">PYG</span>
+                      </p>
+                      {mockPaymentLink.first_payment_reason && (
+                        <p className="text-xs text-accent/90 mt-2 font-medium flex items-center gap-1">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent"></span>
+                          {mockPaymentLink.first_payment_reason}
+                        </p>
+                      )}
+                    </div>
+                    
+                    {/* Precio Regular Después */}
+                    <div className="bg-card/90 backdrop-blur-sm border-2 border-border/50 rounded-lg p-4 shadow-medium">
+                      <p className="text-sm text-muted-foreground mb-1">Cuotas Siguientes (Precio Regular)</p>
+                      <p className="text-2xl font-bold text-foreground">
+                        ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
+                        <span className="text-base font-normal text-muted-foreground ml-2">PYG</span>
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        A partir de la 2da cuota
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-card/90 backdrop-blur-sm border-2 border-primary/30 rounded-lg p-4 shadow-medium">
+                    <p className="text-sm text-foreground/90 mb-1 font-medium">Monto por Cuota</p>
+                    <p className="text-3xl font-bold text-primary">
+                      ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}
+                      <span className="text-base font-normal text-foreground/80 ml-2">PYG</span>
+                    </p>
+                    <p className="text-xs text-foreground/90 mt-2 font-semibold">
+                      Monto sujeto a condiciones contractuales
+                    </p>
+                  </div>
+                )}
 
                 <Separator />
 
@@ -305,12 +344,25 @@ export default function RegisterCardLimitedVariable() {
                           <p className="text-xs font-semibold text-foreground">
                             Información importante:
                           </p>
-                          <p className="text-xs text-foreground/90 leading-relaxed">
-                            Los primeros meses cuentan con descuentos especiales. El monto puede variar según el plan promocional.
-                          </p>
-                          <p className="text-xs text-foreground/90 leading-relaxed">
-                            Esta suscripción finalizará automáticamente después de {mockPaymentLink.numberOfPayments} pagos.
-                          </p>
+                          {mockPaymentLink.first_payment_amount ? (
+                            <>
+                              <p className="text-xs text-foreground/90 leading-relaxed">
+                                La primera cuota tiene un precio promocional. A partir de la segunda cuota, se aplicará el precio regular de ₲ {mockPaymentLink.amount.toLocaleString('es-PY')}.
+                              </p>
+                              <p className="text-xs text-foreground/90 leading-relaxed">
+                                Esta suscripción finalizará automáticamente después de {mockPaymentLink.numberOfPayments} pagos.
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-xs text-foreground/90 leading-relaxed">
+                                El monto puede variar según el plan contractual establecido.
+                              </p>
+                              <p className="text-xs text-foreground/90 leading-relaxed">
+                                Esta suscripción finalizará automáticamente después de {mockPaymentLink.numberOfPayments} pagos.
+                              </p>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
