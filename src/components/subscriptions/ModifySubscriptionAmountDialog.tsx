@@ -54,7 +54,7 @@ export function ModifySubscriptionAmountDialog({
   const isIncrease = difference > 0;
   const isDifferent = formData.newAmount !== subscription.amount;
 
-  // Sugerir tipo de cambio automáticamente
+  // Sugerir tipo de cambio automáticamente y requerir aprobación para tipo fijo
   useEffect(() => {
     if (!isDifferent) return;
     
@@ -65,7 +65,12 @@ export function ModifySubscriptionAmountDialog({
     } else {
       setFormData(prev => ({ ...prev, changeType: 'downgrade' }));
     }
-  }, [formData.newAmount, isDifferent, isIncrease, percentageChange]);
+
+    // Para suscripciones tipo fijo, requerir aprobación del cliente automáticamente
+    if (subscription.type === 'fixed') {
+      setFormData(prev => ({ ...prev, requiresClientApproval: true }));
+    }
+  }, [formData.newAmount, isDifferent, isIncrease, percentageChange, subscription.type]);
 
   const handleConfirm = async () => {
     if (!isDifferent) {
@@ -173,6 +178,19 @@ export function ModifySubscriptionAmountDialog({
         {/* STEP 1: Nuevo Monto */}
         {step === 'amount' && (
           <div className="space-y-6">
+            {subscription.type === 'fixed' && (
+              <Alert className="border-amber-500/50 bg-amber-500/10">
+                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <AlertTitle className="text-amber-700 dark:text-amber-300">
+                  Suscripción de Monto Fijo
+                </AlertTitle>
+                <AlertDescription className="text-amber-600 dark:text-amber-400">
+                  Los cambios de monto en suscripciones de tipo fijo están sujetos a la aprobación del cliente. 
+                  El cliente recibirá una notificación con un enlace para aprobar o rechazar el cambio.
+                </AlertDescription>
+              </Alert>
+            )}
+            
             <Card className="bg-muted/50">
               <CardContent className="p-6">
                 <div className="grid grid-cols-2 gap-6">
@@ -475,7 +493,10 @@ export function ModifySubscriptionAmountDialog({
               <ShieldCheck className="h-4 w-4" />
               <AlertTitle>Aprobación del Cliente</AlertTitle>
               <AlertDescription>
-                Para aumentos de precio, es recomendable obtener la aprobación explícita del cliente
+                {subscription.type === 'fixed' 
+                  ? "Las suscripciones de monto fijo requieren aprobación del cliente para cualquier cambio de precio"
+                  : "Para aumentos de precio, es recomendable obtener la aprobación explícita del cliente"
+                }
               </AlertDescription>
             </Alert>
 
@@ -487,9 +508,11 @@ export function ModifySubscriptionAmountDialog({
                       ¿Requiere aprobación del cliente?
                     </Label>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {isIncrease 
-                        ? "Recomendado para aumentos de precio"
-                        : "No necesario para reducciones de precio"
+                      {subscription.type === 'fixed'
+                        ? "Obligatorio para suscripciones de monto fijo"
+                        : isIncrease 
+                          ? "Recomendado para aumentos de precio"
+                          : "No necesario para reducciones de precio"
                       }
                     </p>
                   </div>
@@ -500,6 +523,7 @@ export function ModifySubscriptionAmountDialog({
                       ...prev, 
                       requiresClientApproval: checked 
                     }))}
+                    disabled={subscription.type === 'fixed'}
                   />
                 </div>
 
