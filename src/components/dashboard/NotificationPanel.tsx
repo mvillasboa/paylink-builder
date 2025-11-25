@@ -16,48 +16,50 @@ export function NotificationPanel({
 }: NotificationPanelProps) {
   if (notifications.length === 0) {
     return (
-      <div className="w-80 p-6 text-center text-muted-foreground">
-        <p className="text-sm">No hay notificaciones</p>
+      <div className="w-96 p-8 text-center">
+        <p className="text-sm text-muted-foreground/70">Sin notificaciones</p>
       </div>
     );
   }
 
   return (
-    <div className="w-80">
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <h3 className="font-semibold text-sm text-foreground">
+    <div className="w-96">
+      <div className="flex items-center justify-between px-5 py-4">
+        <h3 className="font-medium text-sm text-foreground/90">
           Notificaciones
         </h3>
         <Button
           variant="ghost"
           size="sm"
           onClick={onClearAll}
-          className="h-8 text-xs"
+          className="h-7 text-xs text-muted-foreground hover:text-foreground -mr-2"
         >
-          <Trash2 className="h-3 w-3 mr-1" />
+          <Trash2 className="h-3.5 w-3.5 mr-1.5" />
           Limpiar
         </Button>
       </div>
 
-      <ScrollArea className="h-[400px]">
-        <div className="divide-y divide-border">
+      <ScrollArea className="h-[420px]">
+        <div className="px-2 pb-2">
           {notifications.map((notification) => {
             const config = notificationConfig[notification.type];
             return (
               <div
                 key={notification.id}
-                className="p-4 hover:bg-muted/50 transition-colors"
+                className="group px-3 py-3 mb-1 rounded-lg hover:bg-muted/30 transition-all duration-200 cursor-pointer"
               >
-                <div className="flex gap-3">
-                  <div className="text-xl flex-shrink-0">{config.icon}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-medium ${config.color}`}>
+                <div className="flex gap-3 items-start">
+                  <div className="text-base flex-shrink-0 mt-0.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                    {config.icon}
+                  </div>
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <p className={`text-sm font-medium ${config.color} leading-tight`}>
                       {notification.title}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
+                    <p className="text-xs text-muted-foreground/80 leading-relaxed">
                       {notification.message}
                     </p>
-                    <p className="text-xs text-muted-foreground/70 mt-1">
+                    <p className="text-[10px] text-muted-foreground/60 pt-0.5">
                       {formatDistanceToNow(notification.timestamp, {
                         addSuffix: true,
                         locale: es,
