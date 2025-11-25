@@ -60,7 +60,8 @@ const menuItems = [
   { title: "Clientes", url: "/dashboard/clients", icon: Users },
   { title: "Reportes", url: "/dashboard/reports", icon: BarChart3 },
   { title: "Configuración", url: "/dashboard/settings", icon: Settings },
-  { title: "Guía Java/Spring", url: "/docs/java-migration", icon: FileText },
+  { title: "Migración Java", url: "/docs/java-migration", icon: FileText },
+  { title: "Esquema de BD", url: "/docs/database-schema", icon: FileText },
 ];
 
 export function DashboardLayout() {
