@@ -16,14 +16,14 @@ export function NotificationPanel({
 }: NotificationPanelProps) {
   if (notifications.length === 0) {
     return (
-      <div className="w-96 p-8 text-center">
+      <div className="w-80 p-8 text-center">
         <p className="text-xs text-muted-foreground/60">Sin notificaciones</p>
       </div>
     );
   }
 
   return (
-    <div className="w-96">
+    <div className="w-80">
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/40">
         <h3 className="font-medium text-xs text-foreground/80">
           Notificaciones
