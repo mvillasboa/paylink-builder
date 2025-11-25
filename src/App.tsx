@@ -9,6 +9,7 @@ import { DashboardLayout } from "./components/dashboard/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import PaymentLinks from "./pages/PaymentLinks";
 import JavaMigrationGuide from "./pages/JavaMigrationGuide";
+import DatabaseSchemaGuide from "./pages/DatabaseSchemaGuide";
 import Transactions from "./pages/Transactions";
 import DashboardClients from "./pages/DashboardClients";
 import DashboardReports from "./pages/DashboardReports";
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="settings" element={<DashboardSettings />} />
           </Route>
           <Route path="/docs/java-migration" element={<JavaMigrationGuide />} />
+          <Route path="/docs/database-schema" element={<DatabaseSchemaGuide />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
