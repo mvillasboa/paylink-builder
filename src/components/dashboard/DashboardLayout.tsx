@@ -30,6 +30,7 @@ import {
   LogOut,
   Repeat,
   Package,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,6 +60,7 @@ const menuItems = [
   { title: "Clientes", url: "/dashboard/clients", icon: Users },
   { title: "Reportes", url: "/dashboard/reports", icon: BarChart3 },
   { title: "Configuración", url: "/dashboard/settings", icon: Settings },
+  { title: "Guía Java/Spring", url: "/docs/java-migration", icon: FileText },
 ];
 
 export function DashboardLayout() {
