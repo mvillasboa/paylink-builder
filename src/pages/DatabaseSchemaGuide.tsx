@@ -95,34 +95,51 @@ export default function DatabaseSchemaGuide() {
 │              │ 1     * │                 │ 1     * │      changes             │
 │ - id         │         │ - id            │         │ - id                     │
 │ - user_id    │         │ - product_id    │         │ - subscription_id        │
-│ - name       │         │ - reference     │         │ - old_amount             │
-│ - base_amount│         │ - client_name   │         │ - new_amount             │
-└──────┬───────┘         │ - amount        │         │ - approval_token         │
-       │                 │ - status        │         └──────────────────────────┘
-       │                 └────────┬────────┘                      ▲
-       │ 1                        │ 1                             │
-       │                          │                               │
-       │                          │                               │
-       │ *                        │ *                             │
-┌──────▼───────────────┐  ┌───────▼──────────────┐             │
-│ product_price_       │  │  notification_logs   │             │
-│    changes           │  │                      │             │
-│ - id                 │  │ - subscription_id    │◄────────────┘
-│ - product_id         │  │ - channel            │
-│ - old_base_amount    │  │ - event              │
-│ - new_base_amount    │  │ - status             │
-│ - status             │  └──────────────────────┘
-└──────────────────────┘
-
-┌──────────────────┐
-│  transactions    │
-│                  │
-│ - id             │
-│ - user_id        │
-│ - client_name    │
-│ - amount         │
-│ - status         │
-└──────────────────┘
+│ - name       │         │ - client_id     │         │ - old_amount             │
+│ - base_amount│         │ - card_id       │         │ - new_amount             │
+└──────┬───────┘         │ - reference     │         │ - approval_token         │
+       │                 │ - client_name   │         └──────────────────────────┘
+       │                 │ - amount        │                      ▲
+       │                 │ - status        │                      │
+       │                 └────────┬────────┘                      │
+       │ 1                   ▲    │ 1                             │
+       │                     │    │                               │
+       │                     │    │                               │
+       │ *                   │    │ *                             │
+┌──────▼───────────────┐    │    │    ┌──────────────────┐      │
+│ product_price_       │    │    └────│ notification_    │      │
+│    changes           │    │         │     logs         │      │
+│ - id                 │    │         │ - subscription_id│◄─────┘
+│ - product_id         │    │         │ - channel        │
+│ - old_base_amount    │    │         │ - event          │
+│ - new_base_amount    │    │         │ - status         │
+│ - status             │    │         └──────────────────┘
+└──────────────────────┘    │
+                            │
+┌──────────────┐            │         ┌──────────────────┐
+│   clients    │◄───────────┘         │  payment_links   │
+│              │ 1         *           │                  │
+│ - id         │                       │ - id             │
+│ - user_id    │◄──────────────────────│ - client_id      │
+│ - name       │ 1                   * │ - subscription_id│
+│ - email      │                       │ - token          │
+│ - phone      │                       │ - amount         │
+└──────┬───────┘                       │ - status         │
+       │ 1                             └──────────────────┘
+       │
+       │ *
+┌──────▼────────┐          ┌──────────────────┐
+│     cards     │          │  transactions    │
+│               │          │                  │
+│ - id          │          │ - id             │
+│ - client_id   │◄─────────│ - card_id        │
+│ - token       │ 1      * │ - client_id      │
+│ - last_four   │          │ - subscription_id│
+│ - status      │          │ - payment_link_id│
+└───────────────┘          │ - user_id        │
+                           │ - amount         │
+                           │ - status         │
+                           └──────────────────┘
             `} />
 
             <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Convenciones de Nombrado</h3>
@@ -137,7 +154,7 @@ export default function DatabaseSchemaGuide() {
 
           <DocumentSection title="2. Enumeraciones (Enums)" level={1}>
             <p className="text-foreground/80 mb-4">
-              El sistema utiliza 9 tipos de enumeraciones personalizadas para garantizar la integridad de datos:
+              El sistema utiliza 13 tipos de enumeraciones personalizadas para garantizar la integridad de datos:
             </p>
 
             <CodeBlock language="sql" code={`-- 1. Tipo de suscripción
@@ -208,6 +225,41 @@ CREATE TYPE transaction_status AS ENUM (
   'pending',    -- Pendiente de procesamiento
   'completed',  -- Completada exitosamente
   'failed'      -- Fallida
+);
+
+-- 10. Marca de tarjeta
+CREATE TYPE card_brand AS ENUM (
+  'visa',       -- Visa
+  'mastercard', -- Mastercard
+  'amex',       -- American Express
+  'discover',   -- Discover
+  'other'       -- Otras marcas
+);
+
+-- 11. Estado de tarjeta
+CREATE TYPE card_status AS ENUM (
+  'active',     -- Activa y disponible
+  'expired',    -- Expirada
+  'blocked',    -- Bloqueada por seguridad
+  'removed'     -- Eliminada del sistema
+);
+
+-- 12. Canal de envío del payment link
+CREATE TYPE payment_link_channel AS ENUM (
+  'whatsapp',   -- WhatsApp
+  'sms',        -- SMS
+  'email',      -- Email
+  'manual'      -- Enlace copiado manualmente
+);
+
+-- 13. Estado del payment link
+CREATE TYPE payment_link_status AS ENUM (
+  'active',     -- Activo, listo para usar
+  'sent',       -- Enviado al cliente
+  'viewed',     -- Cliente vio el enlace
+  'paid',       -- Pago completado
+  'expired',    -- Expirado
+  'cancelled'   -- Cancelado
 );`} />
           </DocumentSection>
 
@@ -316,7 +368,416 @@ WHERE id = 'PRODUCT_UUID'
   AND user_id = 'USER_UUID';`} />
           </DocumentSection>
 
-          <DocumentSection title="4. Tabla: subscriptions" level={1} id="subscriptions">
+          <DocumentSection title="4. Tabla: clients" level={1} id="clients">
+            <p className="text-foreground/80 mb-4">
+              <strong>Descripción:</strong> Almacena la información completa de los clientes del sistema. 
+              Centraliza datos de contacto, dirección y estadísticas de suscripciones activas.
+            </p>
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Estructura de Columnas</h3>
+            <CodeBlock language="sql" code={`CREATE TABLE clients (
+  -- Identificación
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  
+  -- Información básica
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone_number TEXT NOT NULL,
+  tax_id TEXT,
+  
+  -- Dirección
+  address TEXT,
+  city TEXT,
+  country TEXT DEFAULT 'Paraguay',
+  
+  -- Estadísticas (actualizadas por triggers)
+  total_spent BIGINT DEFAULT 0,
+  active_subscriptions INTEGER DEFAULT 0,
+  total_subscriptions INTEGER DEFAULT 0,
+  
+  -- Estado
+  is_active BOOLEAN DEFAULT true,
+  notes TEXT,
+  
+  -- Metadatos
+  metadata JSONB,
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_clients_user_id ON clients(user_id);
+CREATE INDEX idx_clients_email ON clients(email);
+CREATE INDEX idx_clients_is_active ON clients(is_active);`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Ejemplos SQL Comunes</h3>
+            
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">1. Listar todos los clientes activos</h4>
+            <CodeBlock language="sql" code={`SELECT id, name, email, phone_number, 
+       active_subscriptions, total_spent
+FROM clients
+WHERE user_id = 'USER_UUID'
+  AND is_active = true
+ORDER BY created_at DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">2. Buscar cliente por email o nombre</h4>
+            <CodeBlock language="sql" code={`SELECT * FROM clients
+WHERE user_id = 'USER_UUID'
+  AND (email ILIKE '%juan@email.com%' 
+       OR name ILIKE '%Juan%');`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">3. Crear nuevo cliente</h4>
+            <CodeBlock language="sql" code={`INSERT INTO clients (
+  user_id, name, email, phone_number, 
+  address, city, country
+) VALUES (
+  'USER_UUID',
+  'Juan Pérez',
+  'juan@email.com',
+  '+595981234567',
+  'Av. Principal 123',
+  'Asunción',
+  'Paraguay'
+) RETURNING *;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">4. Actualizar información del cliente</h4>
+            <CodeBlock language="sql" code={`UPDATE clients
+SET email = 'nuevo@email.com',
+    phone_number = '+595981234568',
+    updated_at = NOW()
+WHERE id = 'CLIENT_UUID' 
+  AND user_id = 'USER_UUID';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">5. Top clientes por gasto total</h4>
+            <CodeBlock language="sql" code={`SELECT name, email, 
+       total_spent, 
+       active_subscriptions,
+       total_subscriptions
+FROM clients
+WHERE user_id = 'USER_UUID'
+  AND is_active = true
+ORDER BY total_spent DESC
+LIMIT 10;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">6. Clientes con suscripciones activas</h4>
+            <CodeBlock language="sql" code={`SELECT name, email, active_subscriptions
+FROM clients
+WHERE user_id = 'USER_UUID'
+  AND active_subscriptions > 0
+ORDER BY active_subscriptions DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">7. Desactivar cliente (soft delete)</h4>
+            <CodeBlock language="sql" code={`UPDATE clients
+SET is_active = false,
+    updated_at = NOW()
+WHERE id = 'CLIENT_UUID' 
+  AND user_id = 'USER_UUID';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">8. Cliente con sus suscripciones</h4>
+            <CodeBlock language="sql" code={`SELECT c.name, c.email,
+       s.reference, s.amount, s.status, s.next_charge_date
+FROM clients c
+LEFT JOIN subscriptions s ON c.id = s.client_id
+WHERE c.id = 'CLIENT_UUID'
+  AND c.user_id = 'USER_UUID'
+ORDER BY s.next_charge_date ASC;`} />
+          </DocumentSection>
+
+          <DocumentSection title="5. Tabla: cards" level={1} id="cards">
+            <p className="text-foreground/80 mb-4">
+              <strong>Descripción:</strong> Gestiona las tarjetas de crédito/débito registradas en el sistema. 
+              Almacena tokens seguros y metadatos para procesamiento de pagos recurrentes.
+            </p>
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Estructura de Columnas</h3>
+            <CodeBlock language="sql" code={`CREATE TABLE cards (
+  -- Identificación
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  client_id UUID REFERENCES clients(id) ON DELETE SET NULL,
+  
+  -- Información de la tarjeta
+  token TEXT NOT NULL,  -- Token seguro del procesador
+  last_four_digits TEXT NOT NULL,
+  expiry_month TEXT NOT NULL,
+  expiry_year TEXT NOT NULL,
+  card_brand card_brand NOT NULL,  -- 'visa', 'mastercard', etc.
+  cardholder_name TEXT NOT NULL,
+  
+  -- Estado y uso
+  status card_status DEFAULT 'active',  -- 'active', 'expired', 'blocked', 'removed'
+  is_default BOOLEAN DEFAULT false,
+  last_used_at TIMESTAMPTZ,
+  total_transactions INTEGER DEFAULT 0,
+  
+  -- Metadatos
+  metadata JSONB,
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_cards_user_id ON cards(user_id);
+CREATE INDEX idx_cards_client_id ON cards(client_id);
+CREATE INDEX idx_cards_status ON cards(status);
+CREATE INDEX idx_cards_token ON cards(token);`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Ejemplos SQL Comunes</h3>
+            
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">1. Listar tarjetas activas de un cliente</h4>
+            <CodeBlock language="sql" code={`SELECT id, last_four_digits, card_brand, 
+       expiry_month, expiry_year, 
+       is_default, cardholder_name
+FROM cards
+WHERE user_id = 'USER_UUID'
+  AND client_id = 'CLIENT_UUID'
+  AND status = 'active'
+ORDER BY is_default DESC, created_at DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">2. Registrar nueva tarjeta</h4>
+            <CodeBlock language="sql" code={`INSERT INTO cards (
+  user_id, client_id, token, last_four_digits,
+  expiry_month, expiry_year, card_brand, 
+  cardholder_name, is_default
+) VALUES (
+  'USER_UUID',
+  'CLIENT_UUID',
+  'tok_1234567890abcdef',
+  '4242',
+  '12',
+  '2028',
+  'visa',
+  'Juan Pérez',
+  true
+) RETURNING *;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">3. Establecer tarjeta como predeterminada</h4>
+            <CodeBlock language="sql" code={`-- Primero quitar el default de todas las demás
+UPDATE cards
+SET is_default = false,
+    updated_at = NOW()
+WHERE client_id = 'CLIENT_UUID'
+  AND user_id = 'USER_UUID';
+
+-- Luego establecer la nueva como default
+UPDATE cards
+SET is_default = true,
+    updated_at = NOW()
+WHERE id = 'CARD_UUID'
+  AND user_id = 'USER_UUID';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">4. Tarjetas por vencer (próximos 3 meses)</h4>
+            <CodeBlock language="sql" code={`SELECT c.last_four_digits, c.card_brand,
+       c.expiry_month, c.expiry_year,
+       cl.name as client_name, cl.email
+FROM cards c
+JOIN clients cl ON c.client_id = cl.id
+WHERE c.user_id = 'USER_UUID'
+  AND c.status = 'active'
+  AND TO_DATE(c.expiry_year || '-' || c.expiry_month || '-01', 'YYYY-MM-DD')
+      BETWEEN NOW() AND NOW() + INTERVAL '3 months'
+ORDER BY c.expiry_year, c.expiry_month;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">5. Actualizar uso de tarjeta</h4>
+            <CodeBlock language="sql" code={`UPDATE cards
+SET last_used_at = NOW(),
+    total_transactions = total_transactions + 1,
+    updated_at = NOW()
+WHERE id = 'CARD_UUID'
+  AND user_id = 'USER_UUID';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">6. Bloquear tarjeta</h4>
+            <CodeBlock language="sql" code={`UPDATE cards
+SET status = 'blocked',
+    updated_at = NOW()
+WHERE id = 'CARD_UUID'
+  AND user_id = 'USER_UUID';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">7. Eliminar tarjeta (soft delete)</h4>
+            <CodeBlock language="sql" code={`UPDATE cards
+SET status = 'removed',
+    updated_at = NOW()
+WHERE id = 'CARD_UUID'
+  AND user_id = 'USER_UUID';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">8. Estadísticas de tarjetas por marca</h4>
+            <CodeBlock language="sql" code={`SELECT card_brand,
+       COUNT(*) as total_cards,
+       SUM(total_transactions) as total_transactions
+FROM cards
+WHERE user_id = 'USER_UUID'
+  AND status = 'active'
+GROUP BY card_brand
+ORDER BY total_cards DESC;`} />
+          </DocumentSection>
+
+          <DocumentSection title="6. Tabla: payment_links" level={1} id="payment_links">
+            <p className="text-foreground/80 mb-4">
+              <strong>Descripción:</strong> Gestiona enlaces de pago únicos que pueden ser enviados a clientes 
+              por diversos canales (WhatsApp, SMS, Email). Incluye tracking de visualizaciones y estados.
+            </p>
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Estructura de Columnas</h3>
+            <CodeBlock language="sql" code={`CREATE TABLE payment_links (
+  -- Identificación
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  token TEXT NOT NULL UNIQUE,
+  short_code TEXT UNIQUE,
+  
+  -- Relaciones
+  client_id UUID REFERENCES clients(id) ON DELETE SET NULL,
+  subscription_id UUID REFERENCES subscriptions(id) ON DELETE SET NULL,
+  
+  -- Información del pago
+  concept TEXT NOT NULL,
+  description TEXT,
+  amount BIGINT NOT NULL,
+  
+  -- Destinatario
+  recipient_name TEXT NOT NULL,
+  recipient_phone TEXT NOT NULL,
+  recipient_email TEXT,
+  
+  -- Configuración
+  expires_at TIMESTAMPTZ,
+  max_uses INTEGER DEFAULT 1,
+  uses_count INTEGER DEFAULT 0,
+  
+  -- Estado y canal
+  status payment_link_status DEFAULT 'active',
+  channel payment_link_channel,  -- 'whatsapp', 'sms', 'email', 'manual'
+  
+  -- Tracking
+  sent_at TIMESTAMPTZ,
+  first_viewed_at TIMESTAMPTZ,
+  paid_at TIMESTAMPTZ,
+  
+  -- Notas y metadatos
+  internal_notes TEXT,
+  metadata JSONB,
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_payment_links_user_id ON payment_links(user_id);
+CREATE INDEX idx_payment_links_token ON payment_links(token);
+CREATE INDEX idx_payment_links_status ON payment_links(status);
+CREATE INDEX idx_payment_links_client_id ON payment_links(client_id);
+CREATE INDEX idx_payment_links_expires_at ON payment_links(expires_at);`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Ejemplos SQL Comunes</h3>
+            
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">1. Listar enlaces activos</h4>
+            <CodeBlock language="sql" code={`SELECT id, concept, recipient_name, amount, 
+       status, channel, expires_at, uses_count
+FROM payment_links
+WHERE user_id = 'USER_UUID'
+  AND status IN ('active', 'sent', 'viewed')
+ORDER BY created_at DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">2. Crear nuevo enlace de pago</h4>
+            <CodeBlock language="sql" code={`INSERT INTO payment_links (
+  user_id, token, concept, amount,
+  recipient_name, recipient_phone, recipient_email,
+  expires_at, channel
+) VALUES (
+  'USER_UUID',
+  generate_payment_link_token(),
+  'Pago mensual - Plan Premium',
+  50000,
+  'Juan Pérez',
+  '+595981234567',
+  'juan@email.com',
+  NOW() + INTERVAL '7 days',
+  'whatsapp'
+) RETURNING *;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">3. Obtener enlace por token (para pago)</h4>
+            <CodeBlock language="sql" code={`SELECT pl.*, 
+       c.name as client_name,
+       c.email as client_email
+FROM payment_links pl
+LEFT JOIN clients c ON pl.client_id = c.id
+WHERE pl.token = 'TOKEN_FROM_URL'
+  AND pl.status IN ('active', 'sent', 'viewed')
+  AND (pl.expires_at IS NULL OR pl.expires_at > NOW());`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">4. Actualizar estado a "enviado"</h4>
+            <CodeBlock language="sql" code={`UPDATE payment_links
+SET status = 'sent',
+    sent_at = NOW(),
+    updated_at = NOW()
+WHERE id = 'LINK_UUID'
+  AND user_id = 'USER_UUID';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">5. Registrar primera visualización</h4>
+            <CodeBlock language="sql" code={`UPDATE payment_links
+SET status = 'viewed',
+    first_viewed_at = COALESCE(first_viewed_at, NOW()),
+    updated_at = NOW()
+WHERE token = 'TOKEN_FROM_URL'
+  AND status IN ('active', 'sent');`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">6. Marcar como pagado</h4>
+            <CodeBlock language="sql" code={`UPDATE payment_links
+SET status = 'paid',
+    paid_at = NOW(),
+    uses_count = uses_count + 1,
+    updated_at = NOW()
+WHERE token = 'TOKEN_FROM_URL'
+  AND status IN ('active', 'sent', 'viewed');`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">7. Enlaces expirados (para cleanup job)</h4>
+            <CodeBlock language="sql" code={`UPDATE payment_links
+SET status = 'expired',
+    updated_at = NOW()
+WHERE user_id = 'USER_UUID'
+  AND status IN ('active', 'sent', 'viewed')
+  AND expires_at < NOW()
+RETURNING id, concept, recipient_name;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">8. Estadísticas de conversión por canal</h4>
+            <CodeBlock language="sql" code={`SELECT channel,
+       COUNT(*) as total_sent,
+       SUM(CASE WHEN status = 'viewed' THEN 1 ELSE 0 END) as viewed,
+       SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) as paid,
+       ROUND(
+         SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END)::numeric 
+         / NULLIF(COUNT(*), 0) * 100, 
+         2
+       ) as conversion_rate,
+       SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) as total_revenue
+FROM payment_links
+WHERE user_id = 'USER_UUID'
+  AND sent_at >= DATE_TRUNC('month', NOW())
+GROUP BY channel
+ORDER BY conversion_rate DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">9. Enlaces pendientes de envío</h4>
+            <CodeBlock language="sql" code={`SELECT id, concept, recipient_name, 
+       recipient_phone, amount, channel
+FROM payment_links
+WHERE user_id = 'USER_UUID'
+  AND status = 'active'
+  AND sent_at IS NULL
+ORDER BY created_at ASC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">10. Cancelar enlace no usado</h4>
+            <CodeBlock language="sql" code={`UPDATE payment_links
+SET status = 'cancelled',
+    updated_at = NOW()
+WHERE id = 'LINK_UUID'
+  AND user_id = 'USER_UUID'
+  AND status IN ('active', 'sent', 'viewed');`} />
+          </DocumentSection>
+
+          <DocumentSection title="7. Tabla: subscriptions" level={1} id="subscriptions">
             <p className="text-foreground/80 mb-4">
               <strong>Descripción:</strong> Representa las suscripciones activas de cada cliente. Contiene toda la información 
               necesaria para gestionar el ciclo de facturación, cobros recurrentes y estado de la suscripción.
@@ -492,7 +953,7 @@ WHERE s.user_id = 'USER_UUID'
   AND spc.status = 'pending';`} />
           </DocumentSection>
 
-          <DocumentSection title="5. Tabla: subscription_price_changes" level={1} id="subscription_price_changes">
+          <DocumentSection title="8. Tabla: subscription_price_changes" level={1} id="subscription_price_changes">
             <p className="text-foreground/80 mb-4">
               <strong>Descripción:</strong> Gestiona los cambios de precio a nivel de suscripciones individuales. 
               Incluye funcionalidad de aprobación de clientes mediante tokens seguros y seguimiento completo del proceso.
@@ -648,7 +1109,7 @@ WHERE id = 'CHANGE_UUID'
   AND status = 'pending';`} />
           </DocumentSection>
 
-          <DocumentSection title="6. Tabla: product_price_changes" level={1} id="product_price_changes">
+          <DocumentSection title="9. Tabla: product_price_changes" level={1} id="product_price_changes">
             <p className="text-foreground/80 mb-4">
               <strong>Descripción:</strong> Gestiona cambios de precio masivos a nivel de producto que afectan múltiples suscripciones. 
               Incluye contadores para rastrear el progreso de aplicación.
@@ -762,7 +1223,7 @@ WHERE p.user_id = 'USER_UUID'
 ORDER BY ppc.scheduled_date ASC NULLS LAST;`} />
           </DocumentSection>
 
-          <DocumentSection title="7. Tabla: notification_logs" level={1} id="notification_logs">
+          <DocumentSection title="10. Tabla: notification_logs" level={1} id="notification_logs">
             <p className="text-foreground/80 mb-4">
               <strong>Descripción:</strong> Registro de auditoría de todas las notificaciones enviadas a clientes 
               por diferentes canales (SMS, WhatsApp, Email). Incluye tracking de costos y estados.
@@ -864,24 +1325,45 @@ GROUP BY event
 ORDER BY success_rate ASC;`} />
           </DocumentSection>
 
-          <DocumentSection title="8. Tabla: transactions" level={1} id="transactions">
+          <DocumentSection title="11. Tabla: transactions" level={1} id="transactions">
             <p className="text-foreground/80 mb-4">
               <strong>Descripción:</strong> Registro de todas las transacciones de pago procesadas en el sistema.
             </p>
 
             <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Estructura de Columnas</h3>
             <CodeBlock language="sql" code={`CREATE TABLE transactions (
+  -- Identificación
   id TEXT PRIMARY KEY,
   user_id UUID NOT NULL,
+  external_transaction_id TEXT,
+  
+  -- Relaciones
+  client_id UUID REFERENCES clients(id) ON DELETE SET NULL,
+  card_id UUID REFERENCES cards(id) ON DELETE SET NULL,
+  subscription_id UUID REFERENCES subscriptions(id) ON DELETE SET NULL,
+  payment_link_id UUID REFERENCES payment_links(id) ON DELETE SET NULL,
   
   -- Información del cliente
   client_name TEXT NOT NULL,
   client_email TEXT NOT NULL,
   
   -- Transacción
+  concept TEXT,
+  description TEXT,
   amount BIGINT NOT NULL,
+  currency TEXT DEFAULT 'PYG',
   method TEXT NOT NULL,
   status transaction_status DEFAULT 'pending',
+  
+  -- Fallos
+  failure_reason TEXT,
+  
+  -- Reembolsos
+  refund_amount BIGINT,
+  refunded_at TIMESTAMPTZ,
+  
+  -- Metadatos
+  metadata JSONB,
   
   -- Timestamps
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -889,69 +1371,151 @@ ORDER BY success_rate ASC;`} />
 );
 
 CREATE INDEX idx_transactions_user_id ON transactions(user_id);
-CREATE INDEX idx_transactions_status ON transactions(status);`} />
+CREATE INDEX idx_transactions_status ON transactions(status);
+CREATE INDEX idx_transactions_client_id ON transactions(client_id);
+CREATE INDEX idx_transactions_card_id ON transactions(card_id);
+CREATE INDEX idx_transactions_subscription_id ON transactions(subscription_id);
+CREATE INDEX idx_transactions_payment_link_id ON transactions(payment_link_id);`} />
 
             <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Ejemplos SQL Comunes</h3>
 
-            <h4 className="text-md font-medium text-foreground mt-4 mb-2">1. Transacciones recientes</h4>
-            <CodeBlock language="sql" code={`SELECT id, client_name, amount, method, 
-       status, created_at
-FROM transactions
-WHERE user_id = 'USER_UUID'
-ORDER BY created_at DESC
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">1. Transacciones recientes con detalles completos</h4>
+            <CodeBlock language="sql" code={`SELECT t.id, t.client_name, t.amount, t.method, 
+       t.status, t.created_at,
+       c.name as client,
+       s.reference as subscription,
+       pl.concept as payment_link_concept
+FROM transactions t
+LEFT JOIN clients c ON t.client_id = c.id
+LEFT JOIN subscriptions s ON t.subscription_id = s.id
+LEFT JOIN payment_links pl ON t.payment_link_id = pl.id
+WHERE t.user_id = 'USER_UUID'
+ORDER BY t.created_at DESC
 LIMIT 50;`} />
 
-            <h4 className="text-md font-medium text-foreground mt-4 mb-2">2. Crear transacción</h4>
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">2. Crear transacción de suscripción</h4>
             <CodeBlock language="sql" code={`INSERT INTO transactions (
-  id, user_id, client_name, client_email, 
-  amount, method, status
+  id, user_id, client_id, card_id, subscription_id,
+  client_name, client_email, concept, 
+  amount, currency, method, status
 ) VALUES (
   'TXN-2025-001', 
-  'USER_UUID', 
+  'USER_UUID',
+  'CLIENT_UUID',
+  'CARD_UUID',
+  'SUBSCRIPTION_UUID',
   'Juan Pérez', 
   'juan@email.com',
-  50000, 
+  'Cobro mensual - Plan Premium',
+  50000,
+  'PYG',
   'credit_card', 
   'pending'
 ) RETURNING *;`} />
 
-            <h4 className="text-md font-medium text-foreground mt-4 mb-2">3. Actualizar estado</h4>
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">3. Crear transacción de payment link</h4>
+            <CodeBlock language="sql" code={`INSERT INTO transactions (
+  id, user_id, client_id, payment_link_id,
+  client_name, client_email, concept,
+  amount, currency, method, status
+) VALUES (
+  'TXN-2025-002',
+  'USER_UUID',
+  'CLIENT_UUID',
+  'PAYMENT_LINK_UUID',
+  'María López',
+  'maria@email.com',
+  'Pago único - Servicio',
+  75000,
+  'PYG',
+  'qr_code',
+  'completed'
+) RETURNING *;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">4. Actualizar estado a completado</h4>
             <CodeBlock language="sql" code={`UPDATE transactions
-SET status = 'completed', 
+SET status = 'completed',
+    external_transaction_id = 'EXT-123456',
     updated_at = NOW()
 WHERE id = 'TXN-2025-001' 
   AND user_id = 'USER_UUID';`} />
 
-            <h4 className="text-md font-medium text-foreground mt-4 mb-2">4. Transacciones fallidas del día</h4>
-            <CodeBlock language="sql" code={`SELECT id, client_name, amount, method, created_at
-FROM transactions
-WHERE user_id = 'USER_UUID'
-  AND status = 'failed'
-  AND created_at >= DATE_TRUNC('day', NOW())
-ORDER BY created_at DESC;`} />
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">5. Registrar transacción fallida</h4>
+            <CodeBlock language="sql" code={`UPDATE transactions
+SET status = 'failed',
+    failure_reason = 'Fondos insuficientes',
+    updated_at = NOW()
+WHERE id = 'TXN-2025-001'
+  AND user_id = 'USER_UUID';`} />
 
-            <h4 className="text-md font-medium text-foreground mt-4 mb-2">5. Reporte por método de pago</h4>
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">6. Procesar reembolso</h4>
+            <CodeBlock language="sql" code={`UPDATE transactions
+SET refund_amount = 50000,
+    refunded_at = NOW(),
+    updated_at = NOW()
+WHERE id = 'TXN-2025-001'
+  AND user_id = 'USER_UUID'
+  AND status = 'completed';`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">7. Transacciones fallidas del día</h4>
+            <CodeBlock language="sql" code={`SELECT t.id, t.client_name, t.amount, t.method, 
+       t.failure_reason, t.created_at,
+       c.email, c.phone_number
+FROM transactions t
+LEFT JOIN clients c ON t.client_id = c.id
+WHERE t.user_id = 'USER_UUID'
+  AND t.status = 'failed'
+  AND t.created_at >= DATE_TRUNC('day', NOW())
+ORDER BY t.created_at DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">8. Reporte por método de pago</h4>
             <CodeBlock language="sql" code={`SELECT method,
        COUNT(*) as total_transactions,
-       SUM(amount) as total_amount,
-       AVG(amount) as avg_amount
+       SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed,
+       SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) as failed,
+       SUM(CASE WHEN status = 'completed' THEN amount ELSE 0 END) as total_amount,
+       AVG(CASE WHEN status = 'completed' THEN amount ELSE NULL END) as avg_amount
 FROM transactions
 WHERE user_id = 'USER_UUID'
-  AND status = 'completed'
   AND created_at >= DATE_TRUNC('month', NOW())
 GROUP BY method
 ORDER BY total_amount DESC;`} />
 
-            <h4 className="text-md font-medium text-foreground mt-4 mb-2">6. Ingresos diarios (último mes)</h4>
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">9. Ingresos diarios (último mes)</h4>
             <CodeBlock language="sql" code={`SELECT DATE_TRUNC('day', created_at) as day,
        COUNT(*) as transactions,
-       SUM(amount) as daily_revenue
+       SUM(amount) as daily_revenue,
+       SUM(CASE WHEN refund_amount IS NOT NULL THEN refund_amount ELSE 0 END) as refunds,
+       SUM(amount) - SUM(CASE WHEN refund_amount IS NOT NULL THEN refund_amount ELSE 0 END) as net_revenue
 FROM transactions
 WHERE user_id = 'USER_UUID'
   AND status = 'completed'
   AND created_at >= NOW() - INTERVAL '30 days'
 GROUP BY day
 ORDER BY day DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">10. Transacciones por tarjeta</h4>
+            <CodeBlock language="sql" code={`SELECT cd.last_four_digits, cd.card_brand,
+       COUNT(*) as total_transactions,
+       SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END) as successful,
+       SUM(CASE WHEN t.status = 'completed' THEN t.amount ELSE 0 END) as total_amount
+FROM transactions t
+JOIN cards cd ON t.card_id = cd.id
+WHERE t.user_id = 'USER_UUID'
+  AND t.created_at >= DATE_TRUNC('month', NOW())
+GROUP BY cd.id, cd.last_four_digits, cd.card_brand
+ORDER BY total_amount DESC;`} />
+
+            <h4 className="text-md font-medium text-foreground mt-4 mb-2">11. Historial de cliente con detalles</h4>
+            <CodeBlock language="sql" code={`SELECT t.id, t.concept, t.amount, t.currency,
+       t.method, t.status, t.created_at,
+       t.refund_amount, t.failure_reason,
+       s.reference as subscription_ref
+FROM transactions t
+LEFT JOIN subscriptions s ON t.subscription_id = s.id
+WHERE t.client_id = 'CLIENT_UUID'
+  AND t.user_id = 'USER_UUID'
+ORDER BY t.created_at DESC;`} />
           </DocumentSection>
 
           <DocumentSection title="9. Funciones de Base de Datos" level={1}>
@@ -992,6 +1556,41 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- Uso:
 SELECT generate_approval_token();
 -- Resultado: 'kS8vX2mN9pQ...' (44 caracteres)`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-4 mb-3">3. generate_payment_link_token()</h3>
+            <p className="text-foreground/80 mb-4">
+              Genera tokens únicos para enlaces de pago.
+            </p>
+            <CodeBlock language="sql" code={`CREATE OR REPLACE FUNCTION public.generate_payment_link_token()
+RETURNS TEXT AS $$
+BEGIN
+  RETURN encode(gen_random_bytes(32), 'hex');
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Uso:
+SELECT generate_payment_link_token();
+-- Resultado: 'a7f3c9e1...' (64 caracteres hex)`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-4 mb-3">4. expire_payment_links()</h3>
+            <p className="text-foreground/80 mb-4">
+              Función para marcar automáticamente como expirados los payment links que han vencido. 
+              Se puede ejecutar periódicamente mediante un cron job.
+            </p>
+            <CodeBlock language="sql" code={`CREATE OR REPLACE FUNCTION public.expire_payment_links()
+RETURNS VOID AS $$
+BEGIN
+  UPDATE public.payment_links
+  SET status = 'expired',
+      updated_at = NOW()
+  WHERE status IN ('active', 'sent', 'viewed')
+    AND expires_at IS NOT NULL
+    AND expires_at < NOW();
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Uso (ejecutar periódicamente):
+SELECT expire_payment_links();`} />
           </DocumentSection>
 
           <DocumentSection title="10. Políticas RLS (Row Level Security)" level={1}>
@@ -1037,6 +1636,53 @@ USING (approval_token IS NOT NULL);
 CREATE POLICY "Anyone with token can update approval"
 ON subscription_price_changes FOR UPDATE
 USING (approval_token IS NOT NULL);`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Tabla clients</h3>
+            <CodeBlock language="sql" code={`ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage their own clients"
+ON clients FOR ALL
+TO authenticated
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Tabla cards</h3>
+            <CodeBlock language="sql" code={`ALTER TABLE cards ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own cards"
+ON cards FOR SELECT
+TO authenticated
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own cards"
+ON cards FOR INSERT
+TO authenticated
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own cards"
+ON cards FOR UPDATE
+TO authenticated
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own cards"
+ON cards FOR DELETE
+TO authenticated
+USING (auth.uid() = user_id);`} />
+
+            <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Tabla payment_links</h3>
+            <CodeBlock language="sql" code={`ALTER TABLE payment_links ENABLE ROW LEVEL SECURITY;
+
+-- Usuario puede gestionar sus propios enlaces
+CREATE POLICY "Users can manage their own payment links"
+ON payment_links FOR ALL
+TO authenticated
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
+-- Acceso público con token para pago
+CREATE POLICY "Anyone with token can view payment link"
+ON payment_links FOR SELECT
+USING (token IS NOT NULL);`} />
 
             <h3 className="text-lg font-semibold text-foreground mt-6 mb-3">Tabla transactions</h3>
             <CodeBlock language="sql" code={`ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
