@@ -5,9 +5,69 @@ import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
 const MAX_NOTIFICATIONS = 20;
 
+// Mock notifications para visualización
+const mockNotifications: DashboardNotification[] = [
+  {
+    id: "mock-1",
+    type: "payment_completed",
+    title: "Pago Completado",
+    message: "Juan Pérez pagó $15,000",
+    priority: "medium",
+    timestamp: new Date(Date.now() - 5 * 60 * 1000), // hace 5 minutos
+  },
+  {
+    id: "mock-2",
+    type: "subscription_created",
+    title: "Nueva Suscripción",
+    message: "María García se ha suscrito a Plan Premium",
+    priority: "medium",
+    timestamp: new Date(Date.now() - 15 * 60 * 1000), // hace 15 minutos
+  },
+  {
+    id: "mock-3",
+    type: "payment_failed",
+    title: "Pago Fallido",
+    message: "El pago de Carlos López por $25,000 falló",
+    priority: "high",
+    timestamp: new Date(Date.now() - 30 * 60 * 1000), // hace 30 minutos
+  },
+  {
+    id: "mock-4",
+    type: "subscription_paused",
+    title: "Suscripción Pausada",
+    message: "Ana Rodríguez pausó su suscripción",
+    priority: "low",
+    timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), // hace 1 hora
+  },
+  {
+    id: "mock-5",
+    type: "price_change_approved",
+    title: "Cambio de Precio Aprobado",
+    message: "Cliente aprobó cambio de precio",
+    priority: "medium",
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // hace 2 horas
+  },
+  {
+    id: "mock-6",
+    type: "subscription_cancelled",
+    title: "Suscripción Cancelada",
+    message: "Pedro Martínez canceló su suscripción",
+    priority: "high",
+    timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // hace 3 horas
+  },
+  {
+    id: "mock-7",
+    type: "subscription_reactivated",
+    title: "Suscripción Reactivada",
+    message: "Laura Sánchez reactivó su suscripción",
+    priority: "medium",
+    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), // hace 5 horas
+  },
+];
+
 export function useRealtimeNotifications() {
-  const [notifications, setNotifications] = useState<DashboardNotification[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifications, setNotifications] = useState<DashboardNotification[]>(mockNotifications);
+  const [unreadCount, setUnreadCount] = useState(mockNotifications.length);
 
   useEffect(() => {
     const channel = supabase
