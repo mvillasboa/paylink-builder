@@ -7,7 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { NewProductDialog } from "@/components/products/NewProductDialog";
-import { Package, Plus, Search, Edit, DollarSign, Users, TrendingUp } from "lucide-react";
+import { CreateProductLinkDialog } from "@/components/products/CreateProductLinkDialog";
+import { Package, Plus, Search, Edit, DollarSign, Users, TrendingUp, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { Product } from "@/types/product";
 import { formatCurrency } from "@/lib/utils/currency";
@@ -18,6 +19,7 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [selectedProductForLink, setSelectedProductForLink] = useState<Product | null>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -230,6 +232,14 @@ export default function Products() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => setSelectedProductForLink(product)}
+                            title="Crear Link de Producto"
+                          >
+                            <Link2 className="h-4 w-4" />
+                          </Button>
                           <Button variant="ghost" size="sm">
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -252,6 +262,14 @@ export default function Products() {
         onOpenChange={setIsCreateDialogOpen}
         onSuccess={fetchProducts}
       />
+
+      {selectedProductForLink && (
+        <CreateProductLinkDialog
+          product={selectedProductForLink}
+          open={!!selectedProductForLink}
+          onOpenChange={(open) => !open && setSelectedProductForLink(null)}
+        />
+      )}
     </div>
   );
 }
