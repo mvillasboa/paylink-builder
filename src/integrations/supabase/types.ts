@@ -285,6 +285,59 @@ export type Database = {
           },
         ]
       }
+      product_links: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          internal_notes: string | null
+          max_uses: number | null
+          product_id: string
+          short_code: string | null
+          status: Database["public"]["Enums"]["product_link_status"]
+          token: string
+          updated_at: string
+          user_id: string
+          uses_count: number
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          internal_notes?: string | null
+          max_uses?: number | null
+          product_id: string
+          short_code?: string | null
+          status?: Database["public"]["Enums"]["product_link_status"]
+          token: string
+          updated_at?: string
+          user_id: string
+          uses_count?: number
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          internal_notes?: string | null
+          max_uses?: number | null
+          product_id?: string
+          short_code?: string | null
+          status?: Database["public"]["Enums"]["product_link_status"]
+          token?: string
+          updated_at?: string
+          user_id?: string
+          uses_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_links_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_price_changes: {
         Row: {
           application_type: Database["public"]["Enums"]["application_type"]
@@ -821,6 +874,7 @@ export type Database = {
       expire_payment_links: { Args: never; Returns: undefined }
       generate_approval_token: { Args: never; Returns: string }
       generate_payment_link_token: { Args: never; Returns: string }
+      generate_product_link_token: { Args: never; Returns: string }
     }
     Enums: {
       application_type: "immediate" | "next_cycle" | "scheduled"
@@ -842,6 +896,7 @@ export type Database = {
         | "expired"
         | "cancelled"
       price_change_type: "upgrade" | "downgrade" | "inflation" | "custom"
+      product_link_status: "active" | "used" | "expired" | "cancelled"
       subscription_frequency:
         | "weekly"
         | "monthly"
@@ -1007,6 +1062,7 @@ export const Constants = {
         "cancelled",
       ],
       price_change_type: ["upgrade", "downgrade", "inflation", "custom"],
+      product_link_status: ["active", "used", "expired", "cancelled"],
       subscription_frequency: [
         "weekly",
         "monthly",

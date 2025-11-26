@@ -28,6 +28,7 @@ import FeaturesPage from "./pages/FeaturesPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import PricingPage from "./pages/PricingPage";
 import ContactPage from "./pages/ContactPage";
+import ProductLink from "./pages/ProductLink";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ const App = () => (
           <Route path="/pay-unlimited-fixed/:linkId" element={<RegisterCardUnlimitedFixed />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/my-cards" element={<MyCards />} />
+          <Route path="/product/:token" element={<ProductLink />} />
           <Route path="/approve-change/:token" element={<ApproveSubscriptionChange />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
