@@ -54,23 +54,13 @@ export function ModifySubscriptionAmountDialog({
   const isIncrease = difference > 0;
   const isDifferent = formData.newAmount !== subscription.amount;
 
-  // Sugerir tipo de cambio automáticamente y requerir aprobación para tipo fijo
+  // Requerir aprobación para tipo fijo automáticamente
   useEffect(() => {
-    if (!isDifferent) return;
-    
-    if (Math.abs(parseFloat(percentageChange)) <= 10) {
-      setFormData(prev => ({ ...prev, changeType: 'inflation' }));
-    } else if (isIncrease) {
-      setFormData(prev => ({ ...prev, changeType: 'upgrade' }));
-    } else {
-      setFormData(prev => ({ ...prev, changeType: 'downgrade' }));
-    }
-
     // Para suscripciones tipo fijo, requerir aprobación del cliente automáticamente
     if (subscription.type === 'fixed') {
       setFormData(prev => ({ ...prev, requiresClientApproval: true }));
     }
-  }, [formData.newAmount, isDifferent, isIncrease, percentageChange, subscription.type]);
+  }, [subscription.type]);
 
   const handleConfirm = async () => {
     if (!isDifferent) {
@@ -249,38 +239,6 @@ export function ModifySubscriptionAmountDialog({
                   step={1000}
                 />
               </div>
-              
-              <div className="flex flex-wrap gap-2 mt-2">
-                <Label className="text-xs text-muted-foreground w-full">Ajustes rápidos:</Label>
-                {[5, 10, 15, 20, 25].map(percent => (
-                  <Button
-                    key={percent}
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setFormData(prev => ({
-                      ...prev,
-                      newAmount: Math.round(subscription.amount * (1 + percent / 100))
-                    }))}
-                  >
-                    +{percent}%
-                  </Button>
-                ))}
-                {[-10, -15, -20].map(percent => (
-                  <Button
-                    key={percent}
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setFormData(prev => ({
-                      ...prev,
-                      newAmount: Math.round(subscription.amount * (1 + percent / 100))
-                    }))}
-                  >
-                    {percent}%
-                  </Button>
-                ))}
-              </div>
             </div>
 
             <div className="space-y-2">
@@ -296,42 +254,6 @@ export function ModifySubscriptionAmountDialog({
               <p className="text-xs text-muted-foreground">
                 Esta información se mostrará al cliente en la notificación
               </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Tipo de Cambio</Label>
-              <RadioGroup
-                value={formData.changeType}
-                onValueChange={(value) => setFormData(prev => ({ 
-                  ...prev, 
-                  changeType: value as PriceChangeType 
-                }))}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="upgrade" id="upgrade" />
-                  <Label htmlFor="upgrade" className="cursor-pointer">
-                    📈 Upgrade - Cliente obtiene más beneficios
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="downgrade" id="downgrade" />
-                  <Label htmlFor="downgrade" className="cursor-pointer">
-                    📉 Downgrade - Cliente reduce plan
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="inflation" id="inflation" />
-                  <Label htmlFor="inflation" className="cursor-pointer">
-                    💹 Ajuste por Inflación
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="custom" id="custom" />
-                  <Label htmlFor="custom" className="cursor-pointer">
-                    ⚙️ Personalizado
-                  </Label>
-                </div>
-              </RadioGroup>
             </div>
 
             <div className="space-y-2">
@@ -624,15 +546,12 @@ export function ModifySubscriptionAmountDialog({
                   <p className="text-sm mt-1">{formData.reason}</p>
                 </div>
 
-                <div>
-                  <Label className="text-xs text-muted-foreground">Tipo de Cambio</Label>
-                  <Badge className="mt-1">
-                    {formData.changeType === 'upgrade' && '📈 Upgrade'}
-                    {formData.changeType === 'downgrade' && '📉 Downgrade'}
-                    {formData.changeType === 'inflation' && '💹 Ajuste por Inflación'}
-                    {formData.changeType === 'custom' && '⚙️ Personalizado'}
-                  </Badge>
-                </div>
+                {formData.internalNotes && (
+                  <div>
+                    <Label className="text-xs text-muted-foreground">Notas Internas</Label>
+                    <p className="text-sm mt-1 text-muted-foreground">{formData.internalNotes}</p>
+                  </div>
+                )}
 
                 <Separator />
 
