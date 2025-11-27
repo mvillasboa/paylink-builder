@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { useRealtimeNotifications } from "@/hooks/useRealtimeNotifications";
 import { NotificationPanel } from "./NotificationPanel";
 import { notificationConfig } from "@/types/notification";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Sidebar,
   SidebarContent,
@@ -66,7 +67,17 @@ const menuItems = [
 
 export function DashboardLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const { notifications, unreadCount, clearAll, markAsRead } = useRealtimeNotifications();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
+  const userInitials = user?.email?.[0]?.toUpperCase() || 'U';
+  const userEmail = user?.email || 'usuario@email.com';
 
   useEffect(() => {
     if (notifications.length > 0) {
@@ -132,11 +143,11 @@ export function DashboardLayout() {
             <div className="flex items-center gap-3">
               <Avatar className="h-8 w-8">
                 <AvatarImage src="/placeholder.svg" />
-                <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
+                <AvatarFallback className="bg-primary/10 text-primary">{userInitials}</AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">Admin User</p>
-                <p className="text-xs text-muted-foreground truncate">admin@empresa.com</p>
+                <p className="text-sm font-medium text-foreground truncate">{userEmail}</p>
+                <p className="text-xs text-muted-foreground truncate">Usuario activo</p>
               </div>
             </div>
           </SidebarFooter>
@@ -188,14 +199,14 @@ export function DashboardLayout() {
                     <Button variant="ghost" size="icon">
                       <Avatar className="h-8 w-8">
                         <AvatarImage src="/placeholder.svg" />
-                        <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
+                        <AvatarFallback className="bg-primary/10 text-primary">{userInitials}</AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+                    <DropdownMenuLabel>{userEmail}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
                       <Settings className="mr-2 h-4 w-4" />
                       Configuración
                     </DropdownMenuItem>
@@ -204,7 +215,7 @@ export function DashboardLayout() {
                       Mi Perfil
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive">
+                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
                       <LogOut className="mr-2 h-4 w-4" />
                       Cerrar Sesión
                     </DropdownMenuItem>
