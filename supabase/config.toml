@@ -1,1 +1,13 @@
 project_id = "nsukiynbmhlzvlcvwtyt"
+
+[functions.apply-price-changes]
+verify_jwt = false
+
+[functions.apply-product-price-change]
+verify_jwt = false
+
+[functions.register-from-product-link]
+verify_jwt = false
+
+[functions.setup-test-data]
+verify_jwt = false
