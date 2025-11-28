@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CreditCard } from 'lucide-react';
+import { CreditCard, Database } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 
 const authSchema = z.object({
   email: z.string().trim().email({ message: "Email inválido" }).max(255, { message: "Email muy largo" }),
@@ -21,8 +22,10 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [settingUpData, setSettingUpData] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
+  const isDevelopment = import.meta.env.DEV;
 
   useEffect(() => {
     if (user) {
@@ -61,6 +64,33 @@ export default function Auth() {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSetupTestData = async () => {
+    try {
+      setSettingUpData(true);
+      toast.loading('Configurando datos de prueba...');
+
+      const { data, error } = await supabase.functions.invoke('setup-test-data');
+
+      if (error) throw error;
+
+      if (data?.success) {
+        toast.success('¡Datos de prueba creados!');
+        toast.info(`Email: ${data.credentials.email}`, { duration: 10000 });
+        toast.info(`Contraseña: ${data.credentials.password}`, { duration: 10000 });
+        setEmail(data.credentials.email);
+        setPassword(data.credentials.password);
+        setMode('login');
+      } else {
+        throw new Error(data?.error || 'Error desconocido');
+      }
+    } catch (error) {
+      console.error('Error setting up test data:', error);
+      toast.error('Error al configurar datos de prueba');
+    } finally {
+      setSettingUpData(false);
     }
   };
 
@@ -119,6 +149,22 @@ export default function Auth() {
               {loading ? 'Procesando...' : mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
             </Button>
           </form>
+          
+          {isDevelopment && (
+            <div className="mt-4">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={handleSetupTestData}
+                disabled={settingUpData || loading}
+              >
+                <Database className="w-4 h-4 mr-2" />
+                {settingUpData ? 'Configurando...' : 'Crear Datos de Prueba'}
+              </Button>
+            </div>
+          )}
+          
           <div className="mt-4 text-center text-sm">
             <button
               type="button"
