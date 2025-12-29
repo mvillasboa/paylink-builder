@@ -24,31 +24,31 @@ export function StatCard({ title, value, change, icon: Icon, format = 'number' }
   };
 
   return (
-    <Card className="overflow-hidden transition-all duration-200 hover:shadow-medium">
-      <CardContent className="p-4">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-border/50 bg-card/50 backdrop-blur">
+      <CardContent className="p-6">
         <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{title}</p>
-            <p className="text-2xl font-bold text-foreground tracking-tight">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <p className="text-3xl font-bold text-foreground tracking-tight">
               {formattedValue()}
             </p>
             <div className="flex items-center gap-1">
               {isPositive ? (
-                <ArrowUpIcon className="h-3.5 w-3.5 text-accent" />
+                <ArrowUpIcon className="h-4 w-4 text-accent" />
               ) : (
-                <ArrowDownIcon className="h-3.5 w-3.5 text-destructive" />
+                <ArrowDownIcon className="h-4 w-4 text-destructive" />
               )}
               <span className={cn(
-                "text-xs font-medium",
+                "text-sm font-medium",
                 isPositive ? "text-accent" : "text-destructive"
               )}>
                 {Math.abs(change)}%
               </span>
-              <span className="text-xs text-muted-foreground ml-1">vs mes anterior</span>
+              <span className="text-sm text-muted-foreground ml-1">vs mes anterior</span>
             </div>
           </div>
-          <div className="p-2.5 rounded bg-primary/10">
-            <Icon className="h-5 w-5 text-primary" />
+          <div className="p-3 rounded-lg bg-primary/10">
+            <Icon className="h-6 w-6 text-primary" />
           </div>
         </div>
       </CardContent>

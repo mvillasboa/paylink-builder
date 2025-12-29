@@ -13,18 +13,6 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ['Lato', 'system-ui', '-apple-system', 'sans-serif'],
-      },
-      fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.8125rem', { lineHeight: '1.25rem' }],
-        'base': ['0.875rem', { lineHeight: '1.5rem' }],
-        'lg': ['1rem', { lineHeight: '1.75rem' }],
-        'xl': ['1.125rem', { lineHeight: '1.75rem' }],
-        '2xl': ['1.25rem', { lineHeight: '2rem' }],
-        '3xl': ['1.5rem', { lineHeight: '2.25rem' }],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -61,23 +49,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
         'gradient-hero': 'var(--gradient-hero)',
         'gradient-subtle': 'var(--gradient-subtle)',
         'gradient-card': 'var(--gradient-card)',
-        'gradient-sidebar': 'var(--gradient-sidebar)',
       },
       boxShadow: {
         'soft': 'var(--shadow-soft)',
@@ -87,8 +64,8 @@ export default {
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 1px)",
-        sm: "calc(var(--radius) - 2px)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
