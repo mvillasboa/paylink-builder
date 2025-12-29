@@ -89,7 +89,7 @@ export function DashboardLayout() {
       toast(latestNotification.title, {
         description: latestNotification.message,
         duration: toastDuration,
-        className: config.priority === "high" ? "border-destructive" : config.priority === "medium" ? "border-green-600" : "",
+        className: config.priority === "high" ? "border-destructive" : config.priority === "medium" ? "border-accent" : "",
       });
     }
   }, [notifications]);
@@ -97,26 +97,27 @@ export function DashboardLayout() {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
-        <Sidebar className="border-r border-border/50">
-          <SidebarHeader className="border-b border-border/50 p-4">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-primary/10">
-                <CreditCard className="h-5 w-5 text-primary" />
+        {/* Verona-style Sidebar with dark gradient */}
+        <Sidebar className="border-r-0 bg-gradient-sidebar">
+          <SidebarHeader className="border-b border-sidebar-border p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded bg-primary">
+                <CreditCard className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <h2 className="font-bold text-lg text-foreground">PayLink Pro</h2>
-                <p className="text-xs text-muted-foreground">Panel de Control</p>
+                <h2 className="font-semibold text-lg text-sidebar-foreground">PayLink Pro</h2>
+                <p className="text-xs text-sidebar-foreground/60">Panel de Control</p>
               </div>
             </div>
           </SidebarHeader>
 
-          <SidebarContent>
+          <SidebarContent className="px-3 py-4">
             <SidebarGroup>
-              <SidebarGroupLabel className="text-xs uppercase text-muted-foreground px-4 py-2">
+              <SidebarGroupLabel className="text-[11px] uppercase tracking-wider text-sidebar-foreground/50 px-3 py-2 font-medium">
                 Menú Principal
               </SidebarGroupLabel>
               <SidebarGroupContent>
-                <SidebarMenu>
+                <SidebarMenu className="space-y-1">
                   {menuItems.map((item) => {
                     const isActive = location.pathname === item.url;
                     return (
@@ -124,11 +125,20 @@ export function DashboardLayout() {
                         <SidebarMenuButton asChild isActive={isActive}>
                           <NavLink
                             to={item.url}
-                            className="flex items-center gap-3 px-4 py-2 rounded-lg transition-colors"
-                            activeClassName="bg-primary/10 text-primary font-medium"
+                            className={`
+                              relative flex items-center gap-3 px-3 py-2.5 rounded text-sm transition-all duration-200
+                              ${isActive 
+                                ? 'bg-sidebar-accent text-sidebar-foreground' 
+                                : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground'
+                              }
+                            `}
+                            activeClassName=""
                           >
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.title}</span>
+                            {isActive && (
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r" />
+                            )}
+                            <item.icon className="h-4 w-4 shrink-0" />
+                            <span className="font-medium">{item.title}</span>
                           </NavLink>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
@@ -139,48 +149,50 @@ export function DashboardLayout() {
             </SidebarGroup>
           </SidebarContent>
 
-          <SidebarFooter className="border-t border-border/50 p-4">
+          <SidebarFooter className="border-t border-sidebar-border p-4">
             <div className="flex items-center gap-3">
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-9 w-9 border-2 border-primary/30">
                 <AvatarImage src="/placeholder.svg" />
-                <AvatarFallback className="bg-primary/10 text-primary">{userInitials}</AvatarFallback>
+                <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
+                  {userInitials}
+                </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">{userEmail}</p>
-                <p className="text-xs text-muted-foreground truncate">Usuario activo</p>
+                <p className="text-sm font-medium text-sidebar-foreground truncate">{userEmail}</p>
+                <p className="text-xs text-sidebar-foreground/50 truncate">Usuario activo</p>
               </div>
             </div>
           </SidebarFooter>
         </Sidebar>
 
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Header */}
-          <header className="sticky top-0 z-10 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="flex h-16 items-center gap-4 px-6">
-              <SidebarTrigger />
+          {/* Header - Clean Verona style */}
+          <header className="sticky top-0 z-10 border-b border-border bg-card">
+            <div className="flex h-14 items-center gap-4 px-4">
+              <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
               
               <div className="flex-1 flex items-center gap-4">
-                <div className="relative max-w-md flex-1">
+                <div className="relative max-w-sm flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Buscar transacciones, clientes..."
-                    className="pl-9 bg-muted/50 border-border/50"
+                    placeholder="Buscar..."
+                    className="pl-9 h-9 bg-background border-border text-sm"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="relative"
+                      className="relative h-9 w-9 text-muted-foreground hover:text-foreground"
                       onClick={markAsRead}
                     >
-                      <Bell className="h-5 w-5" />
+                      <Bell className="h-4 w-4" />
                       {unreadCount > 0 && (
-                        <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-destructive text-white text-xs">
+                        <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 bg-destructive text-destructive-foreground text-[10px]">
                           {unreadCount}
                         </Badge>
                       )}
@@ -196,15 +208,20 @@ export function DashboardLayout() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="h-9 w-9">
                       <Avatar className="h-8 w-8">
                         <AvatarImage src="/placeholder.svg" />
-                        <AvatarFallback className="bg-primary/10 text-primary">{userInitials}</AvatarFallback>
+                        <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
+                          {userInitials}
+                        </AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuLabel>{userEmail}</DropdownMenuLabel>
+                    <DropdownMenuLabel className="font-normal">
+                      <p className="text-sm font-medium">{userEmail}</p>
+                      <p className="text-xs text-muted-foreground">Administrador</p>
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
                       <Settings className="mr-2 h-4 w-4" />
@@ -215,7 +232,7 @@ export function DashboardLayout() {
                       Mi Perfil
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
                       <LogOut className="mr-2 h-4 w-4" />
                       Cerrar Sesión
                     </DropdownMenuItem>
