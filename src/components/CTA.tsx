@@ -26,7 +26,7 @@ export const CTA = () => {
           </h2>
           
           <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
-            Más de 100 empresas ya gestionan sus suscripciones con PayLink Pro. Control total, análisis en tiempo real.
+            Más de 100 empresas ya gestionan sus suscripciones con Walpay. Control total, análisis en tiempo real.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
