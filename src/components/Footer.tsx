@@ -1,4 +1,4 @@
-import logoWalpay from "@/assets/logo-walpay.jpg";
+import logoWalpayWhite from "@/assets/logo-walpay-white.jpg";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -11,9 +11,9 @@ export const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <img 
-                src={logoWalpay} 
+                src={logoWalpayWhite} 
                 alt="Walpay" 
-                className="h-10 w-auto rounded-lg"
+                className="h-10 w-auto"
               />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
