@@ -9,7 +9,7 @@ import { Database } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
-import logoWalpay from '@/assets/logo-walpay.jpg';
+import logoWalpayColor from '@/assets/logo-walpay-color.png';
 
 const authSchema = z.object({
   email: z.string().trim().email({ message: "Email inválido" }).max(255, { message: "Email muy largo" }),
@@ -101,7 +101,7 @@ export default function Auth() {
         <CardHeader className="space-y-4">
           <div className="flex items-center justify-center">
             <img 
-              src={logoWalpay} 
+              src={logoWalpayColor} 
               alt="Walpay" 
               className="h-12 w-auto"
             />
