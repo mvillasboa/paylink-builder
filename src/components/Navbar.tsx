@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CreditCard, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
+import logoWalpay from "@/assets/logo-walpay.jpg";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -27,12 +28,13 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center gap-2 text-primary font-bold text-xl">
-            <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <CreditCard className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span>PayLink</span>
-          </div>
+          <a href="/" className="flex items-center gap-2">
+            <img 
+              src={logoWalpay} 
+              alt="Walpay - Plataforma de Pagos B2B" 
+              className="h-10 w-auto"
+            />
+          </a>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
