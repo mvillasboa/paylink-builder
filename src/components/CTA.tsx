@@ -33,7 +33,7 @@ export const CTA = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             
-            <Button variant="outline" size="lg" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary text-lg px-8 py-6 h-auto transition-all duration-300 hover:scale-105 group">
+            <Button size="lg" className="bg-white text-primary border-0 hover:bg-white/90 text-lg px-8 py-6 h-auto transition-all duration-300 hover:scale-105 group shadow-strong">
               <Calendar className="w-5 h-5 transition-transform group-hover:rotate-12" />
               Agendá una reunión
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
