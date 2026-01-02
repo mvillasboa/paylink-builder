@@ -1,18 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail } from "lucide-react";
 import { useInView } from "@/hooks/use-in-view";
-
 export const CTA = () => {
-  const { ref: sectionRef, isInView } = useInView({ threshold: 0.2 });
-  
-  return (
-    <section ref={sectionRef} className="py-24 bg-gradient-hero relative overflow-hidden">
+  const {
+    ref: sectionRef,
+    isInView
+  } = useInView({
+    threshold: 0.2
+  });
+  return <section ref={sectionRef} className="py-24 bg-gradient-hero relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
+        backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }} />
       </div>
       <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl" />
@@ -30,15 +32,8 @@ export const CTA = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="cta" size="lg" className="group text-lg px-8 py-6 h-auto">
-              Solicitar Demo
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 text-lg px-8 py-6 h-auto"
-            >
+            
+            <Button variant="outline" size="lg" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 text-lg px-8 py-6 h-auto">
               <Mail className="w-5 h-5" />
               Contactar Ventas
             </Button>
@@ -49,6 +44,5 @@ export const CTA = () => {
           </p>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
