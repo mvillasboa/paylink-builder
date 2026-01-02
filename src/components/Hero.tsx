@@ -23,7 +23,7 @@ export const Hero = () => {
           <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0s' }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 backdrop-blur-sm border border-secondary/20 rounded-full text-sm font-medium text-secondary">
               <Zap className="w-4 h-4" />
-              Plataforma de Pagos B2B
+              Plataforma de Pagos Inteligente
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
@@ -33,7 +33,7 @@ export const Hero = () => {
             </h1>
             
             <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-xl">
-              Plataforma completa B2B para gestionar suscripciones, cobros recurrentes y links de pago. 
+              Plataforma completa para gestionar suscripciones, cobros recurrentes y links de pago. 
               Control total de tu flujo de ingresos con estadísticas en tiempo real.
             </p>
             
@@ -46,9 +46,9 @@ export const Hero = () => {
                 variant="outline" 
                 size="lg" 
                 className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
-                onClick={() => window.location.href = '/dashboard'}
+                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Ver Dashboard Demo
+                Conocer Más
               </Button>
             </div>
             

@@ -39,7 +39,7 @@ export const Features = () => {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 });
   
   return (
-    <section ref={sectionRef} className="py-24 bg-gradient-subtle relative overflow-hidden">
+    <section id="features" ref={sectionRef} className="py-24 bg-gradient-subtle relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute inset-0" style={{
@@ -51,11 +51,11 @@ export const Features = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className={`text-center max-w-3xl mx-auto mb-16 scroll-fade-up ${isInView ? 'in-view' : ''}`}>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-foreground">
-            Plataforma completa
-            <span className="text-gradient"> para B2B</span>
+            Todo lo que necesitas
+            <span className="text-gradient"> en un solo lugar</span>
           </h2>
           <p className="text-xl text-muted-foreground">
-            Todo lo que necesitas para gestionar suscripciones, cobros recurrentes y pagos en un solo lugar
+            Gestiona suscripciones, cobros recurrentes y pagos con una plataforma diseñada para crecer contigo
           </p>
         </div>
         

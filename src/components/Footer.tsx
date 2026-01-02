@@ -17,7 +17,7 @@ export const Footer = () => {
               />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
-              La plataforma líder para registro seguro de tarjetas y pagos B2B
+              La plataforma líder para registro seguro de tarjetas y gestión de pagos recurrentes
             </p>
           </div>
           
