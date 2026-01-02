@@ -38,6 +38,7 @@ export default function ContactPage() {
     email: "",
     phone: "",
     company: "",
+    position: "",
     message: ""
   });
 
@@ -56,6 +57,7 @@ export default function ContactPage() {
       email: "",
       phone: "",
       company: "",
+      position: "",
       message: ""
     });
   };
@@ -159,14 +161,30 @@ export default function ContactPage() {
                   
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
-                      Empresa
+                      Empresa *
                     </label>
                     <Input
                       id="company"
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
+                      required
                       placeholder="Tu Empresa S.A."
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="position" className="block text-sm font-medium text-foreground mb-2">
+                      Cargo *
+                    </label>
+                    <Input
+                      id="position"
+                      name="position"
+                      value={formData.position}
+                      onChange={handleChange}
+                      required
+                      placeholder="Director de Finanzas"
                       className="w-full"
                     />
                   </div>
