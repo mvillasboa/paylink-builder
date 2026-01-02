@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Shield, Zap } from "lucide-react";
+import { ArrowRight, Shield } from "lucide-react";
 import dashboardImage from "@/assets/dashboard-hero.jpg";
+import logoWalpay from "@/assets/logo-walpay.jpg";
 
 export const Hero = () => {
   return (
@@ -21,9 +22,13 @@ export const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8 animate-slide-up" style={{ animationDelay: '0s' }}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 backdrop-blur-sm border border-secondary/20 rounded-full text-sm font-medium text-secondary">
-              <Zap className="w-4 h-4" />
-              Plataforma de Pagos Inteligente
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
+              <img 
+                src={logoWalpay} 
+                alt="Walpay" 
+                className="h-8 w-auto rounded-md"
+              />
+              <span className="text-sm font-medium text-primary-foreground/90">Plataforma de Pagos Inteligente</span>
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
@@ -41,14 +46,6 @@ export const Hero = () => {
               <Button variant="cta" size="lg" className="group">
                 Comenzar Ahora
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
-                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Conocer Más
               </Button>
             </div>
             
