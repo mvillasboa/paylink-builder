@@ -27,7 +27,6 @@ import {
   Users,
   BarChart3,
   Settings,
-  CreditCard,
   LogOut,
   Repeat,
   Package,
@@ -51,6 +50,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import logoWalpay from "@/assets/logo-walpay.jpg";
 
 const menuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -99,12 +99,14 @@ export function DashboardLayout() {
       <div className="min-h-screen flex w-full bg-background">
         <Sidebar className="border-r border-border/50">
           <SidebarHeader className="border-b border-border/50 p-4">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-primary/10">
-                <CreditCard className="h-5 w-5 text-primary" />
-              </div>
+            <div className="flex items-center gap-3">
+              <img 
+                src={logoWalpay} 
+                alt="Walpay" 
+                className="h-10 w-auto rounded-lg"
+              />
               <div>
-                <h2 className="font-bold text-lg text-foreground">PayLink Pro</h2>
+                <h2 className="font-bold text-lg text-foreground">Walpay</h2>
                 <p className="text-xs text-muted-foreground">Panel de Control</p>
               </div>
             </div>

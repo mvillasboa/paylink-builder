@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CreditCard, Database } from 'lucide-react';
+import { Database } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
+import logoWalpay from '@/assets/logo-walpay.jpg';
 
 const authSchema = z.object({
   email: z.string().trim().email({ message: "Email inválido" }).max(255, { message: "Email muy largo" }),
@@ -98,11 +99,12 @@ export default function Auth() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md border-border/50 bg-card/50">
         <CardHeader className="space-y-4">
-          <div className="flex items-center justify-center gap-2 text-primary">
-            <div className="w-10 h-10 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <CreditCard className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-2xl">PayLink</span>
+          <div className="flex items-center justify-center">
+            <img 
+              src={logoWalpay} 
+              alt="Walpay" 
+              className="h-12 w-auto"
+            />
           </div>
           <div className="text-center">
             <CardTitle className="text-2xl">

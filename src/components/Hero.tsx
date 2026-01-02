@@ -69,7 +69,7 @@ export const Hero = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-strong border border-border/50">
               <img 
                 src={dashboardImage} 
-                alt="Dashboard de PayLink Pro mostrando estadísticas de suscripciones y transacciones" 
+                alt="Dashboard de Walpay mostrando estadísticas de suscripciones y transacciones" 
                 className="w-full h-auto"
               />
             </div>

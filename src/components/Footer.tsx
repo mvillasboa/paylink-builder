@@ -1,4 +1,4 @@
-import { CreditCard } from "lucide-react";
+import logoWalpay from "@/assets/logo-walpay.jpg";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -9,11 +9,12 @@ export const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 font-bold text-xl">
-              <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
-                <CreditCard className="w-5 h-5 text-secondary-foreground" />
-              </div>
-              <span>PayLink</span>
+            <div className="flex items-center gap-2">
+              <img 
+                src={logoWalpay} 
+                alt="Walpay" 
+                className="h-10 w-auto rounded-lg"
+              />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               La plataforma líder para registro seguro de tarjetas y pagos B2B
@@ -55,7 +56,7 @@ export const Footer = () => {
         </div>
         
         <div className="pt-8 border-t border-primary-foreground/10 text-center text-sm text-primary-foreground/60">
-          © {currentYear} PayLink. Todos los derechos reservados.
+          © {currentYear} Walpay. Todos los derechos reservados.
         </div>
       </div>
     </footer>
