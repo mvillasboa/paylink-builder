@@ -53,8 +53,8 @@ export const cardBrandNames = {
 };
 
 export const cardBrandColors = {
-  visa: 'from-blue-500 to-blue-600',
-  mastercard: 'from-red-500 to-orange-500',
-  amex: 'from-blue-700 to-blue-800',
-  discover: 'from-orange-500 to-orange-600',
+  visa: 'from-primary to-primary-light text-primary-foreground',
+  mastercard: 'from-secondary to-secondary-light text-secondary-foreground',
+  amex: 'from-primary to-secondary text-primary-foreground',
+  discover: 'from-accent to-accent/80 text-accent-foreground',
 };

@@ -147,11 +147,11 @@ export default function MyCards() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero py-12 px-4">
+    <div className="min-h-screen bg-gradient-subtle py-12 px-4">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="animate-fade-in">
-          <Button variant="ghost" className="mb-4" asChild>
+          <Button variant="ghost" className="mb-4 text-muted-foreground hover:text-foreground" asChild>
             <a href="/">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver
@@ -161,19 +161,19 @@ export default function MyCards() {
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <CreditCard className="h-6 w-6 text-primary" />
+                <div className="p-3 bg-gradient-to-br from-primary to-primary-light rounded-xl shadow-soft">
+                  <CreditCard className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <h1 className="text-3xl font-bold text-primary-foreground">
+                <h1 className="text-3xl font-bold text-foreground">
                   Mis Tarjetas
                 </h1>
               </div>
-              <p className="text-primary-foreground/80">
+              <p className="text-muted-foreground">
                 Gestiona tus métodos de pago de forma segura
               </p>
             </div>
 
-            <Button className="bg-gradient-primary" asChild>
+            <Button className="bg-gradient-to-r from-primary to-primary-light text-primary-foreground shadow-medium hover:shadow-strong transition-all duration-300" asChild>
               <a href="/pay/new">
                 <Plus className="h-4 w-4 mr-2" />
                 Agregar Tarjeta
@@ -183,10 +183,12 @@ export default function MyCards() {
         </div>
 
         {/* Security Notice */}
-        <Card className="border-border/50 bg-card/50 backdrop-blur animate-fade-in" style={{ animationDelay: '0.1s' }}>
+        <Card className="border-secondary/30 bg-gradient-to-r from-secondary/5 to-secondary/10 backdrop-blur animate-fade-in shadow-soft" style={{ animationDelay: '0.1s' }}>
           <CardContent className="p-4">
             <div className="flex gap-3">
-              <Shield className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+              <div className="p-2 bg-secondary/20 rounded-lg">
+                <Shield className="h-5 w-5 text-secondary flex-shrink-0" />
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
                   Protección de Datos
@@ -208,16 +210,16 @@ export default function MyCards() {
             return (
               <Card
                 key={card.id}
-                className="border-border/50 bg-card/50 backdrop-blur hover:shadow-lg transition-all duration-300 animate-slide-up"
+                className="border-border/50 bg-gradient-card backdrop-blur hover:shadow-medium hover:scale-[1.02] transition-all duration-300 animate-slide-up overflow-hidden"
                 style={{ animationDelay: `${0.1 * (index + 1)}s` }}
               >
-                <CardHeader>
+                <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
-                    <div className={`p-3 rounded-lg bg-gradient-to-br ${cardBrandColors[card.cardBrand]}`}>
+                    <div className={`p-3 rounded-xl bg-gradient-to-br shadow-soft ${cardBrandColors[card.cardBrand]}`}>
                       {getCardIcon(card.cardBrand)}
                     </div>
                     {card.isDefault && (
-                      <Badge className="bg-accent/10 text-accent border-accent/20">
+                      <Badge className="bg-gradient-to-r from-accent/20 to-accent/10 text-accent border-accent/30 shadow-sm">
                         <Star className="h-3 w-3 mr-1 fill-accent" />
                         Predeterminada
                       </Badge>
@@ -247,7 +249,7 @@ export default function MyCards() {
                         <span>{card.expiryMonth}/{card.expiryYear}</span>
                       </div>
                       {expiringSoon && (
-                        <Badge variant="outline" className="text-yellow-600 border-yellow-600/20 bg-yellow-500/5">
+                        <Badge variant="outline" className="text-destructive border-destructive/30 bg-destructive/5">
                           <AlertCircle className="h-3 w-3 mr-1" />
                           Vence pronto
                         </Badge>
@@ -262,12 +264,12 @@ export default function MyCards() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex gap-2 pt-3 border-t border-border/30">
                     {!card.isDefault && (
                       <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1"
+                        className="flex-1 hover:bg-accent/10 hover:text-accent hover:border-accent/30 transition-colors"
                         onClick={() => handleSetDefault(card.id)}
                       >
                         <Star className="h-3 w-3 mr-1" />
@@ -277,7 +279,7 @@ export default function MyCards() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className={card.isDefault ? "flex-1" : ""}
+                      className={`hover:bg-secondary/10 hover:text-secondary hover:border-secondary/30 transition-colors ${card.isDefault ? "flex-1" : ""}`}
                       onClick={() => handleEditClick(card)}
                     >
                       <Edit className="h-3 w-3 mr-1" />
@@ -286,7 +288,7 @@ export default function MyCards() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="text-destructive hover:bg-destructive/10"
+                      className="text-destructive hover:bg-destructive/10 hover:border-destructive/30 transition-colors"
                       onClick={() => setDeletingCard(card)}
                     >
                       <Trash2 className="h-3 w-3" />
@@ -298,14 +300,14 @@ export default function MyCards() {
           })}
 
           {/* Add Card Placeholder */}
-          <Card className="border-border/50 border-dashed bg-card/30 backdrop-blur hover:bg-card/50 transition-all duration-300 cursor-pointer animate-slide-up" style={{ animationDelay: `${0.1 * (cards.length + 1)}s` }}>
+          <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-secondary/5 backdrop-blur hover:border-primary/50 hover:shadow-glow transition-all duration-300 cursor-pointer animate-slide-up group" style={{ animationDelay: `${0.1 * (cards.length + 1)}s` }}>
             <a href="/pay/new" className="block h-full">
               <CardContent className="flex flex-col items-center justify-center h-full min-h-[280px] space-y-4">
-                <div className="p-4 rounded-full bg-primary/10">
-                  <Plus className="h-8 w-8 text-primary" />
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-primary to-primary-light shadow-medium group-hover:shadow-strong group-hover:scale-110 transition-all duration-300">
+                  <Plus className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <div className="text-center">
-                  <p className="font-semibold text-foreground mb-1">
+                  <p className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
                     Agregar Nueva Tarjeta
                   </p>
                   <p className="text-sm text-muted-foreground">
@@ -318,13 +320,20 @@ export default function MyCards() {
         </div>
 
         {/* Info Card */}
-        <Card className="border-border/50 bg-card/50 backdrop-blur animate-fade-in" style={{ animationDelay: '0.3s' }}>
-          <CardHeader>
-            <CardTitle className="text-lg">Información Importante</CardTitle>
+        <Card className="border-accent/20 bg-gradient-to-br from-accent/5 to-accent/10 backdrop-blur animate-fade-in shadow-soft" style={{ animationDelay: '0.3s' }}>
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-2">
+              <div className="p-2 bg-accent/20 rounded-lg">
+                <Shield className="h-5 w-5 text-accent" />
+              </div>
+              <CardTitle className="text-lg text-foreground">Información Importante</CardTitle>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+          <CardContent className="space-y-4">
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-background/50">
+              <div className="p-1.5 bg-accent/20 rounded-full">
+                <CheckCircle2 className="h-4 w-4 text-accent" />
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">Seguridad Garantizada</p>
                 <p className="text-xs text-muted-foreground">
@@ -332,8 +341,10 @@ export default function MyCards() {
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-background/50">
+              <div className="p-1.5 bg-accent/20 rounded-full">
+                <CheckCircle2 className="h-4 w-4 text-accent" />
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">Sin Cargos Automáticos</p>
                 <p className="text-xs text-muted-foreground">
@@ -341,8 +352,10 @@ export default function MyCards() {
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-background/50">
+              <div className="p-1.5 bg-accent/20 rounded-full">
+                <CheckCircle2 className="h-4 w-4 text-accent" />
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">Control Total</p>
                 <p className="text-xs text-muted-foreground">
@@ -431,7 +444,7 @@ export default function MyCards() {
               <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
                 Cancelar
               </Button>
-              <Button type="submit" className="bg-gradient-primary">
+              <Button type="submit" className="bg-gradient-to-r from-primary to-primary-light text-primary-foreground shadow-soft hover:shadow-medium transition-all">
                 Guardar Cambios
               </Button>
             </DialogFooter>
