@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoWalpay from "@/assets/logo-walpay.jpg";
+import logoWalpayWhite from "@/assets/logo-walpay-white.jpg";
 
 export const Hero = () => {
   return (
@@ -23,9 +23,9 @@ export const Hero = () => {
           {/* Prominent Logo */}
           <div className="flex justify-center">
             <img 
-              src={logoWalpay} 
+              src={logoWalpayWhite} 
               alt="Walpay" 
-              className="h-32 sm:h-40 lg:h-48 w-auto rounded-2xl shadow-strong"
+              className="h-32 sm:h-40 lg:h-48 w-auto"
             />
           </div>
           
