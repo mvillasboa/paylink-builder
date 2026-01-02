@@ -35,7 +35,7 @@ export const CTA = () => {
             
             <Button variant="outline" size="lg" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 text-lg px-8 py-6 h-auto">
               <Mail className="w-5 h-5" />
-              Contactar Ventas
+              Agendá una reunión
             </Button>
           </div>
           
