@@ -31,7 +31,7 @@ export const Hero = () => {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
             <span className="text-primary-foreground">Gestiona suscripciones</span>
             <br />
-            <span className="text-gradient">y cobros recurrentes</span>
+            <span className="text-primary-foreground">y cobros recurrentes</span>
           </h1>
           
           <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-2xl mx-auto">
