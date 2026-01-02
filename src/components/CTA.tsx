@@ -24,7 +24,7 @@ export const CTA = () => {
           <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-primary-foreground">
             Automatiza tus suscripciones
             <br />
-            <span className="text-gradient">y cobros recurrentes</span>
+            <span className="text-primary-foreground">y cobros recurrentes</span>
           </h2>
           
           <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
