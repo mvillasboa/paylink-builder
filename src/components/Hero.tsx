@@ -2,31 +2,27 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoWalpayWhite from "@/assets/logo-walpay-white.jpg";
-
 export const Hero = () => {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
+        backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }} />
       </div>
       
       {/* Gradient Orbs */}
       <div className="absolute top-20 -right-40 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute -bottom-20 -left-40 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute -bottom-20 -left-40 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl animate-pulse" style={{
+      animationDelay: '1s'
+    }} />
       
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-10 animate-slide-up">
           {/* Prominent Logo */}
           <div className="flex justify-center">
-            <img 
-              src={logoWalpayWhite} 
-              alt="Walpay" 
-              className="h-32 sm:h-40 lg:h-48 w-auto"
-            />
+            <img alt="Walpay" className="h-32 sm:h-40 lg:h-48 w-auto" src="/lovable-uploads/1b33ddca-bbd1-4647-a5d5-d8f50e893543.png" />
           </div>
           
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
@@ -61,6 +57,5 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
