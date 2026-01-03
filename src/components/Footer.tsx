@@ -7,7 +7,7 @@ export const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <img alt="Walpay" className="h-14 w-auto" src="/lovable-uploads/a3bf07a1-25cb-4348-ac8b-ee5a6267f999.png" />
+              <img alt="Walpay" className="h-28 w-auto" src="/lovable-uploads/a3bf07a1-25cb-4348-ac8b-ee5a6267f999.png" />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               La plataforma líder para registro seguro de tarjetas y gestión de pagos recurrentes
