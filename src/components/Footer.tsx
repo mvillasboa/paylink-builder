@@ -1,20 +1,13 @@
 import logoWalpayWhite from "@/assets/logo-walpay-white.jpg";
-
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
-  return (
-    <footer className="bg-primary text-primary-foreground py-12 border-t border-primary-light/20">
+  return <footer className="bg-primary text-primary-foreground py-12 border-t border-primary-light/20">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <img 
-                src={logoWalpayWhite} 
-                alt="Walpay" 
-                className="h-10 w-auto"
-              />
+              <img alt="Walpay" className="h-10 w-auto" src="/lovable-uploads/a3bf07a1-25cb-4348-ac8b-ee5a6267f999.png" />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               La plataforma líder para registro seguro de tarjetas y gestión de pagos recurrentes
@@ -59,6 +52,5 @@ export const Footer = () => {
           © {currentYear} Walpay. Todos los derechos reservados.
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
