@@ -903,43 +903,61 @@ export default function Subscriptions() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card className="border-border/50 bg-card/50">
+      <div className="grid gap-4 md:grid-cols-5">
+        {/* Suscripciones Activas */}
+        <Card className="border-border/50 bg-gradient-to-br from-primary/5 to-primary/10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
               Suscripciones Activas
             </CardTitle>
+            <Receipt className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-3xl font-bold text-foreground">
               {subscriptions.filter(s => s.contract_status === 'ACTIVE').length}
             </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              de {subscriptions.length} totales
+            </p>
           </CardContent>
         </Card>
-        <Card className="border-border/50 bg-card/50">
+
+        {/* Al Día */}
+        <Card className="border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
               Al Día
             </CardTitle>
+            <div className="h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
+              <div className="h-2 w-2 rounded-full bg-emerald-500" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-600">
+            <div className="text-3xl font-bold text-emerald-600">
               {subscriptions.filter(s => s.contract_status === 'ACTIVE' && s.billing_status === 'IN_GOOD_STANDING').length}
             </div>
+            <p className="text-xs text-emerald-600/70 mt-1">
+              Sin deuda pendiente
+            </p>
           </CardContent>
         </Card>
-        <Card className="border-border/50 bg-amber-500/5">
+
+        {/* Con Deuda */}
+        <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-amber-500/10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-1">
-              <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
+              <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
               Con Deuda
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-600">
+            <div className="text-3xl font-bold text-amber-600">
               {subscriptions.filter(s => s.contract_status === 'ACTIVE' && (s.billing_status === 'PAST_DUE' || s.billing_status === 'DELINQUENT')).length}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-amber-600/70 mt-1">
               {formatCurrency(
                 subscriptions
                   .filter(s => s.contract_status === 'ACTIVE' && (s.billing_status === 'PAST_DUE' || s.billing_status === 'DELINQUENT'))
@@ -948,20 +966,50 @@ export default function Subscriptions() {
             </p>
           </CardContent>
         </Card>
-        <Card className="border-border/50 bg-card/50">
+
+        {/* Tarjetas con Problema */}
+        <Card className="border-red-500/20 bg-gradient-to-br from-red-500/5 to-red-500/10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              MRR Activo
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Tarjetas con Problema
             </CardTitle>
+            <CreditCard className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-3xl font-bold text-red-600">
+              {subscriptions.filter(s => 
+                s.contract_status === 'ACTIVE' && 
+                (s as SubscriptionWithCard)._mockCardStatus && 
+                (s as SubscriptionWithCard)._mockCardStatus !== 'VALID'
+              ).length}
+            </div>
+            <p className="text-xs text-red-600/70 mt-1">
+              Requieren actualización
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* MRR Activo */}
+        <Card className="border-border/50 bg-gradient-to-br from-secondary/5 to-secondary/10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              MRR Activo
+            </CardTitle>
+            <TrendingUp className="h-4 w-4 text-secondary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-foreground">
               {formatCurrency(
                 subscriptions
                   .filter(s => s.contract_status === 'ACTIVE' && s.frequency === 'monthly')
                   .reduce((sum, s) => sum + s.amount, 0)
               )}
             </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Ingreso mensual recurrente
+            </p>
           </CardContent>
         </Card>
       </div>
