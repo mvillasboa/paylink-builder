@@ -25,7 +25,9 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Calendar as CalendarIcon 
+  Calendar as CalendarIcon,
+  AlertTriangle,
+  CreditCard
 } from "lucide-react";
 import {
   Select,
@@ -44,7 +46,7 @@ import { format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
 import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/utils/currency";
-import { Subscription } from "@/types/subscription";
+import { Subscription, ContractStatusLabels, BillingStatusLabels } from "@/types/subscription";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ModifySubscriptionAmountDialog } from "@/components/subscriptions/ModifySubscriptionAmountDialog";
@@ -53,6 +55,8 @@ import { ViewEditSubscriptionDialog } from "@/components/subscriptions/ViewEditS
 import { PaymentHistoryDialog } from "@/components/subscriptions/PaymentHistoryDialog";
 import { ExportDropdown } from "@/components/ExportDropdown";
 import { ExportColumn } from "@/lib/utils/export";
+import { ContractStatusBadge } from "@/components/subscriptions/ContractStatusBadge";
+import { BillingStatusBadge } from "@/components/subscriptions/BillingStatusBadge";
 
 // Mock data for demonstration
 const MOCK_SUBSCRIPTIONS: Subscription[] = [
@@ -366,18 +370,19 @@ const subscriptionColumns: ExportColumn[] = [
     }
   },
   { 
-    label: 'Estado', 
-    key: 'status', 
-    formatter: (status: string) => {
-      const labels: Record<string, string> = {
-        active: 'Activa',
-        paused: 'Pausada',
-        cancelled: 'Cancelada',
-        expired: 'Expirada',
-        trial: 'Prueba',
-      };
-      return labels[status] || status;
-    }
+    label: 'Estado Contrato', 
+    key: 'contract_status', 
+    formatter: (status: string) => ContractStatusLabels[status as keyof typeof ContractStatusLabels] || status
+  },
+  { 
+    label: 'Estado Pago', 
+    key: 'billing_status', 
+    formatter: (status: string) => BillingStatusLabels[status as keyof typeof BillingStatusLabels] || status
+  },
+  { 
+    label: 'Deuda Pendiente', 
+    key: 'outstanding_amount', 
+    formatter: (amount: number) => amount > 0 ? formatCurrency(amount) : '-'
   },
   { 
     label: 'Próximo Cobro', 
@@ -444,11 +449,20 @@ export default function Subscriptions() {
       sub.concept.toLowerCase().includes(searchQuery.toLowerCase()) ||
       sub.client_email.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesStatus = statusFilter === "all" || sub.status === statusFilter;
+    // Match contract status filter
+    const matchesStatus = statusFilter === "all" || sub.contract_status === statusFilter;
+    
+    // Match billing status filter (uses typeFilter with billing_ prefix)
+    const matchesBillingStatus = (() => {
+      if (!typeFilter.startsWith("billing_")) return true;
+      const billingFilter = typeFilter.replace("billing_", "");
+      return sub.billing_status === billingFilter;
+    })();
+    
     const matchesFrequency = frequencyFilter === "all" || sub.frequency === frequencyFilter;
     
     const matchesType = (() => {
-      if (typeFilter === "all") return true;
+      if (typeFilter === "all" || typeFilter.startsWith("billing_")) return true;
       if (typeFilter === "fixed-unlimited") return sub.type === "fixed" && sub.duration_type === "unlimited";
       if (typeFilter === "fixed-limited") return sub.type === "fixed" && sub.duration_type === "limited";
       if (typeFilter === "variable-unlimited") return sub.type === "variable" && sub.duration_type === "unlimited";
@@ -479,7 +493,7 @@ export default function Subscriptions() {
       return true;
     })();
 
-    return matchesSearch && matchesStatus && matchesFrequency && matchesType && matchesDateRange;
+    return matchesSearch && matchesStatus && matchesBillingStatus && matchesFrequency && matchesType && matchesDateRange;
   });
 
   // Calcular paginación
@@ -598,44 +612,64 @@ export default function Subscriptions() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
         <Card className="border-border/50 bg-card/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Suscripciones Activas
+              Contratos Activos
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {subscriptions.filter(s => s.status === 'active').length}
+              {subscriptions.filter(s => s.contract_status === 'ACTIVE').length}
             </div>
           </CardContent>
         </Card>
         <Card className="border-border/50 bg-card/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Ingresos Mensuales Recurrentes
+              Al Día
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-emerald-600">
+              {subscriptions.filter(s => s.contract_status === 'ACTIVE' && s.billing_status === 'IN_GOOD_STANDING').length}
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="border-border/50 bg-amber-500/5">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium flex items-center gap-1">
+              <AlertTriangle className="h-4 w-4 text-amber-600" />
+              Con Deuda
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-amber-600">
+              {subscriptions.filter(s => s.contract_status === 'ACTIVE' && (s.billing_status === 'PAST_DUE' || s.billing_status === 'DELINQUENT')).length}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {formatCurrency(
+                subscriptions
+                  .filter(s => s.contract_status === 'ACTIVE' && (s.billing_status === 'PAST_DUE' || s.billing_status === 'DELINQUENT'))
+                  .reduce((sum, s) => sum + (s.outstanding_amount || 0), 0)
+              )} pendiente
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="border-border/50 bg-card/50">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              MRR Activo
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatCurrency(
                 subscriptions
-                  .filter(s => s.status === 'active' && s.frequency === 'monthly')
+                  .filter(s => s.contract_status === 'ACTIVE' && s.frequency === 'monthly')
                   .reduce((sum, s) => sum + s.amount, 0)
               )}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-border/50 bg-card/50">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Clientes
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {new Set(subscriptions.map(s => s.client_email)).size}
             </div>
           </CardContent>
         </Card>
@@ -667,15 +701,33 @@ export default function Subscriptions() {
             >
               <SelectTrigger className="w-[180px]">
                 <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Estado" />
+                <SelectValue placeholder="Estado Contrato" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos los estados</SelectItem>
-                <SelectItem value="active">Activa</SelectItem>
-                <SelectItem value="paused">Pausada</SelectItem>
-                <SelectItem value="cancelled">Cancelada</SelectItem>
-                <SelectItem value="expired">Expirada</SelectItem>
-                <SelectItem value="trial">Prueba</SelectItem>
+                <SelectItem value="all">Todos los contratos</SelectItem>
+                <SelectItem value="ACTIVE">Activo</SelectItem>
+                <SelectItem value="PAUSED">Pausado</SelectItem>
+                <SelectItem value="CANCELLED">Cancelado</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select 
+              value={typeFilter === "billing" ? "all" : (typeFilter.startsWith("billing_") ? typeFilter.replace("billing_", "") : "all")} 
+              onValueChange={(value) => {
+                setTypeFilter(value === "all" ? "all" : `billing_${value}`);
+                handleFilterChange();
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <CreditCard className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Estado Pago" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos los pagos</SelectItem>
+                <SelectItem value="IN_GOOD_STANDING">Al día</SelectItem>
+                <SelectItem value="PAST_DUE">Con deuda</SelectItem>
+                <SelectItem value="DELINQUENT">En mora</SelectItem>
+                <SelectItem value="RECOVERY">En recuperación</SelectItem>
               </SelectContent>
             </Select>
 
@@ -825,21 +877,21 @@ export default function Subscriptions() {
                     <TableHead>Cliente</TableHead>
                     <TableHead>Referencia</TableHead>
                     <TableHead>Concepto</TableHead>
-                    <TableHead>Tipo</TableHead>
                     <TableHead>Monto</TableHead>
                     <TableHead>Frecuencia</TableHead>
-                    <TableHead>Estado</TableHead>
+                    <TableHead>Contrato</TableHead>
+                    <TableHead>Pago</TableHead>
+                    <TableHead>Deuda</TableHead>
                     <TableHead>Próximo Cobro</TableHead>
-                    <TableHead className="text-right" style={{ width: "180px" }}>Acciones</TableHead>
+                    <TableHead className="text-right" style={{ width: "150px" }}>Acciones</TableHead>
                   </TableRow>
               </TableHeader>
               <TableBody>
                 {paginatedSubscriptions.map((subscription) => {
-                  const typeConfig = getSubscriptionTypeConfig(subscription);
-                  const TypeIcon = typeConfig.icon;
+                  const hasDebt = (subscription.outstanding_amount || 0) > 0;
                   
                   return (
-                  <TableRow key={subscription.id}>
+                  <TableRow key={subscription.id} className={hasDebt ? "bg-amber-500/5" : ""}>
                     <TableCell>
                       <div>
                         <p className="font-medium">{subscription.client_name}</p>
@@ -852,12 +904,6 @@ export default function Subscriptions() {
                       </code>
                     </TableCell>
                     <TableCell>{subscription.concept}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={typeConfig.color}>
-                        <TypeIcon className="h-3 w-3 mr-1" />
-                        {typeConfig.label}
-                      </Badge>
-                    </TableCell>
                     <TableCell className="font-semibold">
                       {formatCurrency(subscription.amount)}
                     </TableCell>
@@ -867,12 +913,24 @@ export default function Subscriptions() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge 
-                        className={statusConfig[subscription.status].className}
-                        variant="secondary"
-                      >
-                        {statusConfig[subscription.status].label}
-                      </Badge>
+                      <ContractStatusBadge status={subscription.contract_status || "ACTIVE"} size="sm" />
+                    </TableCell>
+                    <TableCell>
+                      <BillingStatusBadge status={subscription.billing_status || "IN_GOOD_STANDING"} size="sm" />
+                    </TableCell>
+                    <TableCell>
+                      {hasDebt ? (
+                        <div className="space-y-0.5">
+                          <p className="text-sm font-medium text-amber-600 dark:text-amber-400">
+                            {formatCurrency(subscription.outstanding_amount || 0)}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {subscription.outstanding_cycles || 0} ciclo(s)
+                          </p>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">-</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {new Date(subscription.next_charge_date).toLocaleDateString('es-PY')}
@@ -891,7 +949,7 @@ export default function Subscriptions() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleModifyPrice(subscription)}
-                          disabled={subscription.status !== 'active'}
+                          disabled={subscription.contract_status !== 'ACTIVE'}
                           title="Modificar precio"
                         >
                           <Edit3 className="h-4 w-4" />

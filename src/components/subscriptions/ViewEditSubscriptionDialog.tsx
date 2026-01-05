@@ -35,12 +35,16 @@ import {
   Ban,
   History,
   CreditCard,
+  AlertTriangle,
+  RefreshCw,
 } from "lucide-react";
-import { Subscription } from "@/types/subscription";
+import { Subscription, ContractStatusLabels } from "@/types/subscription";
 import { formatCurrency } from "@/lib/utils/currency";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { toast } from "sonner";
+import { SubscriptionStatusDisplay } from "./SubscriptionStatusDisplay";
+import { ContractStatusBadge } from "./ContractStatusBadge";
 
 interface ViewEditSubscriptionDialogProps {
   subscription: Subscription | null;
@@ -89,11 +93,11 @@ export function ViewEditSubscriptionDialog({
   };
 
   const handlePauseResume = async () => {
-    const newStatus = subscription.status === "paused" ? "active" : "paused";
+    const newStatus = subscription.contract_status === "PAUSED" ? "ACTIVE" : "PAUSED";
     try {
       // Aquí iría la lógica para actualizar en Supabase
       toast.success(
-        `Suscripción ${newStatus === "paused" ? "pausada" : "reactivada"} correctamente`
+        `Suscripción ${newStatus === "PAUSED" ? "pausada" : "reactivada"} correctamente`
       );
       onSuccess?.();
     } catch (error) {
@@ -115,22 +119,14 @@ export function ViewEditSubscriptionDialog({
     }
   };
 
-  const statusConfig = {
-    active: { label: "Activa", className: "bg-green-500/10 text-green-700 dark:text-green-400" },
-    paused: { label: "Pausada", className: "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400" },
-    cancelled: { label: "Cancelada", className: "bg-red-500/10 text-red-700 dark:text-red-400" },
-    expired: { label: "Expirada", className: "bg-gray-500/10 text-gray-700 dark:text-gray-400" },
-    trial: { label: "Prueba", className: "bg-blue-500/10 text-blue-700 dark:text-blue-400" },
-  };
-
-  const frequencyLabels = {
+  const frequencyLabels: Record<string, string> = {
     weekly: "Semanal",
     monthly: "Mensual",
     quarterly: "Trimestral",
     yearly: "Anual",
   };
 
-  const typeLabels = {
+  const typeLabels: Record<string, string> = {
     fixed: "Monto Fijo",
     variable: "Monto Variable",
     single: "Pago Único",
@@ -149,13 +145,39 @@ export function ViewEditSubscriptionDialog({
                 Referencia: <code className="text-xs bg-muted px-2 py-1 rounded">{subscription.reference}</code>
               </DialogDescription>
             </div>
-            <Badge className={statusConfig[subscription.status].className} variant="secondary">
-              {statusConfig[subscription.status].label}
-            </Badge>
+            <ContractStatusBadge status={subscription.contract_status || "ACTIVE"} />
           </div>
         </DialogHeader>
 
         <div className="space-y-6">
+          {/* Status Summary - NUEVOS ESTADOS SEPARADOS */}
+          {!isEditing && (
+            <SubscriptionStatusDisplay subscription={subscription} />
+          )}
+
+          {/* Billing Alert */}
+          {!isEditing && subscription.outstanding_amount && subscription.outstanding_amount > 0 && (
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-amber-500/10 border border-amber-500/30">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium text-amber-700 dark:text-amber-400">
+                  Esta suscripción tiene {subscription.outstanding_cycles || 0} ciclo(s) pendiente(s)
+                </p>
+                <p className="text-sm text-amber-600/80 dark:text-amber-400/80">
+                  Monto pendiente: {formatCurrency(subscription.outstanding_amount)} · 
+                  {subscription.consecutive_failed_charges || 0} intento(s) fallido(s) consecutivo(s)
+                  {subscription.recovery_attempts ? ` · ${subscription.recovery_attempts} intentos de recuperación` : ""}
+                </p>
+              </div>
+              {subscription.billing_status === "RECOVERY" && (
+                <Badge variant="outline" className="bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/30">
+                  <RefreshCw className="h-3 w-3 mr-1" />
+                  En recuperación
+                </Badge>
+              )}
+            </div>
+          )}
+
           {/* Client Information */}
           <div className="bg-card/90 backdrop-blur-sm border-2 border-border/50 rounded-lg p-4 shadow-soft">
             <div className="flex items-center gap-2 mb-4">
@@ -509,19 +531,19 @@ export function ViewEditSubscriptionDialog({
           ) : (
             <>
               <div className="flex gap-2">
-                {subscription.status === "active" && subscription.allow_pause && (
+                {subscription.contract_status === "ACTIVE" && subscription.allow_pause && (
                   <Button variant="outline" onClick={handlePauseResume}>
                     <Pause className="h-4 w-4 mr-2" />
                     Pausar
                   </Button>
                 )}
-                {subscription.status === "paused" && (
+                {subscription.contract_status === "PAUSED" && (
                   <Button variant="outline" onClick={handlePauseResume}>
                     <Play className="h-4 w-4 mr-2" />
                     Reactivar
                   </Button>
                 )}
-                {(subscription.status === "active" || subscription.status === "paused") && (
+                {(subscription.contract_status === "ACTIVE" || subscription.contract_status === "PAUSED") && (
                   <Button variant="destructive" onClick={handleCancelSubscription}>
                     <Ban className="h-4 w-4 mr-2" />
                     Cancelar Suscripción
