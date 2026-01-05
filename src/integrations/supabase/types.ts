@@ -14,19 +14,97 @@ export type Database = {
   }
   public: {
     Tables: {
+      billing_cycles: {
+        Row: {
+          amount_due: number
+          amount_paid: number | null
+          created_at: string
+          cycle_end_date: string
+          cycle_number: number
+          cycle_start_date: string
+          due_date: string
+          id: string
+          last_attempt_at: string | null
+          paid_at: string | null
+          status: string
+          status_label: string | null
+          subscription_id: string
+          successful_charge_id: string | null
+          total_attempts: number | null
+          updated_at: string
+        }
+        Insert: {
+          amount_due: number
+          amount_paid?: number | null
+          created_at?: string
+          cycle_end_date: string
+          cycle_number: number
+          cycle_start_date: string
+          due_date: string
+          id?: string
+          last_attempt_at?: string | null
+          paid_at?: string | null
+          status?: string
+          status_label?: string | null
+          subscription_id: string
+          successful_charge_id?: string | null
+          total_attempts?: number | null
+          updated_at?: string
+        }
+        Update: {
+          amount_due?: number
+          amount_paid?: number | null
+          created_at?: string
+          cycle_end_date?: string
+          cycle_number?: number
+          cycle_start_date?: string
+          due_date?: string
+          id?: string
+          last_attempt_at?: string | null
+          paid_at?: string | null
+          status?: string
+          status_label?: string | null
+          subscription_id?: string
+          successful_charge_id?: string | null
+          total_attempts?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_cycles_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "billing_cycles_successful_charge_id_fkey"
+            columns: ["successful_charge_id"]
+            isOneToOne: false
+            referencedRelation: "charge_attempts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cards: {
         Row: {
           card_brand: Database["public"]["Enums"]["card_brand"]
           cardholder_name: string
           client_id: string | null
+          consecutive_failures: number | null
           created_at: string
           expiry_month: string
           expiry_year: string
           id: string
+          invalid_reason: string | null
           is_default: boolean | null
           last_four_digits: string
           last_used_at: string | null
+          last_validation_date: string | null
           metadata: Json | null
+          payment_method_status:
+            | Database["public"]["Enums"]["payment_method_status"]
+            | null
           status: Database["public"]["Enums"]["card_status"] | null
           token: string
           total_transactions: number | null
@@ -37,14 +115,20 @@ export type Database = {
           card_brand: Database["public"]["Enums"]["card_brand"]
           cardholder_name: string
           client_id?: string | null
+          consecutive_failures?: number | null
           created_at?: string
           expiry_month: string
           expiry_year: string
           id?: string
+          invalid_reason?: string | null
           is_default?: boolean | null
           last_four_digits: string
           last_used_at?: string | null
+          last_validation_date?: string | null
           metadata?: Json | null
+          payment_method_status?:
+            | Database["public"]["Enums"]["payment_method_status"]
+            | null
           status?: Database["public"]["Enums"]["card_status"] | null
           token: string
           total_transactions?: number | null
@@ -55,14 +139,20 @@ export type Database = {
           card_brand?: Database["public"]["Enums"]["card_brand"]
           cardholder_name?: string
           client_id?: string | null
+          consecutive_failures?: number | null
           created_at?: string
           expiry_month?: string
           expiry_year?: string
           id?: string
+          invalid_reason?: string | null
           is_default?: boolean | null
           last_four_digits?: string
           last_used_at?: string | null
+          last_validation_date?: string | null
           metadata?: Json | null
+          payment_method_status?:
+            | Database["public"]["Enums"]["payment_method_status"]
+            | null
           status?: Database["public"]["Enums"]["card_status"] | null
           token?: string
           total_transactions?: number | null
@@ -75,6 +165,78 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      charge_attempts: {
+        Row: {
+          amount: number
+          attempt_number: number
+          attempted_at: string
+          billing_cycle_date: string
+          card_id: string | null
+          created_at: string
+          decline_category: string | null
+          id: string
+          is_retryable: boolean | null
+          metadata: Json | null
+          processor_response_code: string | null
+          processor_response_message: string | null
+          status: string
+          status_label: string | null
+          subscription_id: string
+          transaction_id: string | null
+        }
+        Insert: {
+          amount: number
+          attempt_number?: number
+          attempted_at?: string
+          billing_cycle_date: string
+          card_id?: string | null
+          created_at?: string
+          decline_category?: string | null
+          id?: string
+          is_retryable?: boolean | null
+          metadata?: Json | null
+          processor_response_code?: string | null
+          processor_response_message?: string | null
+          status?: string
+          status_label?: string | null
+          subscription_id: string
+          transaction_id?: string | null
+        }
+        Update: {
+          amount?: number
+          attempt_number?: number
+          attempted_at?: string
+          billing_cycle_date?: string
+          card_id?: string | null
+          created_at?: string
+          decline_category?: string | null
+          id?: string
+          is_retryable?: boolean | null
+          metadata?: Json | null
+          processor_response_code?: string | null
+          processor_response_message?: string | null
+          status?: string
+          status_label?: string | null
+          subscription_id?: string
+          transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charge_attempts_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "charge_attempts_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
             referencedColumns: ["id"]
           },
         ]
@@ -604,11 +766,73 @@ export type Database = {
           },
         ]
       }
+      subscription_status_history: {
+        Row: {
+          changed_at: string
+          id: string
+          metadata: Json | null
+          new_label: string | null
+          new_value: string | null
+          previous_label: string | null
+          previous_value: string | null
+          reason: string | null
+          related_charge_attempt_id: string | null
+          status_type: string
+          subscription_id: string
+          triggered_by: string | null
+        }
+        Insert: {
+          changed_at?: string
+          id?: string
+          metadata?: Json | null
+          new_label?: string | null
+          new_value?: string | null
+          previous_label?: string | null
+          previous_value?: string | null
+          reason?: string | null
+          related_charge_attempt_id?: string | null
+          status_type: string
+          subscription_id: string
+          triggered_by?: string | null
+        }
+        Update: {
+          changed_at?: string
+          id?: string
+          metadata?: Json | null
+          new_label?: string | null
+          new_value?: string | null
+          previous_label?: string | null
+          previous_value?: string | null
+          reason?: string | null
+          related_charge_attempt_id?: string | null
+          status_type?: string
+          subscription_id?: string
+          triggered_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_status_history_related_charge_attempt_id_fkey"
+            columns: ["related_charge_attempt_id"]
+            isOneToOne: false
+            referencedRelation: "charge_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscription_status_history_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           allow_pause: boolean | null
           amount: number
           billing_day: number
+          billing_status: Database["public"]["Enums"]["billing_status"] | null
+          billing_status_updated_at: string | null
           cancelled_at: string | null
           cancelled_reason: string | null
           card_id: string | null
@@ -616,6 +840,10 @@ export type Database = {
           client_id: string | null
           client_name: string
           concept: string
+          consecutive_failed_charges: number | null
+          contract_status:
+            | Database["public"]["Enums"]["subscription_contract_status"]
+            | null
           created_at: string
           created_from_product: boolean | null
           description: string | null
@@ -630,9 +858,12 @@ export type Database = {
           is_first_payment_completed: boolean | null
           last_charge_date: string | null
           last_price_change_date: string | null
+          last_successful_charge_date: string | null
           next_charge_date: string
           number_of_payments: number | null
           original_payment_link_id: string | null
+          outstanding_amount: number | null
+          outstanding_cycles: number | null
           paused_at: string | null
           paused_until: string | null
           payments_completed: number | null
@@ -640,6 +871,8 @@ export type Database = {
           phone_number: string
           price_change_history_count: number | null
           product_id: string | null
+          recovery_attempts: number | null
+          recovery_started_at: string | null
           reference: string
           send_reminder_before_charge: boolean | null
           status: Database["public"]["Enums"]["subscription_status"]
@@ -652,6 +885,8 @@ export type Database = {
           allow_pause?: boolean | null
           amount: number
           billing_day: number
+          billing_status?: Database["public"]["Enums"]["billing_status"] | null
+          billing_status_updated_at?: string | null
           cancelled_at?: string | null
           cancelled_reason?: string | null
           card_id?: string | null
@@ -659,6 +894,10 @@ export type Database = {
           client_id?: string | null
           client_name: string
           concept: string
+          consecutive_failed_charges?: number | null
+          contract_status?:
+            | Database["public"]["Enums"]["subscription_contract_status"]
+            | null
           created_at?: string
           created_from_product?: boolean | null
           description?: string | null
@@ -673,9 +912,12 @@ export type Database = {
           is_first_payment_completed?: boolean | null
           last_charge_date?: string | null
           last_price_change_date?: string | null
+          last_successful_charge_date?: string | null
           next_charge_date: string
           number_of_payments?: number | null
           original_payment_link_id?: string | null
+          outstanding_amount?: number | null
+          outstanding_cycles?: number | null
           paused_at?: string | null
           paused_until?: string | null
           payments_completed?: number | null
@@ -683,6 +925,8 @@ export type Database = {
           phone_number: string
           price_change_history_count?: number | null
           product_id?: string | null
+          recovery_attempts?: number | null
+          recovery_started_at?: string | null
           reference: string
           send_reminder_before_charge?: boolean | null
           status?: Database["public"]["Enums"]["subscription_status"]
@@ -695,6 +939,8 @@ export type Database = {
           allow_pause?: boolean | null
           amount?: number
           billing_day?: number
+          billing_status?: Database["public"]["Enums"]["billing_status"] | null
+          billing_status_updated_at?: string | null
           cancelled_at?: string | null
           cancelled_reason?: string | null
           card_id?: string | null
@@ -702,6 +948,10 @@ export type Database = {
           client_id?: string | null
           client_name?: string
           concept?: string
+          consecutive_failed_charges?: number | null
+          contract_status?:
+            | Database["public"]["Enums"]["subscription_contract_status"]
+            | null
           created_at?: string
           created_from_product?: boolean | null
           description?: string | null
@@ -716,9 +966,12 @@ export type Database = {
           is_first_payment_completed?: boolean | null
           last_charge_date?: string | null
           last_price_change_date?: string | null
+          last_successful_charge_date?: string | null
           next_charge_date?: string
           number_of_payments?: number | null
           original_payment_link_id?: string | null
+          outstanding_amount?: number | null
+          outstanding_cycles?: number | null
           paused_at?: string | null
           paused_until?: string | null
           payments_completed?: number | null
@@ -726,6 +979,8 @@ export type Database = {
           phone_number?: string
           price_change_history_count?: number | null
           product_id?: string | null
+          recovery_attempts?: number | null
+          recovery_started_at?: string | null
           reference?: string
           send_reminder_before_charge?: boolean | null
           status?: Database["public"]["Enums"]["subscription_status"]
@@ -875,9 +1130,19 @@ export type Database = {
       generate_approval_token: { Args: never; Returns: string }
       generate_payment_link_token: { Args: never; Returns: string }
       generate_product_link_token: { Args: never; Returns: string }
+      get_status_label: {
+        Args: { status_code: string; status_type: string }
+        Returns: string
+      }
     }
     Enums: {
       application_type: "immediate" | "next_cycle" | "scheduled"
+      billing_status:
+        | "IN_GOOD_STANDING"
+        | "PAST_DUE"
+        | "DELINQUENT"
+        | "SUSPENDED"
+        | "RECOVERY"
       card_brand: "visa" | "mastercard" | "amex" | "discover" | "other"
       card_status: "active" | "expired" | "blocked" | "removed"
       client_approval_status:
@@ -895,8 +1160,10 @@ export type Database = {
         | "paid"
         | "expired"
         | "cancelled"
+      payment_method_status: "VALID" | "TEMPORARILY_INVALID" | "INVALID"
       price_change_type: "upgrade" | "downgrade" | "inflation" | "custom"
       product_link_status: "active" | "used" | "expired" | "cancelled"
+      subscription_contract_status: "ACTIVE" | "PAUSED" | "CANCELLED"
       subscription_frequency:
         | "weekly"
         | "monthly"
@@ -1042,6 +1309,13 @@ export const Constants = {
   public: {
     Enums: {
       application_type: ["immediate", "next_cycle", "scheduled"],
+      billing_status: [
+        "IN_GOOD_STANDING",
+        "PAST_DUE",
+        "DELINQUENT",
+        "SUSPENDED",
+        "RECOVERY",
+      ],
       card_brand: ["visa", "mastercard", "amex", "discover", "other"],
       card_status: ["active", "expired", "blocked", "removed"],
       client_approval_status: [
@@ -1061,8 +1335,10 @@ export const Constants = {
         "expired",
         "cancelled",
       ],
+      payment_method_status: ["VALID", "TEMPORARILY_INVALID", "INVALID"],
       price_change_type: ["upgrade", "downgrade", "inflation", "custom"],
       product_link_status: ["active", "used", "expired", "cancelled"],
+      subscription_contract_status: ["ACTIVE", "PAUSED", "CANCELLED"],
       subscription_frequency: [
         "weekly",
         "monthly",
