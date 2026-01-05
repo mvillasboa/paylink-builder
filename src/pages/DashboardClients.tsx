@@ -21,6 +21,8 @@ import {
   ChevronRight,
   X,
   Calendar as CalendarIcon,
+  AlertTriangle,
+  CreditCard,
 } from "lucide-react";
 import {
   Select,
@@ -41,15 +43,18 @@ import { es } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { ExportDropdown } from "@/components/ExportDropdown";
 import { ExportColumn } from "@/lib/utils/export";
-
-type SubscriptionStatus = "active" | "paused" | "cancelled" | "expired";
+import { ContractStatus, BillingStatus } from "@/types/subscription";
+import { ContractStatusBadge } from "@/components/subscriptions/ContractStatusBadge";
+import { BillingStatusBadge } from "@/components/subscriptions/BillingStatusBadge";
 
 type ClientSubscription = {
   id: string;
   concept: string;
   amount: number;
   frequency: string;
-  status: SubscriptionStatus;
+  contract_status: ContractStatus;
+  billing_status: BillingStatus;
+  outstanding_amount?: number;
   nextChargeDate?: string;
   startDate: string;
 };
@@ -63,7 +68,7 @@ type Client = {
   subscriptions: ClientSubscription[];
 };
 
-// Mock data
+// Mock data with new status model
 const MOCK_CLIENTS: Client[] = [
   {
     id: "1",
@@ -77,7 +82,8 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Gimnasio Premium",
         amount: 350000,
         frequency: "Mensual",
-        status: "active",
+        contract_status: "ACTIVE",
+        billing_status: "IN_GOOD_STANDING",
         nextChargeDate: "2025-12-05",
         startDate: "2024-01-15",
       },
@@ -86,7 +92,9 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Clases de Yoga",
         amount: 180000,
         frequency: "Mensual",
-        status: "active",
+        contract_status: "ACTIVE",
+        billing_status: "PAST_DUE",
+        outstanding_amount: 180000,
         nextChargeDate: "2025-12-10",
         startDate: "2024-03-01",
       },
@@ -104,7 +112,9 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Plan Internet Fibra",
         amount: 280000,
         frequency: "Mensual",
-        status: "active",
+        contract_status: "ACTIVE",
+        billing_status: "RECOVERY",
+        outstanding_amount: 560000,
         nextChargeDate: "2025-12-10",
         startDate: "2024-02-20",
       },
@@ -122,7 +132,8 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Servicio Eléctrico",
         amount: 450000,
         frequency: "Mensual",
-        status: "active",
+        contract_status: "ACTIVE",
+        billing_status: "IN_GOOD_STANDING",
         nextChargeDate: "2025-12-15",
         startDate: "2024-03-10",
       },
@@ -131,7 +142,8 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Plan Premium TV",
         amount: 120000,
         frequency: "Mensual",
-        status: "paused",
+        contract_status: "PAUSED",
+        billing_status: "IN_GOOD_STANDING",
         startDate: "2024-05-01",
       },
     ],
@@ -148,7 +160,8 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Membresía Club Deportivo",
         amount: 2500000,
         frequency: "Anual",
-        status: "expired",
+        contract_status: "CANCELLED",
+        billing_status: "IN_GOOD_STANDING",
         startDate: "2024-01-01",
       },
     ],
@@ -165,7 +178,8 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Streaming Premium",
         amount: 45000,
         frequency: "Mensual",
-        status: "paused",
+        contract_status: "PAUSED",
+        billing_status: "IN_GOOD_STANDING",
         nextChargeDate: "2025-12-20",
         startDate: "2024-04-15",
       },
@@ -174,7 +188,9 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Cloud Storage Pro",
         amount: 75000,
         frequency: "Mensual",
-        status: "cancelled",
+        contract_status: "CANCELLED",
+        billing_status: "DELINQUENT",
+        outstanding_amount: 150000,
         startDate: "2024-06-01",
       },
     ],
@@ -191,7 +207,8 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Clases de Inglés Online",
         amount: 600000,
         frequency: "Mensual",
-        status: "active",
+        contract_status: "ACTIVE",
+        billing_status: "IN_GOOD_STANDING",
         nextChargeDate: "2025-12-01",
         startDate: "2024-04-01",
       },
@@ -209,7 +226,8 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Software Empresarial",
         amount: 850000,
         frequency: "Mensual",
-        status: "cancelled",
+        contract_status: "CANCELLED",
+        billing_status: "IN_GOOD_STANDING",
         startDate: "2024-01-01",
       },
       {
@@ -217,7 +235,9 @@ const MOCK_CLIENTS: Client[] = [
         concept: "Consultoría Mensual",
         amount: 1200000,
         frequency: "Mensual",
-        status: "active",
+        contract_status: "ACTIVE",
+        billing_status: "PAST_DUE",
+        outstanding_amount: 1200000,
         nextChargeDate: "2025-12-05",
         startDate: "2024-10-01",
       },
@@ -240,7 +260,7 @@ const clientColumns: ExportColumn[] = [
   { 
     label: 'Suscripciones Activas', 
     key: 'subscriptions', 
-    formatter: (subs: ClientSubscription[]) => subs.filter(s => s.status === 'active').length.toString()
+    formatter: (subs: ClientSubscription[]) => subs.filter(s => s.contract_status === 'ACTIVE').length.toString()
   },
   { 
     label: 'Suscripciones Totales', 
@@ -252,7 +272,7 @@ const clientColumns: ExportColumn[] = [
     key: 'subscriptions', 
     formatter: (subs: ClientSubscription[]) => {
       const mrr = subs
-        .filter(s => s.status === 'active' && s.frequency === 'Mensual')
+        .filter(s => s.contract_status === 'ACTIVE' && s.frequency === 'Mensual')
         .reduce((sum, s) => sum + s.amount, 0);
       return formatCurrency(mrr);
     }
@@ -328,16 +348,16 @@ export default function DashboardClients() {
 
   const getSubscriptionStats = (subscriptions: ClientSubscription[]) => {
     return {
-      active: subscriptions.filter((s) => s.status === "active").length,
-      paused: subscriptions.filter((s) => s.status === "paused").length,
-      cancelled: subscriptions.filter((s) => s.status === "cancelled").length,
-      expired: subscriptions.filter((s) => s.status === "expired").length,
+      active: subscriptions.filter((s) => s.contract_status === "ACTIVE").length,
+      paused: subscriptions.filter((s) => s.contract_status === "PAUSED").length,
+      cancelled: subscriptions.filter((s) => s.contract_status === "CANCELLED").length,
+      withDebt: subscriptions.filter((s) => s.billing_status !== "IN_GOOD_STANDING" && s.contract_status === "ACTIVE").length,
     };
   };
 
   const getTotalMonthlyRevenue = (subscriptions: ClientSubscription[]) => {
     return subscriptions
-      .filter((s) => s.status === "active" && s.frequency === "Mensual")
+      .filter((s) => s.contract_status === "ACTIVE" && s.frequency === "Mensual")
       .reduce((sum, s) => sum + s.amount, 0);
   };
 
@@ -419,7 +439,7 @@ export default function DashboardClients() {
               {MOCK_CLIENTS.reduce(
                 (sum, client) =>
                   sum +
-                  client.subscriptions.filter((s) => s.status === "active").length,
+                  client.subscriptions.filter((s) => s.contract_status === "ACTIVE").length,
                 0
               )}
             </div>
@@ -434,23 +454,26 @@ export default function DashboardClients() {
               {MOCK_CLIENTS.reduce(
                 (sum, client) =>
                   sum +
-                  client.subscriptions.filter((s) => s.status === "paused").length,
+                  client.subscriptions.filter((s) => s.contract_status === "PAUSED").length,
                 0
               )}
             </div>
           </CardContent>
         </Card>
-        <Card className="border-border/50 bg-card/50">
+        <Card className="border-border/50 bg-amber-500/5">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Canceladas</CardTitle>
+            <CardTitle className="text-sm font-medium flex items-center gap-1">
+              <AlertTriangle className="h-4 w-4 text-amber-600" />
+              Con Deuda
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+            <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
               {MOCK_CLIENTS.reduce(
                 (sum, client) =>
                   sum +
                   client.subscriptions.filter(
-                    (s) => s.status === "cancelled" || s.status === "expired"
+                    (s) => s.contract_status === "ACTIVE" && s.billing_status !== "IN_GOOD_STANDING"
                   ).length,
                 0
               )}
@@ -663,17 +686,18 @@ export default function DashboardClients() {
                       {stats.cancelled > 0 && (
                         <Badge
                           variant="outline"
-                          className={statusConfig.cancelled.color}
+                          className="bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/30"
                         >
                           {stats.cancelled} Cancelada{stats.cancelled > 1 ? "s" : ""}
                         </Badge>
                       )}
-                      {stats.expired > 0 && (
+                      {stats.withDebt > 0 && (
                         <Badge
                           variant="outline"
-                          className={statusConfig.expired.color}
+                          className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30"
                         >
-                          {stats.expired} Expirada{stats.expired > 1 ? "s" : ""}
+                          <AlertTriangle className="h-3 w-3 mr-1" />
+                          {stats.withDebt} con deuda
                         </Badge>
                       )}
                     </div>
@@ -704,16 +728,16 @@ export default function DashboardClients() {
                     {isExpanded && (
                       <div className="pt-3 space-y-2 animate-fade-in">
                         {client.subscriptions.map((subscription) => {
-                          const StatusIcon = statusConfig[subscription.status].icon;
+                          const hasDebt = subscription.billing_status !== "IN_GOOD_STANDING" && subscription.contract_status === "ACTIVE";
                           return (
                             <div
                               key={subscription.id}
-                              className="p-3 rounded-lg border border-border/50 bg-background/50"
+                              className={`p-3 rounded-lg border border-border/50 ${hasDebt ? "bg-amber-500/5" : "bg-background/50"}`}
                             >
                               <div className="flex items-start justify-between gap-3">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-1">
-                                    <StatusIcon className="h-4 w-4 text-muted-foreground" />
+                                    <CreditCard className="h-4 w-4 text-muted-foreground" />
                                     <h4 className="font-medium text-foreground">
                                       {subscription.concept}
                                     </h4>
@@ -741,19 +765,23 @@ export default function DashboardClients() {
                                       </>
                                     )}
                                   </div>
+                                  {subscription.outstanding_amount && subscription.outstanding_amount > 0 && (
+                                    <div className="mt-2 flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400">
+                                      <AlertTriangle className="h-3 w-3" />
+                                      Deuda: {formatCurrency(subscription.outstanding_amount)}
+                                    </div>
+                                  )}
                                 </div>
                                 <div className="text-right space-y-1">
                                   <p className="text-base font-semibold text-foreground">
                                     {formatCurrency(subscription.amount)}
                                   </p>
-                                  <Badge
-                                    variant="outline"
-                                    className={`${
-                                      statusConfig[subscription.status].color
-                                    } text-xs`}
-                                  >
-                                    {statusConfig[subscription.status].label}
-                                  </Badge>
+                                  <div className="flex flex-col gap-1 items-end">
+                                    <ContractStatusBadge status={subscription.contract_status} size="sm" />
+                                    {subscription.contract_status === "ACTIVE" && subscription.billing_status !== "IN_GOOD_STANDING" && (
+                                      <BillingStatusBadge status={subscription.billing_status} size="sm" />
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>

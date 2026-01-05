@@ -16,11 +16,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, XCircle, Clock, Calendar, CreditCard } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Calendar, CreditCard, AlertTriangle } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/currency";
-import { Subscription } from "@/types/subscription";
+import { Subscription, ChargeAttemptStatus, ChargeAttemptStatusLabels } from "@/types/subscription";
 
-type PaymentStatus = "completed" | "pending" | "failed";
+type PaymentStatus = "completed" | "pending" | "failed" | "soft_decline" | "hard_decline";
 
 type Payment = {
   id: string;
@@ -29,6 +29,8 @@ type Payment = {
   status: PaymentStatus;
   paymentMethod: string;
   transactionId?: string;
+  declineReason?: string;
+  isRetryable?: boolean;
 };
 
 interface PaymentHistoryDialogProps {
@@ -109,6 +111,16 @@ export function PaymentHistoryDialog({
     },
     failed: {
       label: "Fallido",
+      color: "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/30",
+      icon: XCircle,
+    },
+    soft_decline: {
+      label: "Rechazo Temporal",
+      color: "bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/30",
+      icon: AlertTriangle,
+    },
+    hard_decline: {
+      label: "Rechazo Permanente",
       color: "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/30",
       icon: XCircle,
     },
