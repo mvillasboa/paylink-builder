@@ -70,7 +70,7 @@ export function SubscriptionStatusDisplay({
 
         {/* Three Status Columns */}
         <div className="grid grid-cols-3 gap-4">
-          {/* Contract Status */}
+          {/* Subscription Status */}
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <FileCheck className="h-3.5 w-3.5" />
