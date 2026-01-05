@@ -57,9 +57,17 @@ import { ExportDropdown } from "@/components/ExportDropdown";
 import { ExportColumn } from "@/lib/utils/export";
 import { ContractStatusBadge } from "@/components/subscriptions/ContractStatusBadge";
 import { BillingStatusBadge } from "@/components/subscriptions/BillingStatusBadge";
+import { PaymentMethodStatusBadge } from "@/components/subscriptions/PaymentMethodStatusBadge";
+import { PaymentMethodStatus } from "@/types/subscription";
+
+// Extended subscription type with mock card data
+interface SubscriptionWithCard extends Subscription {
+  _mockCardLastFour?: string;
+  _mockCardStatus?: PaymentMethodStatus;
+}
 
 // Mock data for demonstration - Various state combinations
-const MOCK_SUBSCRIPTIONS: Subscription[] = [
+const MOCK_SUBSCRIPTIONS: SubscriptionWithCard[] = [
   // 1. Activa y al día - Caso ideal
   {
     id: "mock-1",
@@ -93,6 +101,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     allow_pause: false,
     price_change_history_count: 0,
     last_charge_date: "2024-11-05T00:00:00Z",
+    _mockCardLastFour: "4532",
+    _mockCardStatus: "VALID",
   },
   // 2. Activa con deuda leve (PAST_DUE) - 1 ciclo pendiente
   {
@@ -127,6 +137,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     allow_pause: false,
     price_change_history_count: 0,
     last_charge_date: "2024-11-10T00:00:00Z",
+    _mockCardLastFour: "8901",
+    _mockCardStatus: "TEMPORARILY_INVALID",
   },
   // 3. Activa en mora grave (DELINQUENT) - Múltiples ciclos
   {
@@ -162,6 +174,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     allow_pause: false,
     price_change_history_count: 0,
     last_charge_date: "2024-09-15T00:00:00Z",
+    _mockCardLastFour: "2345",
+    _mockCardStatus: "TEMPORARILY_INVALID",
   },
   // 4. Activa en recuperación (RECOVERY) - Intento de recuperar deuda
   {
@@ -197,6 +211,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     allow_pause: false,
     price_change_history_count: 0,
     last_charge_date: "2024-08-20T00:00:00Z",
+    _mockCardLastFour: "6789",
+    _mockCardStatus: "VALID",
   },
   // 5. Activa pero cobro suspendido (SUSPENDED) - Tarjeta inválida
   {
@@ -231,6 +247,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     allow_pause: false,
     price_change_history_count: 0,
     last_charge_date: "2024-09-01T00:00:00Z",
+    _mockCardLastFour: "1111",
+    _mockCardStatus: "INVALID",
   },
   // 6. Pausada y al día - Pausa voluntaria
   {
@@ -266,6 +284,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     price_change_history_count: 0,
     last_charge_date: "2024-10-20T00:00:00Z",
     paused_at: "2024-11-01T00:00:00Z",
+    _mockCardLastFour: "5555",
+    _mockCardStatus: "VALID",
   },
   // 7. Pausada con deuda pendiente - Caso especial
   {
@@ -301,6 +321,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     price_change_history_count: 0,
     last_charge_date: "2024-10-05T00:00:00Z",
     paused_at: "2024-11-10T00:00:00Z",
+    _mockCardLastFour: "7777",
+    _mockCardStatus: "TEMPORARILY_INVALID",
   },
   // 8. Cancelada al día - Cancelación voluntaria sin deuda
   {
@@ -337,6 +359,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     price_change_history_count: 0,
     cancelled_at: "2024-10-15T00:00:00Z",
     cancelled_reason: "Cliente solicitó cancelación",
+    _mockCardLastFour: "9999",
+    _mockCardStatus: "VALID",
   },
   // 9. Cancelada con deuda - Cancelación por mora
   {
@@ -373,6 +397,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     price_change_history_count: 0,
     cancelled_at: "2024-11-20T00:00:00Z",
     cancelled_reason: "Cancelada por mora prolongada",
+    _mockCardLastFour: "3333",
+    _mockCardStatus: "INVALID",
   },
   // 10. En período de prueba - Trial activo
   {
@@ -407,6 +433,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     send_reminder_before_charge: true,
     allow_pause: false,
     price_change_history_count: 0,
+    _mockCardLastFour: "4444",
+    _mockCardStatus: "VALID",
   },
   // 11. Suscripción limitada activa - Progreso de pagos
   {
@@ -442,6 +470,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     allow_pause: false,
     price_change_history_count: 0,
     last_charge_date: "2024-12-01T00:00:00Z",
+    _mockCardLastFour: "2222",
+    _mockCardStatus: "VALID",
   },
   // 12. Suscripción limitada expirada - Completó todos los pagos
   {
@@ -478,6 +508,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     price_change_history_count: 0,
     last_charge_date: "2024-09-10T00:00:00Z",
     expired_at: "2024-10-10T00:00:00Z",
+    _mockCardLastFour: "6666",
+    _mockCardStatus: "VALID",
   },
   // 13. Suscripción variable activa - Monto puede variar
   {
@@ -513,6 +545,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     price_change_history_count: 3,
     last_charge_date: "2024-12-25T00:00:00Z",
     last_price_change_date: "2024-12-01T00:00:00Z",
+    _mockCardLastFour: "8888",
+    _mockCardStatus: "VALID",
   },
   // 14. Activa con cambio de precio pendiente
   {
@@ -548,6 +582,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     price_change_history_count: 1,
     last_charge_date: "2024-12-08T00:00:00Z",
     pending_price_change_id: "price-change-001",
+    _mockCardLastFour: "1234",
+    _mockCardStatus: "VALID",
   },
   // 15. Suscripción única completada
   {
@@ -583,6 +619,8 @@ const MOCK_SUBSCRIPTIONS: Subscription[] = [
     send_reminder_before_charge: false,
     allow_pause: false,
     price_change_history_count: 0,
+    _mockCardLastFour: "0000",
+    _mockCardStatus: "VALID",
   },
 ];
 
@@ -623,7 +661,7 @@ const subscriptionColumns: ExportColumn[] = [
     }
   },
   { 
-    label: 'Estado Contrato', 
+    label: 'Estado Suscripción', 
     key: 'contract_status', 
     formatter: (status: string) => ContractStatusLabels[status as keyof typeof ContractStatusLabels] || status
   },
@@ -645,7 +683,7 @@ const subscriptionColumns: ExportColumn[] = [
 ];
 
 export default function Subscriptions() {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [subscriptions, setSubscriptions] = useState<SubscriptionWithCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -954,13 +992,13 @@ export default function Subscriptions() {
             >
               <SelectTrigger className="w-[180px]">
                 <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Estado Contrato" />
+                <SelectValue placeholder="Estado Suscripción" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos los contratos</SelectItem>
-                <SelectItem value="ACTIVE">Activo</SelectItem>
-                <SelectItem value="PAUSED">Pausado</SelectItem>
-                <SelectItem value="CANCELLED">Cancelado</SelectItem>
+                <SelectItem value="all">Todas</SelectItem>
+                <SelectItem value="ACTIVE">Activa</SelectItem>
+                <SelectItem value="PAUSED">Pausada</SelectItem>
+                <SelectItem value="CANCELLED">Cancelada</SelectItem>
               </SelectContent>
             </Select>
 
@@ -1132,16 +1170,18 @@ export default function Subscriptions() {
                     <TableHead>Concepto</TableHead>
                     <TableHead>Monto</TableHead>
                     <TableHead>Frecuencia</TableHead>
-                    <TableHead>Contrato</TableHead>
+                    <TableHead>Suscripción</TableHead>
                     <TableHead>Pago</TableHead>
+                    <TableHead>Tarjeta</TableHead>
                     <TableHead>Deuda</TableHead>
                     <TableHead>Próximo Cobro</TableHead>
                     <TableHead className="text-right" style={{ width: "150px" }}>Acciones</TableHead>
                   </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedSubscriptions.map((subscription) => {
+                {paginatedSubscriptions.map((subscription: SubscriptionWithCard) => {
                   const hasDebt = (subscription.outstanding_amount || 0) > 0;
+                  const cardStatus = subscription._mockCardStatus || "VALID";
                   
                   return (
                   <TableRow key={subscription.id} className={hasDebt ? "bg-amber-500/5" : ""}>
@@ -1170,6 +1210,14 @@ export default function Subscriptions() {
                     </TableCell>
                     <TableCell>
                       <BillingStatusBadge status={subscription.billing_status || "IN_GOOD_STANDING"} size="sm" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-0.5">
+                        <p className="text-xs font-mono text-muted-foreground">
+                          •••• {subscription._mockCardLastFour || "----"}
+                        </p>
+                        <PaymentMethodStatusBadge status={cardStatus} size="sm" />
+                      </div>
                     </TableCell>
                     <TableCell>
                       {hasDebt ? (
