@@ -715,14 +715,27 @@ export default function Subscriptions() {
 
       const { data, error } = await supabase
         .from('subscriptions')
-        .select('*')
+        .select(`
+          *,
+          cards:card_id (
+            last_four_digits,
+            payment_method_status
+          )
+        `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
 
+      // Mapear datos de tarjeta a los campos que usa el componente
+      const enrichedData = data?.map(sub => ({
+        ...sub,
+        _mockCardLastFour: sub.cards?.last_four_digits || null,
+        _mockCardStatus: sub.cards?.payment_method_status || null,
+      })) || [];
+
       // Si no hay datos reales, usar mock data
-      const finalData = data && data.length > 0 ? data : MOCK_SUBSCRIPTIONS;
+      const finalData = enrichedData.length > 0 ? enrichedData : MOCK_SUBSCRIPTIONS;
       setSubscriptions(finalData);
     } catch (error: any) {
       console.error("Error loading subscriptions:", error);
