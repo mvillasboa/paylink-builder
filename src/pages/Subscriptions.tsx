@@ -916,7 +916,7 @@ export default function Subscriptions() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-4">
         {/* Suscripciones Activas */}
         <Card className="border-border/50 bg-gradient-to-br from-primary/5 to-primary/10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -1003,28 +1003,6 @@ export default function Subscriptions() {
           </CardContent>
         </Card>
 
-        {/* MRR Activo */}
-        <Card className="border-border/50 bg-gradient-to-br from-secondary/5 to-secondary/10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              MRR Activo
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">
-              {formatCurrency(
-                subscriptions
-                  .filter(s => s.contract_status === 'ACTIVE' && s.frequency === 'monthly')
-                  .reduce((sum, s) => sum + s.amount, 0)
-              )}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Ingreso mensual recurrente
-            </p>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Search and Filters */}
