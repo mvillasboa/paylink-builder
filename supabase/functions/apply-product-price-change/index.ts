@@ -1,10 +1,26 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Input validation schema
+const requestSchema = z.object({
+  product_price_change_id: z.string().uuid({ message: "Invalid product_price_change_id format" }),
+});
+
+// Sanitize error messages to prevent information leakage
+function sanitizeError(error: unknown): string {
+  console.error('Full error:', error);
+  if (error instanceof z.ZodError) {
+    return 'Invalid request data: ' + error.errors.map(e => e.message).join(', ');
+  }
+  // Return generic message for other errors
+  return 'An error occurred while processing your request';
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -13,7 +29,19 @@ serve(async (req) => {
   }
 
   try {
-    const { product_price_change_id } = await req.json();
+    // Parse and validate input
+    const rawBody = await req.json();
+    const validationResult = requestSchema.safeParse(rawBody);
+    
+    if (!validationResult.success) {
+      console.error('Validation error:', validationResult.error);
+      return new Response(
+        JSON.stringify({ error: sanitizeError(validationResult.error) }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const { product_price_change_id } = validationResult.data;
     
     console.log('Applying product price change:', product_price_change_id);
     
@@ -31,7 +59,10 @@ serve(async (req) => {
     
     if (priceChangeError || !priceChange) {
       console.error('Price change not found:', priceChangeError);
-      throw new Error('Price change not found');
+      return new Response(
+        JSON.stringify({ error: 'Price change not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
     
     console.log('Price change loaded:', priceChange);
@@ -184,10 +215,8 @@ serve(async (req) => {
     );
     
   } catch (error) {
-    console.error('Error in apply-product-price-change:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: sanitizeError(error) }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
