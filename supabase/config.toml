@@ -8,6 +8,3 @@ verify_jwt = false
 
 [functions.register-from-product-link]
 verify_jwt = false
-
-[functions.setup-test-data]
-verify_jwt = false

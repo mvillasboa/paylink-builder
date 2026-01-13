@@ -6,6 +6,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Sanitize error messages to prevent information leakage
+function sanitizeError(error: unknown): string {
+  console.error('Full error:', error);
+  // Return generic message for errors
+  return 'An error occurred while processing price changes';
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -34,15 +41,15 @@ serve(async (req) => {
     console.log(`[apply-price-changes] Found ${scheduledChanges?.length || 0} changes to apply`);
 
     // 2. Aplicar cada cambio
-    const results = [];
+    const results: Array<{ id: string; status: string; error?: string }> = [];
     for (const change of scheduledChanges || []) {
       try {
         await applyPriceChange(supabase, change);
         console.log(`[apply-price-changes] Applied change ${change.id} for subscription ${change.subscription_id}`);
         results.push({ id: change.id, status: 'success' });
-      } catch (error: any) {
+      } catch (error) {
         console.error(`[apply-price-changes] Error applying change ${change.id}:`, error);
-        results.push({ id: change.id, status: 'error', error: error.message });
+        results.push({ id: change.id, status: 'error', error: 'Failed to apply change' });
       }
     }
 
@@ -78,9 +85,9 @@ serve(async (req) => {
 
         console.log(`[apply-price-changes] Auto-approved and applied change ${change.id}`);
         results.push({ id: change.id, status: 'auto_approved' });
-      } catch (error: any) {
+      } catch (error) {
         console.error(`[apply-price-changes] Error auto-approving change ${change.id}:`, error);
-        results.push({ id: change.id, status: 'error', error: error.message });
+        results.push({ id: change.id, status: 'error', error: 'Failed to auto-approve' });
       }
     }
 
@@ -97,10 +104,9 @@ serve(async (req) => {
       }
     );
 
-  } catch (error: any) {
-    console.error('[apply-price-changes] Error:', error);
+  } catch (error) {
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: sanitizeError(error) }),
       { 
         status: 500, 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -109,8 +115,10 @@ serve(async (req) => {
   }
 });
 
+// deno-lint-ignore no-explicit-any
 async function applyPriceChange(supabase: any, change: any) {
   const now = new Date();
+  const subscriptions = change.subscriptions;
 
   // 1. Actualizar el monto en la suscripción
   const { error: updateError } = await supabase
@@ -118,7 +126,7 @@ async function applyPriceChange(supabase: any, change: any) {
     .update({
       amount: change.new_amount,
       last_price_change_date: now.toISOString(),
-      price_change_history_count: change.subscriptions.price_change_history_count + 1,
+      price_change_history_count: (subscriptions.price_change_history_count || 0) + 1,
       pending_price_change_id: null,
     })
     .eq('id', change.subscription_id);
@@ -141,10 +149,10 @@ async function applyPriceChange(supabase: any, change: any) {
     .from('notification_logs')
     .insert({
       subscription_id: change.subscription_id,
-      phone_number: change.subscriptions.phone_number,
+      phone_number: subscriptions.phone_number,
       channel: 'whatsapp',
       event: 'price_change_applied',
-      message: `Cambio de precio aplicado: ${change.subscriptions.reference}. Nuevo monto: ${change.new_amount}`,
+      message: `Cambio de precio aplicado: ${subscriptions.reference}. Nuevo monto: ${change.new_amount}`,
       status: 'pending',
     });
 
