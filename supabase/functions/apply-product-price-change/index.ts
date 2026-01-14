@@ -29,6 +29,37 @@ serve(async (req) => {
   }
 
   try {
+    // 1. VALIDATE AUTHENTICATION
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.error('Missing or invalid authorization header');
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    // 2. EXTRACT USER FROM JWT
+    const supabaseAuth = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { authorization: authHeader } } }
+    );
+    
+    const token = authHeader.replace('Bearer ', '');
+    const { data: claimsData, error: claimsError } = await supabaseAuth.auth.getClaims(token);
+    
+    if (claimsError || !claimsData?.claims) {
+      console.error('Invalid token:', claimsError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const userId = claimsData.claims.sub;
+    console.log(`Authenticated user: ${userId}`);
+    
     // Parse and validate input
     const rawBody = await req.json();
     const validationResult = requestSchema.safeParse(rawBody);
@@ -45,15 +76,16 @@ serve(async (req) => {
     
     console.log('Applying product price change:', product_price_change_id);
     
+    // 3. CREATE SERVICE ROLE CLIENT for database operations
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
     
-    // 1. Get the product price change
+    // 4. Get the product price change WITH product ownership info
     const { data: priceChange, error: priceChangeError } = await supabase
       .from('product_price_changes')
-      .select('*, products(*)')
+      .select('*, products(id, user_id)')
       .eq('id', product_price_change_id)
       .single();
     
@@ -64,6 +96,26 @@ serve(async (req) => {
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    
+    // 5. AUTHORIZATION CHECK - Verify user owns the product
+    if (priceChange.products.user_id !== userId) {
+      console.error(`Unauthorized: User ${userId} attempted to apply price change for product owned by ${priceChange.products.user_id}`);
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    // 6. VALIDATE STATUS - Only allow pending price changes
+    if (priceChange.status !== 'pending') {
+      console.error(`Invalid status: Price change ${product_price_change_id} has status ${priceChange.status}`);
+      return new Response(
+        JSON.stringify({ error: 'Price change already processed or cancelled' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    console.log(`Authorized: User ${userId} applying price change ${product_price_change_id}`);
     
     console.log('Price change loaded:', priceChange);
     
