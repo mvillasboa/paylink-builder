@@ -1,4 +1,3 @@
-import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -40,38 +39,76 @@ export const exportToCSV = (
   document.body.removeChild(link);
 };
 
+/**
+ * Creates an Excel-compatible XML Spreadsheet (SpreadsheetML) file.
+ * This is a pure JS implementation that doesn't rely on vulnerable xlsx library.
+ * The generated file opens correctly in Excel, LibreOffice, and Google Sheets.
+ */
 export const exportToExcel = (
   data: any[],
   columns: ExportColumn[],
   filename: string
 ) => {
-  // Transform data to worksheet format
-  const wsData = [
-    columns.map(col => col.label),
-    ...data.map(item => 
-      columns.map(col => {
-        const value = item[col.key];
-        return col.formatter ? col.formatter(value) : value;
-      })
-    )
-  ];
+  // Escape XML special characters
+  const escapeXml = (str: string): string => {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  };
+
+  // Build XML Spreadsheet
+  const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>\n<?mso-application progid="Excel.Sheet"?>\n';
   
-  // Create worksheet and workbook
-  const ws = XLSX.utils.aoa_to_sheet(wsData);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+  const workbookStart = `<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+    <Styles>
+      <Style ss:ID="Header">
+        <Font ss:Bold="1"/>
+        <Interior ss:Color="#3B82F6" ss:Pattern="Solid"/>
+        <Font ss:Color="#FFFFFF"/>
+      </Style>
+    </Styles>
+    <Worksheet ss:Name="Datos">
+      <Table>`;
   
-  // Auto-size columns
-  const maxWidth = 50;
-  const colWidths = columns.map((_, colIndex) => {
-    const columnData = wsData.map(row => String(row[colIndex] || ''));
-    const maxLength = Math.max(...columnData.map(str => str.length));
-    return { wch: Math.min(maxLength + 2, maxWidth) };
-  });
-  ws['!cols'] = colWidths;
+  // Header row
+  const headerRow = '<Row ss:StyleID="Header">' + 
+    columns.map(col => `<Cell><Data ss:Type="String">${escapeXml(col.label)}</Data></Cell>`).join('') + 
+    '</Row>';
   
-  // Download file
-  XLSX.writeFile(wb, `${filename}.xlsx`);
+  // Data rows
+  const dataRows = data.map(item => {
+    const cells = columns.map(col => {
+      const value = item[col.key];
+      const formatted = col.formatter ? col.formatter(value) : value;
+      const cellValue = escapeXml(String(formatted ?? ''));
+      // Detect if value is numeric
+      const isNumber = !isNaN(Number(value)) && value !== null && value !== '' && typeof value !== 'boolean';
+      const dataType = isNumber ? 'Number' : 'String';
+      const displayValue = isNumber ? String(value) : cellValue;
+      return `<Cell><Data ss:Type="${dataType}">${displayValue}</Data></Cell>`;
+    }).join('');
+    return `<Row>${cells}</Row>`;
+  }).join('\n');
+  
+  const workbookEnd = `</Table></Worksheet></Workbook>`;
+  
+  const xmlContent = xmlHeader + workbookStart + headerRow + dataRows + workbookEnd;
+  
+  // Create and download file with .xls extension (XML Spreadsheet format)
+  const blob = new Blob([xmlContent], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', `${filename}.xls`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 export const exportToPDF = (
