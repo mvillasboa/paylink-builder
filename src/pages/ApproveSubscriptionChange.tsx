@@ -84,18 +84,14 @@ export default function ApproveSubscriptionChange() {
   };
 
   const handleApprove = async () => {
-    if (!change) return;
+    if (!change || !token) return;
     
     setProcessing(true);
     try {
-      const { error } = await supabase
-        .from('subscription_price_changes')
-        .update({
-          client_approval_status: 'approved',
-          client_approval_date: new Date().toISOString(),
-          client_approval_method: 'web',
-        })
-        .eq('id', change.id);
+      // Use edge function to securely process approval (bypasses RLS properly)
+      const { data, error } = await supabase.functions.invoke('approve-price-change', {
+        body: { token, action: 'approve' }
+      });
 
       if (error) throw error;
 
@@ -110,19 +106,14 @@ export default function ApproveSubscriptionChange() {
   };
 
   const handleReject = async () => {
-    if (!change) return;
+    if (!change || !token) return;
     
     setProcessing(true);
     try {
-      const { error } = await supabase
-        .from('subscription_price_changes')
-        .update({
-          client_approval_status: 'rejected',
-          client_approval_date: new Date().toISOString(),
-          client_approval_method: 'web',
-          status: 'cancelled',
-        })
-        .eq('id', change.id);
+      // Use edge function to securely process rejection (bypasses RLS properly)
+      const { data, error } = await supabase.functions.invoke('approve-price-change', {
+        body: { token, action: 'reject' }
+      });
 
       if (error) throw error;
 
