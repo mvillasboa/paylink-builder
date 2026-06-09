@@ -33,39 +33,7 @@ export default function ApproveSubscriptionChange() {
 
     try {
       const { data: changeData, error: changeError } = await supabase
-        .from('subscription_price_changes')
-        .select(`
-          *,
-          subscriptions (
-            id,
-            reference,
-            client_name,
-            client_email,
-            phone_number,
-            concept,
-            description,
-            amount,
-            type,
-            frequency,
-            billing_day,
-            duration_type,
-            number_of_payments,
-            payments_completed,
-            trial_period_days,
-            first_charge_type,
-            first_charge_date,
-            is_first_payment_completed,
-            first_payment_amount,
-            first_payment_reason,
-            next_charge_date,
-            last_charge_date,
-            status,
-            created_at
-          )
-        `)
-        .eq('approval_token', token)
-        .eq('client_approval_status', 'pending')
-        .single();
+        .rpc('get_price_change_by_approval_token', { p_token: token });
 
       if (changeError || !changeData) {
         setStatus('error');
@@ -74,7 +42,7 @@ export default function ApproveSubscriptionChange() {
       }
 
       setChange(changeData);
-      setSubscription(changeData.subscriptions);
+      setSubscription((changeData as any).subscriptions);
     } catch (error) {
       console.error("Error loading change:", error);
       setStatus('error');

@@ -75,16 +75,11 @@ export function useProductLinkByToken(token: string) {
     queryKey: ['product-link', token],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('product_links')
-        .select(`
-          *,
-          products (*)
-        `)
-        .eq('token', token)
-        .single();
+        .rpc('get_product_link_by_token', { p_token: token });
 
       if (error) throw error;
-      return data;
+      if (!data) throw new Error('Link no encontrado');
+      return data as any;
     },
     enabled: !!token,
   });
