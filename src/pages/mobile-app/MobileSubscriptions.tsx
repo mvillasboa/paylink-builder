@@ -124,6 +124,28 @@ export default function MobileSubscriptions() {
               <p className="text-2xl font-bold">{formatCurrency(selected.amount)}</p>
             </div>
 
+            {selected.totalInstallments != null && (
+              <div className="rounded-xl bg-blue-500/5 border border-blue-500/10 p-4 mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs text-muted-foreground">Progreso de cuotas</p>
+                  <p className="text-xs font-semibold text-blue-700 dark:text-blue-400">
+                    {selected.paidInstallments ?? 0} / {selected.totalInstallments}
+                  </p>
+                </div>
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-blue-500 rounded-full transition-all"
+                    style={{
+                      width: `${((selected.paidInstallments ?? 0) / selected.totalInstallments) * 100}%`,
+                    }}
+                  />
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1.5">
+                  {selected.totalInstallments - (selected.paidInstallments ?? 0)} cuotas restantes
+                </p>
+              </div>
+            )}
+
             <ul className="space-y-3 text-sm mb-5">
               <li className="flex items-center gap-3">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
