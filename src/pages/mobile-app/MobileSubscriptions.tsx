@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MobileHeader } from "@/components/mobile-app/MobileHeader";
 import { mockMobileSubscriptions, type MobileSubscription } from "@/data/mockMobileApp";
 import { formatCurrency } from "@/lib/utils/currency";
-import { Pause, X, Calendar, CreditCard, ChevronRight } from "lucide-react";
+import { Pause, X, Calendar, CreditCard, ChevronRight, ListChecks } from "lucide-react";
 
 type Filter = "all" | "active" | "paused";
 
