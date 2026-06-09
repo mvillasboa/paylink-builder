@@ -74,6 +74,20 @@ export const mockMobileSubscriptions: MobileSubscription[] = [
     cardBrand: 'mastercard',
     icon: '☁️',
   },
+  {
+    id: 'sub-6',
+    merchant: 'Curso de Programación',
+    concept: 'Fullstack Web Dev',
+    amount: 185000,
+    frequency: 'Mensual',
+    nextChargeDate: new Date(Date.now() + 8 * 86400000),
+    status: 'active',
+    cardLast4: '4242',
+    cardBrand: 'visa',
+    icon: '🎓',
+    totalInstallments: 6,
+    paidInstallments: 3,
+  },
 ];
 
 export interface MobilePayment {
