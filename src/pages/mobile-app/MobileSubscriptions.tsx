@@ -66,9 +66,16 @@ export default function MobileSubscriptions() {
                   <p className="text-xs text-muted-foreground truncate">
                     {sub.concept} • {sub.frequency}
                   </p>
-                  <span className={`inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded ${st.cls}`}>
-                    {st.label}
-                  </span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded ${st.cls}`}>
+                      {st.label}
+                    </span>
+                    {sub.totalInstallments != null && (
+                      <span className="inline-block text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-700 dark:text-blue-400">
+                        {sub.paidInstallments ?? 0} de {sub.totalInstallments} cuotas
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <p className="text-sm font-bold">{formatCurrency(sub.amount)}</p>
