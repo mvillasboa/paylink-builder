@@ -32,6 +32,12 @@ import HowItWorksPage from "./pages/HowItWorksPage";
 import PricingPage from "./pages/PricingPage";
 import ContactPage from "./pages/ContactPage";
 import ProductLink from "./pages/ProductLink";
+import { MobileAppLayout } from "./components/mobile-app/MobileAppLayout";
+import MobileHome from "./pages/mobile-app/MobileHome";
+import MobileCards from "./pages/mobile-app/MobileCards";
+import MobileSubscriptions from "./pages/mobile-app/MobileSubscriptions";
+import MobilePayments from "./pages/mobile-app/MobilePayments";
+import MobileProfile from "./pages/mobile-app/MobileProfile";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +73,13 @@ const App = () => (
               <Route path="clients" element={<DashboardClients />} />
               <Route path="reports" element={<DashboardReports />} />
               <Route path="settings" element={<DashboardSettings />} />
+            </Route>
+            <Route path="/app" element={<MobileAppLayout />}>
+              <Route index element={<MobileHome />} />
+              <Route path="cards" element={<MobileCards />} />
+              <Route path="subscriptions" element={<MobileSubscriptions />} />
+              <Route path="payments" element={<MobilePayments />} />
+              <Route path="profile" element={<MobileProfile />} />
             </Route>
             <Route path="/docs/java-migration" element={<JavaMigrationGuide />} />
             <Route path="/docs/database-schema" element={<DatabaseSchemaGuide />} />
