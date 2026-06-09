@@ -1130,6 +1130,11 @@ export type Database = {
       generate_approval_token: { Args: never; Returns: string }
       generate_payment_link_token: { Args: never; Returns: string }
       generate_product_link_token: { Args: never; Returns: string }
+      get_price_change_by_approval_token: {
+        Args: { p_token: string }
+        Returns: Json
+      }
+      get_product_link_by_token: { Args: { p_token: string }; Returns: Json }
       get_status_label: {
         Args: { status_code: string; status_type: string }
         Returns: string
