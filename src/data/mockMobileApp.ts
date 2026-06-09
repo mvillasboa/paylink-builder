@@ -9,6 +9,8 @@ export interface MobileSubscription {
   cardLast4: string;
   cardBrand: 'visa' | 'mastercard' | 'amex';
   icon: string;
+  totalInstallments?: number;
+  paidInstallments?: number;
 }
 
 export const mockMobileSubscriptions: MobileSubscription[] = [
