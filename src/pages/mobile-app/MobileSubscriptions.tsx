@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MobileHeader } from "@/components/mobile-app/MobileHeader";
 import { mockMobileSubscriptions, type MobileSubscription } from "@/data/mockMobileApp";
 import { formatCurrency } from "@/lib/utils/currency";
-import { Pause, X, Calendar, CreditCard, ChevronRight } from "lucide-react";
+import { Pause, X, Calendar, CreditCard, ChevronRight, ListChecks } from "lucide-react";
 
 type Filter = "all" | "active" | "paused";
 
@@ -66,9 +66,16 @@ export default function MobileSubscriptions() {
                   <p className="text-xs text-muted-foreground truncate">
                     {sub.concept} • {sub.frequency}
                   </p>
-                  <span className={`inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded ${st.cls}`}>
-                    {st.label}
-                  </span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded ${st.cls}`}>
+                      {st.label}
+                    </span>
+                    {sub.totalInstallments != null && (
+                      <span className="inline-block text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-700 dark:text-blue-400">
+                        {sub.paidInstallments ?? 0} de {sub.totalInstallments} cuotas
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <p className="text-sm font-bold">{formatCurrency(sub.amount)}</p>
@@ -116,6 +123,28 @@ export default function MobileSubscriptions() {
               <p className="text-xs text-muted-foreground">Monto {selected.frequency.toLowerCase()}</p>
               <p className="text-2xl font-bold">{formatCurrency(selected.amount)}</p>
             </div>
+
+            {selected.totalInstallments != null && (
+              <div className="rounded-xl bg-blue-500/5 border border-blue-500/10 p-4 mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs text-muted-foreground">Progreso de cuotas</p>
+                  <p className="text-xs font-semibold text-blue-700 dark:text-blue-400">
+                    {selected.paidInstallments ?? 0} / {selected.totalInstallments}
+                  </p>
+                </div>
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-blue-500 rounded-full transition-all"
+                    style={{
+                      width: `${((selected.paidInstallments ?? 0) / selected.totalInstallments) * 100}%`,
+                    }}
+                  />
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1.5">
+                  {selected.totalInstallments - (selected.paidInstallments ?? 0)} cuotas restantes
+                </p>
+              </div>
+            )}
 
             <ul className="space-y-3 text-sm mb-5">
               <li className="flex items-center gap-3">

@@ -9,6 +9,8 @@ export interface MobileSubscription {
   cardLast4: string;
   cardBrand: 'visa' | 'mastercard' | 'amex';
   icon: string;
+  totalInstallments?: number;
+  paidInstallments?: number;
 }
 
 export const mockMobileSubscriptions: MobileSubscription[] = [
@@ -71,6 +73,20 @@ export const mockMobileSubscriptions: MobileSubscription[] = [
     cardLast4: '5555',
     cardBrand: 'mastercard',
     icon: '☁️',
+  },
+  {
+    id: 'sub-6',
+    merchant: 'Curso de Programación',
+    concept: 'Fullstack Web Dev',
+    amount: 185000,
+    frequency: 'Mensual',
+    nextChargeDate: new Date(Date.now() + 8 * 86400000),
+    status: 'active',
+    cardLast4: '4242',
+    cardBrand: 'visa',
+    icon: '🎓',
+    totalInstallments: 6,
+    paidInstallments: 3,
   },
 ];
 
