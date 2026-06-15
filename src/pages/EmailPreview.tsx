@@ -23,7 +23,7 @@ const emailTemplates: Record<string, string> = {
   <title>[COMERCIO] te invita a registrar tu tarjeta</title>
   <style>
     body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
-    .wrapper { width: 100%; max-width: 600px; margin: 0 de auto; background-color: #ffffff; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 24px 32px; text-align: center; }
     .header-logo { color: #ffffff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
     .header-accent { color: #14b8d4; }
