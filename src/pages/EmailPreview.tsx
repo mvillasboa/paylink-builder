@@ -1003,7 +1003,7 @@ const emailTemplates: Record<string, string> = {
           <!-- Status Bar -->
           <tr>
             <td class="status-bar" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 32px;">
-              <div class="status-text">Pago no procesado</div>
+              <div class="status-text">Tarjeta inactivada tras varios rechazos</div>
             </td>
           </tr>
           <!-- Content -->
@@ -1014,9 +1014,9 @@ const emailTemplates: Record<string, string> = {
                   <span class="alert-symbol" style="color: #f59e0b; font-size: 32px;">&#9888;</span>
                 </div>
               </div>
-              <h1 class="heading">No pudimos procesar el pago</h1>
+              <h1 class="heading">Tu tarjeta fue inactivada</h1>
               <p class="body-text">
-                No pudimos procesar el pago con tu tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong>. La tarjeta fue inactivada para <strong style="color: #0a1929;">[COMERCIO]</strong>. Actualizala aquí: <a href="[LINK]" style="color: #14b8d4; text-decoration: underline;">[LINK]</a>. Más info: <a href="mailto:[CONTACTO]" style="color: #14b8d4; text-decoration: underline;">[CONTACTO]</a>.
+                Tras varios intentos de cobro rechazados, tu tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong> fue inactivada para <strong style="color: #0a1929;">[COMERCIO]</strong>. Te dejamos el último motivo de rechazo como referencia y un enlace para actualizar tu medio de pago.
               </p>
               <!-- Details -->
               <div class="details-box">
@@ -1042,10 +1042,20 @@ const emailTemplates: Record<string, string> = {
                     </td>
                   </tr>
                   <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Último motivo de rechazo</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[MOTIVO]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
                     <td style="padding: 8px 0;">
                       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tr>
-                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Fecha del intento</td>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Fecha del último intento</td>
                           <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA]</td>
                         </tr>
                       </table>
@@ -1056,9 +1066,10 @@ const emailTemplates: Record<string, string> = {
               <!-- Info Box -->
               <div class="info-box">
                 <p class="info-box-text">
-                  Por seguridad y para evitar nuevos rechazos, esta tarjeta fue inactivada para pagos recurrentes con <strong>[COMERCIO]</strong>.
+                  Por seguridad y para evitar nuevos rechazos, tras varios intentos sin éxito esta tarjeta fue inactivada para pagos recurrentes con <strong>[COMERCIO]</strong>.
                 </p>
               </div>
+
               <!-- CTA -->
               <div class="cta-wrapper">
                 <a href="[LINK]" class="cta-button" style="background-color: #f59e0b; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; display: inline-block;">Actualizar tarjeta</a>
@@ -1395,18 +1406,18 @@ const emailTemplates: Record<string, string> = {
           </tr>
           <tr>
             <td class="status-bar" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px 32px;">
-              <div class="status-text">Tarjeta inactivada por rechazo</div>
+              <div class="status-text">Tarjeta inactivada tras varios rechazos</div>
             </td>
           </tr>
           <tr>
             <td class="content" style="padding: 28px 32px;">
-              <h1 class="heading">Tarjeta inactivada tras un rechazo</h1>
+              <h1 class="heading">Tarjeta inactivada tras varios rechazos</h1>
               <p class="body-text">
-                No se pudo procesar el pago de <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> con la tarjeta terminada en <strong style="color:#0a1929;">[XXXX]</strong>. La tarjeta fue inactivada para <strong style="color:#0a1929;">[COMERCIO]</strong>.
+                Tras varios intentos de cobro rechazados, la tarjeta de <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> terminada en <strong style="color:#0a1929;">[XXXX]</strong> fue inactivada para <strong style="color:#0a1929;">[COMERCIO]</strong>. A continuación se incluye el último motivo de rechazo como referencia.
               </p>
 
               <div class="reason-box">
-                <p class="reason-label">Motivo del rechazo</p>
+                <p class="reason-label">Último motivo de rechazo (referencia)</p>
                 <p class="reason-text">[MOTIVO]</p>
               </div>
 
@@ -1417,7 +1428,7 @@ const emailTemplates: Record<string, string> = {
                   <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Email</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_EMAIL]</td></tr></table></td></tr>
                   <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Tarjeta</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">Terminada en [XXXX]</td></tr></table></td></tr>
                   <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">ID suscripción</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;font-family:monospace;">[SUB_ID]</td></tr></table></td></tr>
-                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha del rechazo</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha del último rechazo</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
                 </table>
               </div>
 
