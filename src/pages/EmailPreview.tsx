@@ -516,7 +516,582 @@ const emailTemplates: Record<string, string> = {
 </body>
 </html>`,
 
-  "inactivacion-rechazo": ,
+  "inactivacion-tarjeta": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Tu tarjeta fue inactivada</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrapper {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+    .header {
+      background-color: #0a1929;
+      padding: 24px 32px;
+      text-align: center;
+    }
+    .header-logo {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .header-accent {
+      color: #14b8d4;
+    }
+    .status-bar {
+      background-color: #f1f5f9;
+      border-left: 4px solid #94a3b8;
+      padding: 12px 32px;
+    }
+    .status-text {
+      color: #475569;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .content {
+      padding: 32px;
+    }
+    .heading {
+      color: #0a1929;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin: 0 0 20px 0;
+      text-align: center;
+    }
+    .body-text {
+      color: #4a5568;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 24px 0;
+      text-align: center;
+    }
+    .details-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-label {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .detail-value {
+      color: #0a1929;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .info-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .info-box-text {
+      color: #4a5568;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .notice-box {
+      background-color: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 24px 0 0 0;
+    }
+    .notice-text {
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .contact-box {
+      background-color: #e6f7fa;
+      border: 1px solid #14b8d4;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 24px 0 0 0;
+    }
+    .contact-box-text {
+      color: #0a1929;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+      text-align: center;
+    }
+    .contact-box-text a {
+      color: #14b8d4;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer {
+      background-color: #f4f6f8;
+      padding: 20px 32px;
+      text-align: center;
+    }
+    .footer-text {
+      color: #94a3b8;
+      font-size: 11px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+      .heading {
+        font-size: 20px !important;
+      }
+      .detail-row {
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <!-- Header -->
+          <tr>
+            <td class="header" style="background-color: #0a1929; padding: 24px 32px; text-align: center;">
+              <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
+            </td>
+          </tr>
+          <!-- Status Bar -->
+          <tr>
+            <td class="status-bar" style="background-color: #f1f5f9; border-left: 4px solid #94a3b8; padding: 12px 32px;">
+              <div class="status-text">Tarjeta inactivada</div>
+            </td>
+          </tr>
+          <!-- Content -->
+          <tr>
+            <td class="content" style="padding: 32px;">
+              <h1 class="heading">Inactivación confirmada</h1>
+              <p class="body-text">
+                Tu tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong> fue inactivada para pagos recurrentes de <strong style="color: #0a1929;">[COMERCIO]</strong>. No se realizarán nuevos cobros con esta tarjeta.
+              </p>
+              <!-- Details -->
+              <div class="details-box">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Comercio</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[COMERCIO]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Tarjeta</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Fecha de inactivación</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <!-- Info Box -->
+              <div class="info-box">
+                <p class="info-box-text">
+                  A partir de esta inactivación, no se procesarán nuevos pagos recurrentes con esta tarjeta para <strong>[COMERCIO]</strong>.
+                </p>
+              </div>
+              <!-- Notice Box -->
+              <div class="notice-box">
+                <p class="notice-text">
+                  <strong>Nota:</strong> Esta inactivación no afecta pagos anteriores ya procesados.
+                </p>
+              </div>
+              <!-- Contact Box -->
+              <div class="contact-box">
+                <p class="contact-box-text">
+                  Para consultas o información adicional, contactá a: <a href="mailto:[CONTACTO]">[CONTACTO]</a>.
+                </p>
+              </div>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center;">
+              <p class="footer-text">
+                Este correo fue enviado automáticamente por Walton Pagos.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`,
+  "inactivacion-rechazo": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Necesitamos que actualices tu tarjeta</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrapper {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+    .header {
+      background-color: #0a1929;
+      padding: 24px 32px;
+      text-align: center;
+    }
+    .header-logo {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .header-accent {
+      color: #14b8d4;
+    }
+    .status-bar {
+      background-color: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 32px;
+ doesn't work, use a different approach
+    }
+    .status-text {
+      color: #92400e;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .content {
+      padding: 32px;
+    }
+    .alert-icon {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .alert-circle {
+      display: inline-block;
+      text-align: center;
+      width: 64px;
+      height: 64px;
+      background-color: #fef3c7;
+      border-radius: 50%;
+      line-height: 64px;
+    }
+    .alert-symbol {
+      color: #f59e0b;
+      font-size: 32px;
+    }
+    .heading {
+      color: #0a1929;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin: 0 0 20px 0;
+      text-align: center;
+    }
+    .body-text {
+      color: #4a5568;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 24px 0;
+      text-align: center;
+    }
+    .details-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-label {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .detail-value {
+      color: #0a1929;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .info-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .info-box-text {
+      color: #4a5568;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .cta-wrapper {
+      text-align: center;
+      margin: 28px 0;
+    }
+    .cta-button {
+      display: inline-block;
+      background-color: #f59e0b;
+      color: #ffffff !important;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .link-fallback {
+      color: #4a5568;
+      font-size: 12px;
+      text-align: center;
+      word-break: break-all;
+      margin-top: 12px;
+    }
+    .link-fallback a {
+      color: #14b8d4;
+      text-decoration: underline;
+    }
+    .contact-box {
+      background-color: #e6f7fa;
+      border: 1px solid #14b8d4;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 24px 0 0 0;
+    }
+    .contact-box-text {
+      color: #0a1929;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+      text-align: center;
+    }
+    .contact-box-text a {
+      color: #14b8d4;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .security-box {
+      background-color: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 24px 0 0 0;
+    }
+    .security-text {
+      color: #92400e;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .footer {
+      background-color: #f4f6f8;
+      padding: 20px 32px;
+      text-align: center;
+    }
+    .footer-text {
+      color: #94a3b8;
+      font-size: 11px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+      .heading {
+        font-size: 20px !important;
+      }
+      .cta-button {
+        display: block !important;
+        width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .detail-row {
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <!-- Header -->
+          <tr>
+            <td class="header" style="background-color: #0a1929; padding: 24px 32px; text-align: center;">
+              <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
+            </td>
+          </tr>
+          <!-- Status Bar -->
+          <tr>
+            <td class="status-bar" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 32px;">
+              <div class="status-text">Pago no procesado</div>
+            </td>
+          </tr>
+          <!-- Content -->
+          <tr>
+            <td class="content" style="padding: 32px;">
+              <div class="alert-icon">
+                <div class="alert-circle" style="display: inline-block; text-align: center; width: 64px; height: 64px; background-color: #fef3c7; border-radius: 50%; line-height: 64px;">
+                  <span class="alert-symbol" style="color: #f59e0b; font-size: 32px;">&#9888;</span>
+                </div>
+              </div>
+              <h1 class="heading">No pudimos procesar el pago</h1>
+              <p class="body-text">
+                No pudimos procesar el pago con tu tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong>. La tarjeta fue inactivada para <strong style="color: #0a1929;">[COMERCIO]</strong>. Actualizala aquí: <a href="[LINK]" style="color: #14b8d4; text-decoration: underline;">[LINK]</a>. Más info: <a href="mailto:[CONTACTO]" style="color: #14b8d4; text-decoration: underline;">[CONTACTO]</a>.
+              </p>
+              <!-- Details -->
+              <div class="details-box">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Comercio</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[COMERCIO]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Tarjeta</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Fecha del intento</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <!-- Info Box -->
+              <div class="info-box">
+                <p class="info-box-text">
+                  Por seguridad y para evitar nuevos rechazos, esta tarjeta fue inactivada para pagos recurrentes con <strong>[COMERCIO]</strong>.
+                </p>
+              </div>
+              <!-- CTA -->
+              <div class="cta-wrapper">
+                <a href="[LINK]" class="cta-button" style="background-color: #f59e0b; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; display: inline-block;">Actualizar tarjeta</a>
+              </div>
+              <p class="link-fallback">
+                Si el botón no funciona, copiá y pegá este enlace en tu navegador:<br>
+                <a href="[LINK]">[LINK]</a>
+              </p>
+              <!-- Contact Box -->
+              <div class="contact-box">
+                <p class="contact-box-text">
+                  Para consultas sobre este pago o sobre la baja del servicio, contactá a: <a href="mailto:[CONTACTO]">[CONTACTO]</a>.
+                </p>
+              </div>
+              <!-- Security Box -->
+              <div class="security-box">
+                <p class="security-text">
+                  <strong>Seguridad:</strong> Ingresá únicamente desde el enlace oficial recibido y no compartas claves ni códigos de seguridad.
+                </p>
+              </div>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center;">
+              <p class="footer-text">
+                Este correo fue enviado automáticamente por Walton Pagos.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
 };
 
 const templateSubjects: Record<string, string> = {
