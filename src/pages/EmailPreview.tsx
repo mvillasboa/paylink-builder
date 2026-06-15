@@ -773,6 +773,7 @@ const emailTemplates: Record<string, string> = {
     </body>
     </html>
   `,
+};
 
 const templateSubjects: Record<string, string> = {
   "link-suscripcion": "[COMERCIO] te invita a registrar tu tarjeta",
