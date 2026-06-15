@@ -240,6 +240,7 @@ const emailTemplates: Record<string, string> = {
 const templateSubjects: Record<string, string> = {
   "link-suscripcion": "[COMERCIO] te invita a registrar tu tarjeta",
   "confirmacion-suscripcion": "Tu tarjeta fue registrada correctamente",
+  "confirmacion-suscripcion-monto": "Suscripción confirmada con [COMERCIO]",
 };
 
 function interpolateTemplate(template: string, data: Record<string, string>): string {
