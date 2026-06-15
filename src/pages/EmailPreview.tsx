@@ -10,6 +10,10 @@ const mockData: Record<string, string> = {
   FRECUENCIA: "mensual",
   XXXX: "4567",
   FECHA: "14 de junio de 2026",
+  PAGADOR_NOMBRE: "Juan Pérez",
+  PAGADOR_EMAIL: "juan.perez@email.com",
+  SUB_ID: "sub_8f3a2b1c9d",
+  MOTIVO: "Fondos insuficientes",
 };
 
 const emailTemplates: Record<string, string> = {
@@ -1092,6 +1096,352 @@ const emailTemplates: Record<string, string> = {
 </body>
 </html>
 `,
+  "comercio-registro": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Nueva tarjeta registrada</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; overflow: hidden; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #0a1929; padding: 20px 32px; }
+    .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
+    .header-accent { color: #14b8d4; }
+    .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+    .status-bar { background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 10px 32px; }
+    .status-text { color: #15803d; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 28px 32px; }
+    .heading { color: #0a1929; font-size: 18px; font-weight: 700; line-height: 1.3; margin: 0 0 12px 0; }
+    .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
+    .section-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 8px 0; }
+    .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 16px; margin: 0 0 20px 0; }
+    .info-box { background-color: #f1f5f9; border-left: 3px solid #14b8d4; padding: 12px 16px; margin: 0 0 8px 0; }
+    .info-text { color: #475569; font-size: 13px; line-height: 1.5; margin: 0; }
+    .footer { background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preheader">Un pagador registró su tarjeta para pagos recurrentes.</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <tr>
+            <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
+              <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
+              <div class="header-meta">Notificación al comercio</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="status-bar" style="background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 10px 32px;">
+              <div class="status-text">Tarjeta registrada</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content" style="padding: 28px 32px;">
+              <h1 class="heading">Nueva tarjeta registrada en [COMERCIO]</h1>
+              <p class="body-text">
+                <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> registró su tarjeta terminada en <strong style="color:#0a1929;">[XXXX]</strong> para pagos recurrentes en <strong style="color:#0a1929;">[COMERCIO]</strong>.
+              </p>
+
+              <p class="section-label">Detalle</p>
+              <div class="details-box">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Pagador</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_NOMBRE]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Email</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_EMAIL]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Tarjeta</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">Terminada en [XXXX]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">ID suscripción</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;font-family:monospace;">[SUB_ID]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha de alta</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+                </table>
+              </div>
+
+              <div class="info-box">
+                <p class="info-text">A partir de este momento, los cobros recurrentes autorizados por [COMERCIO] podrán procesarse con esta tarjeta.</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p class="footer-text">Notificación automática para el comercio. No responder a este correo.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
+  "comercio-pago": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Pago recibido</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; overflow: hidden; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #0a1929; padding: 20px 32px; }
+    .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
+    .header-accent { color: #14b8d4; }
+    .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+    .status-bar { background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 10px 32px; }
+    .status-text { color: #15803d; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 28px 32px; }
+    .heading { color: #0a1929; font-size: 18px; font-weight: 700; line-height: 1.3; margin: 0 0 12px 0; }
+    .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
+    .amount-box { background-color: #0a1929; border-radius: 6px; padding: 18px 20px; margin: 0 0 20px 0; text-align: center; }
+    .amount-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 4px 0; }
+    .amount-value { color: #ffffff; font-size: 24px; font-weight: 700; margin: 0; }
+    .section-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 8px 0; }
+    .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 16px; margin: 0 0 8px 0; }
+    .footer { background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preheader">Se procesó un pago recurrente exitosamente.</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <tr>
+            <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
+              <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
+              <div class="header-meta">Notificación al comercio</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="status-bar" style="background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 10px 32px;">
+              <div class="status-text">Pago procesado</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content" style="padding: 28px 32px;">
+              <h1 class="heading">Pago recibido en [COMERCIO]</h1>
+              <p class="body-text">
+                Se procesó un pago de <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> con tarjeta terminada en <strong style="color:#0a1929;">[XXXX]</strong>.
+              </p>
+
+              <div class="amount-box">
+                <p class="amount-label">Monto procesado</p>
+                <p class="amount-value">Gs. [MONTO]</p>
+              </div>
+
+              <p class="section-label">Detalle</p>
+              <div class="details-box">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Pagador</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_NOMBRE]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Email</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_EMAIL]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Tarjeta</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">Terminada en [XXXX]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">ID suscripción</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;font-family:monospace;">[SUB_ID]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha de pago</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p class="footer-text">Notificación automática para el comercio. No responder a este correo.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
+  "comercio-inactivacion-usuario": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Tarjeta inactivada por el pagador</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; overflow: hidden; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #0a1929; padding: 20px 32px; }
+    .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
+    .header-accent { color: #14b8d4; }
+    .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+    .status-bar { background-color: #f1f5f9; border-left: 4px solid #94a3b8; padding: 10px 32px; }
+    .status-text { color: #475569; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 28px 32px; }
+    .heading { color: #0a1929; font-size: 18px; font-weight: 700; line-height: 1.3; margin: 0 0 12px 0; }
+    .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
+    .section-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 8px 0; }
+    .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 16px; margin: 0 0 20px 0; }
+    .notice-box { background-color: #f1f5f9; border-left: 3px solid #94a3b8; padding: 12px 16px; margin: 0 0 8px 0; }
+    .notice-text { color: #475569; font-size: 13px; line-height: 1.5; margin: 0; }
+    .footer { background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preheader">El pagador dio de baja su tarjeta para esta suscripción.</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <tr>
+            <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
+              <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
+              <div class="header-meta">Notificación al comercio</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="status-bar" style="background-color: #f1f5f9; border-left: 4px solid #94a3b8; padding: 10px 32px;">
+              <div class="status-text">Tarjeta inactivada por el pagador</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content" style="padding: 28px 32px;">
+              <h1 class="heading">Inactivación solicitada por el pagador</h1>
+              <p class="body-text">
+                <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> solicitó la inactivación de su tarjeta terminada en <strong style="color:#0a1929;">[XXXX]</strong> para <strong style="color:#0a1929;">[COMERCIO]</strong>. No se procesarán nuevos cobros con esta tarjeta.
+              </p>
+
+              <p class="section-label">Detalle</p>
+              <div class="details-box">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Pagador</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_NOMBRE]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Email</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_EMAIL]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Tarjeta</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">Terminada en [XXXX]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">ID suscripción</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;font-family:monospace;">[SUB_ID]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha de inactivación</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+                </table>
+              </div>
+
+              <div class="notice-box">
+                <p class="notice-text"><strong>Nota:</strong> Esta inactivación no afecta pagos ya procesados ni el estado contractual de la suscripción.</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p class="footer-text">Notificación automática para el comercio. No responder a este correo.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
+  "comercio-inactivacion-rechazo": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Tarjeta inactivada por rechazo</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; overflow: hidden; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #0a1929; padding: 20px 32px; }
+    .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
+    .header-accent { color: #14b8d4; }
+    .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+    .status-bar { background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px 32px; }
+    .status-text { color: #92400e; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 28px 32px; }
+    .heading { color: #0a1929; font-size: 18px; font-weight: 700; line-height: 1.3; margin: 0 0 12px 0; }
+    .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
+    .section-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 8px 0; }
+    .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 16px; margin: 0 0 20px 0; }
+    .reason-box { background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 14px 16px; margin: 0 0 20px 0; }
+    .reason-label { color: #92400e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 4px 0; }
+    .reason-text { color: #78350f; font-size: 14px; font-weight: 600; margin: 0; }
+    .notice-box { background-color: #f1f5f9; border-left: 3px solid #14b8d4; padding: 12px 16px; margin: 0 0 8px 0; }
+    .notice-text { color: #475569; font-size: 13px; line-height: 1.5; margin: 0; }
+    .footer { background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preheader">Una tarjeta fue inactivada tras un rechazo de pago.</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <tr>
+            <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
+              <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
+              <div class="header-meta">Notificación al comercio</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="status-bar" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px 32px;">
+              <div class="status-text">Tarjeta inactivada por rechazo</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content" style="padding: 28px 32px;">
+              <h1 class="heading">Tarjeta inactivada tras un rechazo</h1>
+              <p class="body-text">
+                No se pudo procesar el pago de <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> con la tarjeta terminada en <strong style="color:#0a1929;">[XXXX]</strong>. La tarjeta fue inactivada para <strong style="color:#0a1929;">[COMERCIO]</strong>.
+              </p>
+
+              <div class="reason-box">
+                <p class="reason-label">Motivo del rechazo</p>
+                <p class="reason-text">[MOTIVO]</p>
+              </div>
+
+              <p class="section-label">Detalle</p>
+              <div class="details-box">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Pagador</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_NOMBRE]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Email</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_EMAIL]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Tarjeta</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">Terminada en [XXXX]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">ID suscripción</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;font-family:monospace;">[SUB_ID]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha del rechazo</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+                </table>
+              </div>
+
+              <div class="notice-box">
+                <p class="notice-text">Se notificó al pagador con un enlace para actualizar su medio de pago. La suscripción permanece activa contractualmente.</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p class="footer-text">Notificación automática para el comercio. No responder a este correo.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
 };
 
 const templateSubjects: Record<string, string> = {
@@ -1101,10 +1451,14 @@ const templateSubjects: Record<string, string> = {
   "confirmacion-pago": "Pago confirmado a [COMERCIO]",
   "inactivacion-tarjeta": "Tu tarjeta fue inactivada",
   "inactivacion-rechazo": "Necesitamos que actualices tu tarjeta",
+  "comercio-registro": "Nueva tarjeta registrada — [PAGADOR_NOMBRE]",
+  "comercio-pago": "Pago recibido — Gs. [MONTO] de [PAGADOR_NOMBRE]",
+  "comercio-inactivacion-usuario": "Tarjeta inactivada por el pagador — [PAGADOR_NOMBRE]",
+  "comercio-inactivacion-rechazo": "Tarjeta inactivada por rechazo — [PAGADOR_NOMBRE]",
 };
 
 function interpolateTemplate(template: string, data: Record<string, string>): string {
-  return template.replace(/\[([A-Z]+)\]/g, (_, key) => data[key] || `[${key}]`);
+  return template.replace(/\[([A-Z_]+)\]/g, (_, key) => data[key] || `[${key}]`);
 }
 
 export default function EmailPreview() {
@@ -1139,6 +1493,10 @@ export default function EmailPreview() {
             <option value="confirmacion-pago">04 — Confirmación de pago</option>
             <option value="inactivacion-tarjeta">05 — Inactivación de tarjeta por solicitud del cliente</option>
             <option value="inactivacion-rechazo">06 — Inactivación de tarjeta por rechazo o falla</option>
+            <option value="comercio-registro">07 — [Comercio] Registro de tarjeta</option>
+            <option value="comercio-pago">08 — [Comercio] Confirmación de pago</option>
+            <option value="comercio-inactivacion-usuario">09 — [Comercio] Inactivación por el pagador</option>
+            <option value="comercio-inactivacion-rechazo">10 — [Comercio] Inactivación por rechazo</option>
           </select>
         </div>
 
