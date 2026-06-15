@@ -273,6 +273,7 @@ export default function EmailPreview() {
             className="border border-slate-300 rounded-md px-3 py-1.5 text-sm bg-white"
           >
             <option value="link-suscripcion">01 — Link de suscripción de tarjeta</option>
+            <option value="confirmacion-suscripcion">02 — Confirmación de suscripción de tarjeta</option>
           </select>
         </div>
 
