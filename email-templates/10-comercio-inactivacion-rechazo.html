@@ -34,7 +34,7 @@
   </style>
 </head>
 <body>
-  <div class="preheader">Una tarjeta fue inactivada tras un rechazo de pago.</div>
+  <div class="preheader">Una tarjeta fue inactivada tras varios rechazos sucesivos.</div>
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
       <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
@@ -46,18 +46,18 @@
           </tr>
           <tr>
             <td class="status-bar" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px 32px;">
-              <div class="status-text">Tarjeta inactivada por rechazo</div>
+              <div class="status-text">Tarjeta inactivada tras varios rechazos</div>
             </td>
           </tr>
           <tr>
             <td class="content" style="padding: 28px 32px;">
-              <h1 class="heading">Tarjeta inactivada tras un rechazo</h1>
+              <h1 class="heading">Tarjeta inactivada tras varios rechazos</h1>
               <p class="body-text">
-                No se pudo procesar el pago de <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> con la tarjeta terminada en <strong style="color:#0a1929;">[XXXX]</strong>. La tarjeta fue inactivada para <strong style="color:#0a1929;">[COMERCIO]</strong>.
+                Tras varios intentos de cobro rechazados, la tarjeta de <strong style="color:#0a1929;">[PAGADOR_NOMBRE]</strong> terminada en <strong style="color:#0a1929;">[XXXX]</strong> fue inactivada para <strong style="color:#0a1929;">[COMERCIO]</strong>. A continuación se incluye el último motivo de rechazo como referencia.
               </p>
 
               <div class="reason-box">
-                <p class="reason-label">Motivo del rechazo</p>
+                <p class="reason-label">Último motivo de rechazo (referencia)</p>
                 <p class="reason-text">[MOTIVO]</p>
               </div>
 
@@ -68,7 +68,8 @@
                   <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Email</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[PAGADOR_EMAIL]</td></tr></table></td></tr>
                   <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Tarjeta</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">Terminada en [XXXX]</td></tr></table></td></tr>
                   <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">ID suscripción</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;font-family:monospace;">[SUB_ID]</td></tr></table></td></tr>
-                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha del rechazo</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha del último rechazo</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+
                 </table>
               </div>
 
