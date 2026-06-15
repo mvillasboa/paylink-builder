@@ -522,6 +522,7 @@ const templateSubjects: Record<string, string> = {
   "confirmacion-suscripcion": "Tu tarjeta fue registrada correctamente",
   "confirmacion-suscripcion-monto": "Suscripción confirmada con [COMERCIO]",
   "confirmacion-pago": "Pago confirmado a [COMERCIO]",
+  "inactivacion-tarjeta": "Tu tarjeta fue inactivada",
 };
 
 function interpolateTemplate(template: string, data: Record<string, string>): string {
