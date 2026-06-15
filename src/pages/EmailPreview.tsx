@@ -1137,7 +1137,6 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
               <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
-              <div class="header-meta">Notificación al comercio</div>
             </td>
           </tr>
           <tr>
@@ -1222,7 +1221,6 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
               <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
-              <div class="header-meta">Notificación al comercio</div>
             </td>
           </tr>
           <tr>
@@ -1307,7 +1305,6 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
               <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
-              <div class="header-meta">Notificación al comercio</div>
             </td>
           </tr>
           <tr>
@@ -1394,7 +1391,6 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="header" style="background-color: #0a1929; padding: 20px 32px;">
               <div class="header-logo">Walton <span class="header-accent">Pagos</span></div>
-              <div class="header-meta">Notificación al comercio</div>
             </td>
           </tr>
           <tr>
