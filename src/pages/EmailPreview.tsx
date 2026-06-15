@@ -557,6 +557,7 @@ export default function EmailPreview() {
             <option value="link-suscripcion">01 — Link de suscripción de tarjeta</option>
             <option value="confirmacion-suscripcion">02 — Confirmación de suscripción de tarjeta</option>
             <option value="confirmacion-suscripcion-monto">03 — Confirmación de suscripción con monto y frecuencia</option>
+            <option value="confirmacion-pago">04 — Confirmación de pago</option>
           </select>
         </div>
 
