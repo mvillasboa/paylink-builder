@@ -283,7 +283,7 @@ export default function EmailPreview() {
             <div className="w-3 h-3 rounded-full bg-yellow-400" />
             <div className="w-3 h-3 rounded-full bg-green-400" />
             <span className="ml-2 text-xs text-slate-500 font-mono">
-              Asunto: {mockData.COMERCIO} te invita a registrar tu tarjeta
+              Asunto: {interpolateTemplate(templateSubjects[selectedTemplate] || "", mockData)}
             </span>
           </div>
           <div dangerouslySetInnerHTML={{ __html: html }} />
