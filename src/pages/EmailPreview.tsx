@@ -1458,7 +1458,7 @@ const templateSubjects: Record<string, string> = {
 };
 
 function interpolateTemplate(template: string, data: Record<string, string>): string {
-  return template.replace(/\[([A-Z]+)\]/g, (_, key) => data[key] || `[${key}]`);
+  return template.replace(/\[([A-Z_]+)\]/g, (_, key) => data[key] || `[${key}]`);
 }
 
 export default function EmailPreview() {
