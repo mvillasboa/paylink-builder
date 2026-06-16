@@ -1,44 +1,42 @@
 ## Objetivo
 
-Alinear visualmente las plantillas de email con el logo Walton Pagos. Hoy el cyan #14b8d4 compite con el magenta del logo. Aplicamos una paleta dual: **magenta de marca** para todo lo que representa identidad/acción (CTAs, header accent, links primarios, badges destacados) y **cyan más apagado** como soporte para info secundaria. Cambios limitados a los correos; el dashboard, la landing y la app móvil no se tocan.
+Revertir los correos al **cyan #14b8d4 como acento principal** (igual que el resto del producto) y dejar el **magenta #e3589f como toque puntual de marca**, no como color dominante. Así recuperamos el aire tech/pagos y el magenta sigue presente sutilmente para conectar con el logo.
 
-## Paleta resultante (solo correos)
+## Cambios
+
+Revertir todo lo que en la última iteración cambiamos de cyan a magenta, y reintroducir el magenta solo en lugares puntuales y de alto impacto visual.
 
 ```text
-Deep Navy        #0a1929   fondo del header, títulos fuertes (sin cambios)
-Navy 700         #13294a   fondos sutiles / hover (sin cambios)
-Brand Magenta    #e3589f   acento principal: CTAs, links, header accent, badges destacados
-Magenta deep     #b8407d   hover/borde de CTA magenta
-Magenta soft     #fdeaf3   fondo de cajas informativas con tinte de marca
-Support Cyan     #3aa8c2   acento secundario apagado: info, datos, iconos neutros
-Neutrales        sin cambios (#f4f6f8, #e2e8f0, #94a3b8, #475569…)
-Semánticos       sin cambios (verde éxito, ámbar warning, rojo error)
+Revertir (volver a cyan):
+  #e3589f → #14b8d4   (todos los CTAs, links, header accent, bordes de status bar, montos)
+  #fdeaf3 → #e6f7fa   (fondos suaves de status bars con tinte cyan)
+
+Mantener como acento magenta puntual (#e3589f):
+  - Subrayado/borde inferior decorativo de 2px en el CTA principal de cada correo.
+  - Color del "Gs. [MONTO]" en el correo de confirmación de pago (04 y 08), para que el dato más importante destaque con el color de marca.
+  - Pequeño chevron/separador "/" del header accent ya queda cubierto por el logo, así que no se toca.
+
+Sin cambios:
+  - Header con logo blanco sobre Deep Navy.
+  - Colores semánticos (verde éxito, ámbar warning, rojo error).
+  - Neutrales (grises de texto, fondos #f4f6f8 / #ffffff).
 ```
 
-## Aplicación por tipo de elemento
+## Por qué este balance
 
-- **Botones primarios (CTA "Registrar tarjeta", "Ver suscripción", etc.):** fondo magenta `#e3589f`, texto blanco, borde inferior `#b8407d` para sombra sutil.
-- **Links inline dentro del cuerpo:** magenta `#e3589f` con subrayado.
-- **Header accent / detalles de marca:** magenta (el resto del header sigue Deep Navy con el logo blanco ya colocado).
-- **Cajas informativas neutrales (detalle de suscripción, montos, fechas):** se mantienen con borde/etiquetas en el cyan apagado `#3aa8c2` o en gris neutro, según el caso, para no saturar de magenta.
-- **Badges de estado semántico (Tarjeta registrada, Pago procesado, Inactivada, etc.):** se mantienen con sus colores semánticos actuales (verde/ámbar/rojo). No se reemplazan por magenta.
-- **Texto destacado dentro del cuerpo (`<strong>` con color):** sigue en Deep Navy, no se vuelve magenta.
+- El **CTA sigue siendo cyan** (alto contraste sobre blanco, coherente con el dashboard), pero gana un borde inferior magenta de 2px que firma la marca sin saturar.
+- El **monto destacado en magenta** funciona como un punto focal único por correo: el ojo lo encuentra de inmediato y queda asociado al logo.
+- El resto del correo respira igual que antes con el cyan ya conocido.
 
 ## Archivos afectados
 
 - `email-templates/01-link-suscripcion-tarjeta.html` a `10-comercio-inactivacion-rechazo.html`
-- `src/pages/EmailPreview.tsx` (contiene copias inline de cada plantilla que deben quedar sincronizadas)
-- `mem://style/color-palette` y `mem://branding/identity`: actualizar para reflejar que en correos el acento de marca es magenta `#e3589f` con cyan `#3aa8c2` como soporte.
-
-## Detalles técnicos
-
-- Sustituir las apariciones de `#14b8d4` usadas como **acento de marca, CTA o link** por `#e3589f`. Las apariciones que actuaban como **dato/info neutral** (etiquetas, iconos secundarios) pasan a `#3aa8c2` para mantener jerarquía sin chocar con el magenta.
-- En cada CTA: añadir `border-bottom: 2px solid #b8407d` o equivalente para dar profundidad, conservando padding y tipografía actuales.
-- En las cajas con tinte de marca (por ejemplo el bloque "Seguridad" o el detalle resumen) probar fondo `#fdeaf3` con borde izquierdo magenta solo cuando el contexto sea de marca, no de estado.
-- Mantener intactos: colores semánticos (verde éxito `#16a34a`/`#ecfdf5`, ámbar warning, rojo error), grises de texto y fondos `#f4f6f8` / `#ffffff`.
-- Revisar contraste WCAG AA: magenta `#e3589f` sobre blanco da ~3.1:1 (válido para texto grande/botón con texto blanco encima, no para texto pequeño sobre blanco). Por eso los links inline mantendrán subrayado para reforzar accesibilidad y el texto de botones será blanco sobre magenta (contraste ~4.9:1).
+- `src/pages/EmailPreview.tsx` (las mismas copias inline)
+- `mem://style/color-palette`: actualizar la nota para reflejar "cyan como acento principal también en correos, magenta solo como toque puntual (CTA underline + monto destacado)".
 
 ## Validación
 
-- Recorrer las 10 plantillas en `/email-preview` y verificar header, CTA, links, cajas info y badges de estado.
-- Confirmar que el logo blanco del header sigue legible y que el magenta aparece como acento, no como fondo dominante.
+- Recorrer las 10 plantillas en `/email-preview`.
+- Confirmar que cada CTA tiene su borde inferior magenta (2px).
+- Confirmar que los correos con monto (04, 08) muestran el "Gs. [MONTO]" en magenta y el resto del tipográfico en navy/gris.
+- Confirmar que ningún otro elemento quedó en magenta por error.
