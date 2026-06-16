@@ -1,9 +1,50 @@
-# Ajuste: Inactivación tras varios rechazos (no 1 solo)
+# Mejorar contraste del header de los correos
 
-## Contexto
-El producto nunca inactiva una tarjeta por un único rechazo. La inactivación ocurre tras varios rechazos sucesivos. El motivo mostrado es el del último rechazo, como referencia. Los correos actuales (06 y 10) están redactados como si fuera un solo rechazo.
+Actualmente el header usa fondo Deep Navy (`#0a1929`) con el logo blanco. Lo cambiamos a un header claro para mayor contraste y aire visual.
 
-## Cambios
+## Cambios de diseño
 
-### ERROR - plan tool input schema only accepts a single 'content' parameter
-## but user passed both 'content' and 'summary'. Let me use the correct schema.
+- **Fondo del header:** `#0a1929` → `#f8fafc` (gris muy claro)
+- **Logo:** versión blanca → versión a color (`walton-pagos-logo.png`)
+- **Línea divisoria:** agregar `border-bottom: 1px solid #e2e8f0` al header para separarlo del contenido
+- **Sin tocar** el resto del diseño: status bar, contenido, CTAs y footer permanecen igual
+
+## Archivos a modificar
+
+**Templates HTML (10 archivos):**
+- `email-templates/01-link-suscripcion-tarjeta.html`
+- `email-templates/02-confirmacion-suscripcion-tarjeta.html`
+- `email-templates/03-confirmacion-suscripcion-monto-frecuencia.html`
+- `email-templates/04-confirmacion-pago.html`
+- `email-templates/05-inactivacion-tarjeta.html`
+- `email-templates/06-inactivacion-tarjeta-rechazo.html`
+- `email-templates/07-comercio-registro-tarjeta.html`
+- `email-templates/08-comercio-confirmacion-pago.html`
+- `email-templates/09-comercio-inactivacion-usuario.html`
+- `email-templates/10-comercio-inactivacion-rechazo.html`
+
+**Vista previa:**
+- `src/pages/EmailPreview.tsx` — sincronizar los strings HTML inlineados para que el preview refleje el nuevo header.
+
+## Detalles técnicos
+
+En cada template, reemplazar en el `<style>` y en los estilos inline del `<td class="header">`:
+
+```css
+.header {
+  background-color: #f8fafc;       /* antes #0a1929 */
+  padding: 24px 32px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0; /* nuevo */
+}
+```
+
+Y en el `<img>` del logo:
+
+```html
+<img src="/__l5e/assets-v1/.../walton-pagos-logo.png"
+     alt="Walton Pagos" width="180" height="27"
+     style="display:block;border:0;outline:none;height:27px;width:180px;margin:0 auto;" />
+```
+
+(URL exacta del CDN se toma de `src/assets/walton-pagos-logo.png.asset.json`.)
