@@ -36,7 +36,7 @@ const emailTemplates: Record<string, string> = {
     .content { padding: 32px; }
     .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 20px 0; }
     .body-text { color: #4a5568; font-size: 15px; line-height: 1.6; margin: 0 0 24px 0; }
-    .cta-button { display: inline-block; background-color: #14b8d4; color: #ffffff !important; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; text-align: center; border-bottom: 3px solid #b8407d; }
+    .cta-button { display: inline-block; background-color: #14b8d4; color: #ffffff !important; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; text-align: center; }
     .cta-wrapper { text-align: center; margin: 28px 0; }
     .link-fallback { color: #4a5568; font-size: 12px; text-align: center; word-break: break-all; margin-top: 12px; }
     .link-fallback a { color: #14b8d4; text-decoration: underline; }
@@ -77,7 +77,7 @@ const emailTemplates: Record<string, string> = {
                 <strong style="color: #0a1929;">[COMERCIO]</strong> te invita a registrar tu tarjeta para pagos recurrentes. Para completar la suscripción, ingresá al siguiente enlace seguro:
               </p>
               <div class="cta-wrapper">
-                <a href="[LINK]" class="cta-button" style="background-color: #14b8d4; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; display: inline-block; border-bottom: 3px solid #b8407d;">Registrar mi tarjeta</a>
+                <a href="[LINK]" class="cta-button" style="background-color: #14b8d4; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; display: inline-block;">Registrar mi tarjeta</a>
               </div>
               <p class="link-fallback">
                 Si el botón no funciona, copiá y pegá este enlace en tu navegador:<br>
@@ -494,7 +494,7 @@ const emailTemplates: Record<string, string> = {
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                       <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Monto pagado</td>
-                      <td align="right" style="color: #e3589f; font-size: 18px; font-weight: 700;">Gs. [MONTO]</td>
+                      <td align="right" style="color: #14b8d4; font-size: 18px; font-weight: 700;">Gs. [MONTO]</td>
                     </tr>
                   </table>
                 </div>
@@ -1213,7 +1213,7 @@ const emailTemplates: Record<string, string> = {
     .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
     .amount-box { background-color: #0a1929; border-radius: 6px; padding: 18px 20px; margin: 0 0 20px 0; text-align: center; }
     .amount-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 4px 0; }
-    .amount-value { color: #e3589f; font-size: 24px; font-weight: 700; margin: 0; }
+    .amount-value { color: #ffffff; font-size: 24px; font-weight: 700; margin: 0; }
     .section-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 8px 0; }
     .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 16px; margin: 0 0 8px 0; }
     .footer { background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
