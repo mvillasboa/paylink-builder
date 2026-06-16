@@ -1,41 +1,29 @@
-## Objetivo
-Cambiar el header de todas las plantillas de correo de Walton Pagos: fondo blanco en lugar de Deep Navy, logo a color centrado.
+## Problema
 
-## Alcance
-- 10 plantillas HTML en `email-templates/`
-- Preview inline en `src/pages/EmailPreview.tsx`
+El logo actual (`walton-pagos-logo-pink.png`) es una imagen cuadrada de 512×512 px con mucho espacio en blanco arriba y abajo, pero en todas las plantillas de correo se está renderizando con `width="180" height="27"` (proporción 6.67:1). Esto deforma/aplasta el logo horriblemente.
 
-## Cambios a realizar
+## Solución
 
-### 1. Fondo del header
-En todas las plantillas, cambiar `background-color` del header:
-- CSS: `.header { background-color: #0a1929; ... }` → `.header { background-color: #ffffff; ... }`
-- Inline: `style="background-color: #0a1929; ..."` → `style="background-color: #ffffff; ..."`
+1. **Generar una versión apaisada (wordmark)** del logo a partir del actual, eliminando el espacio en blanco superior e inferior, conservando los colores actuales (negro + magenta). Aspect ratio objetivo ~4.5:1 (p. ej. 900×200 px).
 
-### 2. Logo a color
-Cambiar la imagen del logo en todos los headers:
-- De: `walton-pagos-logo-white.png` (asset ID: `bbde0269-b4eb-4efb-a0d7-9c8725ad9365`)
-- A: `walton-pagos-logo.png` (asset ID: `baaea9a7-40c8-4c8e-ac8c-be77b9d47420`)
+2. **Subir el nuevo asset** como `src/assets/walton-pagos-logo-wordmark.png` vía `lovable-assets`.
 
-### 3. Centrado del logo
-Asegurar `text-align: center` en todos los headers:
-- Las plantillas de pagador (01-06) ya lo tienen.
-- Las plantillas de comercio (07-10) no lo tienen; agregar `text-align: center` al CSS y al style inline del `<td class="header">`.
+3. **Reemplazar la URL** del logo en todas las plantillas y en `EmailPreview.tsx`:
+   - URL antigua: `537d82b2-…/walton-pagos-logo-pink.png`
+   - URL nueva: `<nuevo asset id>/walton-pagos-logo-wordmark.png`
 
-### 4. Limpieza CSS
-Eliminar las reglas CSS obsoletas `.header-logo` y `.header-accent` de todas las plantillas, ya que el logo ahora es una imagen.
+4. **Ajustar dimensiones de render** en los 10 templates + `EmailPreview.tsx`:
+   - De `width="180" height="27"` (deformado) a `width="180" height="40"` (proporción real ~4.5:1).
+   - Actualizar el `style="height:27px;width:180px;"` inline en la misma etiqueta `<img>`.
 
-### Archivos a modificar
-```
-email-templates/01-link-suscripcion-tarjeta.html
-email-templates/02-confirmacion-suscripcion-tarjeta.html
-email-templates/03-confirmacion-suscripcion-monto-frecuencia.html
-email-templates/04-confirmacion-pago.html
-email-templates/05-inactivacion-tarjeta.html
-email-templates/06-inactivacion-tarjeta-rechazo.html
-email-templates/07-comercio-registro-tarjeta.html
-email-templates/08-comercio-confirmacion-pago.html
-email-templates/09-comercio-inactivacion-usuario.html
-email-templates/10-comercio-inactivacion-rechazo.html
-src/pages/EmailPreview.tsx
-```
+5. **Eliminar el asset antiguo** (`walton-pagos-logo-pink.png.asset.json`) para limpiar.
+
+## Archivos a modificar
+
+- Crear: `src/assets/walton-pagos-logo-wordmark.png.asset.json`
+- Eliminar: `src/assets/walton-pagos-logo-pink.png.asset.json`
+- Editar: los 10 `email-templates/*.html` + `src/pages/EmailPreview.tsx`
+
+## Verificación
+
+Tras los cambios, abrir `/email-preview` y confirmar que el logo se ve nítido, proporcionado y centrado sobre el header blanco en todas las plantillas.
