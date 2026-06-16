@@ -62,7 +62,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
@@ -158,7 +158,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
@@ -287,7 +287,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
@@ -436,7 +436,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
@@ -691,7 +691,7 @@ const emailTemplates: Record<string, string> = {
           <!-- Header -->
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <!-- Status Bar -->
@@ -997,7 +997,7 @@ const emailTemplates: Record<string, string> = {
           <!-- Header -->
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <!-- Status Bar -->
@@ -1147,7 +1147,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 20px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
@@ -1231,7 +1231,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 20px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
@@ -1315,7 +1315,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 20px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
@@ -1401,7 +1401,7 @@ const emailTemplates: Record<string, string> = {
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 20px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/537d82b2-11de-4a94-ae93-af08494d8aee/walton-pagos-logo-pink.png" alt="Walton Pagos" width="180" height="27" style="display:block;border:0;outline:none;height:27px;width:180px;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;" />
             </td>
           </tr>
           <tr>
