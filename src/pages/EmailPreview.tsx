@@ -30,22 +30,22 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 24px 32px; text-align: center; }
     .header-logo { color: #ffffff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
-    .header-accent { color: #e3589f; }
-    .status-bar { background-color: #fdeaf3; border-left: 4px solid #e3589f; padding: 12px 32px; }
+    .header-accent { color: #14b8d4; }
+    .status-bar { background-color: #e6f7fa; border-left: 4px solid #14b8d4; padding: 12px 32px; }
     .status-text { color: #0a1929; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
     .content { padding: 32px; }
     .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 20px 0; }
     .body-text { color: #4a5568; font-size: 15px; line-height: 1.6; margin: 0 0 24px 0; }
-    .cta-button { display: inline-block; background-color: #e3589f; color: #ffffff !important; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; text-align: center; }
+    .cta-button { display: inline-block; background-color: #14b8d4; color: #ffffff !important; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; text-align: center; }
     .cta-wrapper { text-align: center; margin: 28px 0; }
     .link-fallback { color: #4a5568; font-size: 12px; text-align: center; word-break: break-all; margin-top: 12px; }
-    .link-fallback a { color: #e3589f; text-decoration: underline; }
+    .link-fallback a { color: #14b8d4; text-decoration: underline; }
     .info-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 20px; margin: 24px 0; }
     .info-box-title { color: #0a1929; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin: 0 0 8px 0; }
     .info-box-text { color: #4a5568; font-size: 13px; line-height: 1.5; margin: 0; }
     .alt-action { background-color: #fff8e6; border: 1px solid #fde68a; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
     .alt-action-text { color: #92400e; font-size: 13px; line-height: 1.5; margin: 0; }
-    .alt-action-text a { color: #e3589f; text-decoration: underline; }
+    .alt-action-text a { color: #14b8d4; text-decoration: underline; }
     .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; }
     .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
     @media screen and (max-width: 600px) {
@@ -66,7 +66,7 @@ const emailTemplates: Record<string, string> = {
             </td>
           </tr>
           <tr>
-            <td class="status-bar" style="background-color: #fdeaf3; border-left: 4px solid #e3589f; padding: 12px 32px;">
+            <td class="status-bar" style="background-color: #e6f7fa; border-left: 4px solid #14b8d4; padding: 12px 32px;">
               <div class="status-text">Registro de tarjeta pendiente</div>
             </td>
           </tr>
@@ -77,7 +77,7 @@ const emailTemplates: Record<string, string> = {
                 <strong style="color: #0a1929;">[COMERCIO]</strong> te invita a registrar tu tarjeta para pagos recurrentes. Para completar la suscripción, ingresá al siguiente enlace seguro:
               </p>
               <div class="cta-wrapper">
-                <a href="[LINK]" class="cta-button" style="background-color: #e3589f; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; display: inline-block;">Registrar mi tarjeta</a>
+                <a href="[LINK]" class="cta-button" style="background-color: #14b8d4; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; display: inline-block;">Registrar mi tarjeta</a>
               </div>
               <p class="link-fallback">
                 Si el botón no funciona, copiá y pegá este enlace en tu navegador:<br>
@@ -122,7 +122,7 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 24px 32px; text-align: center; }
     .header-logo { color: #ffffff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
-    .header-accent { color: #e3589f; }
+    .header-accent { color: #14b8d4; }
     .status-bar { background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 32px; }
     .status-text { color: #0a1929; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
     .content { padding: 32px; }
@@ -141,7 +141,7 @@ const emailTemplates: Record<string, string> = {
     .security-box { background-color: #fffbeb; border: 1px solid #fcd34d; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
     .security-text { color: #92400e; font-size: 13px; line-height: 1.5; margin: 0; }
     .contact-cta { text-align: center; margin: 24px 0 0 0; }
-    .contact-link { color: #e3589f; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .contact-link { color: #14b8d4; font-size: 14px; font-weight: 600; text-decoration: none; }
     .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; }
     .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
     @media screen and (max-width: 600px) {
@@ -222,7 +222,7 @@ const emailTemplates: Record<string, string> = {
                 </p>
               </div>
               <div class="contact-cta">
-                <a href="mailto:[CONTACTO]" class="contact-link" style="color: #e3589f; font-size: 14px; font-weight: 600; text-decoration: none;">Consultas o baja: [CONTACTO]</a>
+                <a href="mailto:[CONTACTO]" class="contact-link" style="color: #14b8d4; font-size: 14px; font-weight: 600; text-decoration: none;">Consultas o baja: [CONTACTO]</a>
               </div>
             </td>
           </tr>
@@ -252,7 +252,7 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 24px 32px; text-align: center; }
     .header-logo { color: #ffffff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
-    .header-accent { color: #e3589f; }
+    .header-accent { color: #14b8d4; }
     .status-bar { background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 32px; }
     .status-text { color: #0a1929; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
     .content { padding: 32px; }
@@ -268,9 +268,9 @@ const emailTemplates: Record<string, string> = {
     .detail-value { color: #0a1929; font-size: 14px; font-weight: 600; }
     .info-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 20px; margin: 24px 0; }
     .info-box-text { color: #4a5568; font-size: 14px; line-height: 1.5; margin: 0; }
-    .contact-box { background-color: #fdeaf3; border: 1px solid #e3589f; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
+    .contact-box { background-color: #e6f7fa; border: 1px solid #14b8d4; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
     .contact-box-text { color: #0a1929; font-size: 14px; line-height: 1.5; margin: 0; }
-    .contact-box-text a { color: #e3589f; text-decoration: none; font-weight: 600; }
+    .contact-box-text a { color: #14b8d4; text-decoration: none; font-weight: 600; }
     .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; }
     .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
     @media screen and (max-width: 600px) {
@@ -399,7 +399,7 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 24px 32px; text-align: center; }
     .header-logo { color: #ffffff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
-    .header-accent { color: #e3589f; }
+    .header-accent { color: #14b8d4; }
     .status-bar { background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 32px; }
     .status-text { color: #0a1929; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
     .content { padding: 32px; }
@@ -416,10 +416,10 @@ const emailTemplates: Record<string, string> = {
     .receipt-value { color: #0a1929; font-size: 14px; font-weight: 600; }
     .receipt-total { background-color: #0a1929; border-radius: 6px; padding: 14px 16px; margin-top: 16px; }
     .receipt-total-label { color: #94a3b8; font-size: 13px; font-weight: 600; }
-    .receipt-total-value { color: #e3589f; font-size: 18px; font-weight: 700; }
-    .contact-box { background-color: #fdeaf3; border: 1px solid #e3589f; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
+    .receipt-total-value { color: #14b8d4; font-size: 18px; font-weight: 700; }
+    .contact-box { background-color: #e6f7fa; border: 1px solid #14b8d4; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
     .contact-box-text { color: #0a1929; font-size: 14px; line-height: 1.5; margin: 0; text-align: center; }
-    .contact-box-text a { color: #e3589f; text-decoration: none; font-weight: 600; }
+    .contact-box-text a { color: #14b8d4; text-decoration: none; font-weight: 600; }
     .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; }
     .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
     @media screen and (max-width: 600px) {
@@ -494,7 +494,7 @@ const emailTemplates: Record<string, string> = {
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                       <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Monto pagado</td>
-                      <td align="right" style="color: #e3589f; font-size: 18px; font-weight: 700;">Gs. [MONTO]</td>
+                      <td align="right" style="color: #14b8d4; font-size: 18px; font-weight: 700;">Gs. [MONTO]</td>
                     </tr>
                   </table>
                 </div>
@@ -554,7 +554,7 @@ const emailTemplates: Record<string, string> = {
       letter-spacing: 0.5px;
     }
     .header-accent {
-      color: #e3589f;
+      color: #14b8d4;
     }
     .status-bar {
       background-color: #f1f5f9;
@@ -639,8 +639,8 @@ const emailTemplates: Record<string, string> = {
       margin: 0;
     }
     .contact-box {
-      background-color: #fdeaf3;
-      border: 1px solid #e3589f;
+      background-color: #e6f7fa;
+      border: 1px solid #14b8d4;
       border-radius: 6px;
       padding: 16px 20px;
       margin: 24px 0 0 0;
@@ -653,7 +653,7 @@ const emailTemplates: Record<string, string> = {
       text-align: center;
     }
     .contact-box-text a {
-      color: #e3589f;
+      color: #14b8d4;
       text-decoration: none;
       font-weight: 600;
     }
@@ -810,7 +810,7 @@ const emailTemplates: Record<string, string> = {
       letter-spacing: 0.5px;
     }
     .header-accent {
-      color: #e3589f;
+      color: #14b8d4;
     }
     .status-bar {
       background-color: #fef3c7;
@@ -922,12 +922,12 @@ const emailTemplates: Record<string, string> = {
       margin-top: 12px;
     }
     .link-fallback a {
-      color: #e3589f;
+      color: #14b8d4;
       text-decoration: underline;
     }
     .contact-box {
-      background-color: #fdeaf3;
-      border: 1px solid #e3589f;
+      background-color: #e6f7fa;
+      border: 1px solid #14b8d4;
       border-radius: 6px;
       padding: 16px 20px;
       margin: 24px 0 0 0;
@@ -940,7 +940,7 @@ const emailTemplates: Record<string, string> = {
       text-align: center;
     }
     .contact-box-text a {
-      color: #e3589f;
+      color: #14b8d4;
       text-decoration: none;
       font-weight: 600;
     }
@@ -1121,7 +1121,7 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 20px 32px; }
     .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
-    .header-accent { color: #e3589f; }
+    .header-accent { color: #14b8d4; }
     .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
     .status-bar { background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 10px 32px; }
     .status-text { color: #15803d; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
@@ -1130,7 +1130,7 @@ const emailTemplates: Record<string, string> = {
     .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
     .section-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 8px 0; }
     .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 16px; margin: 0 0 20px 0; }
-    .info-box { background-color: #f1f5f9; border-left: 3px solid #e3589f; padding: 12px 16px; margin: 0 0 8px 0; }
+    .info-box { background-color: #f1f5f9; border-left: 3px solid #14b8d4; padding: 12px 16px; margin: 0 0 8px 0; }
     .info-text { color: #475569; font-size: 13px; line-height: 1.5; margin: 0; }
     .footer { background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
     .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
@@ -1204,7 +1204,7 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 20px 32px; }
     .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
-    .header-accent { color: #e3589f; }
+    .header-accent { color: #14b8d4; }
     .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
     .status-bar { background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 10px 32px; }
     .status-text { color: #15803d; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
@@ -1289,7 +1289,7 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 20px 32px; }
     .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
-    .header-accent { color: #e3589f; }
+    .header-accent { color: #14b8d4; }
     .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
     .status-bar { background-color: #f1f5f9; border-left: 4px solid #94a3b8; padding: 10px 32px; }
     .status-text { color: #475569; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
@@ -1372,7 +1372,7 @@ const emailTemplates: Record<string, string> = {
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #0a1929; padding: 20px 32px; }
     .header-logo { color: #ffffff; font-size: 18px; font-weight: 700; letter-spacing: 0.4px; }
-    .header-accent { color: #e3589f; }
+    .header-accent { color: #14b8d4; }
     .header-meta { color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
     .status-bar { background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px 32px; }
     .status-text { color: #92400e; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
@@ -1384,7 +1384,7 @@ const emailTemplates: Record<string, string> = {
     .reason-box { background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 14px 16px; margin: 0 0 20px 0; }
     .reason-label { color: #92400e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 4px 0; }
     .reason-text { color: #78350f; font-size: 14px; font-weight: 600; margin: 0; }
-    .notice-box { background-color: #f1f5f9; border-left: 3px solid #e3589f; padding: 12px 16px; margin: 0 0 8px 0; }
+    .notice-box { background-color: #f1f5f9; border-left: 3px solid #14b8d4; padding: 12px 16px; margin: 0 0 8px 0; }
     .notice-text { color: #475569; font-size: 13px; line-height: 1.5; margin: 0; }
     .footer { background-color: #f4f6f8; padding: 18px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
     .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
@@ -1480,7 +1480,7 @@ export default function EmailPreview() {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="bg-[#0a1929] text-white px-6 py-4 flex items-center gap-4">
-        <Link to="/" className="text-white hover:text-[#e3589f] transition-colors">
+        <Link to="/" className="text-white hover:text-[#14b8d4] transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <h1 className="text-lg font-semibold">Vista previa de emails</h1>
