@@ -34,7 +34,7 @@ export default function MobileLogin() {
 
   return (
     <PhoneFrame>
-      <div className="flex flex-col min-h-full bg-gradient-to-b from-secondary/15 via-primary/5 to-background px-6 pt-12 pb-8">
+      <div className="flex flex-col min-h-full bg-background px-6 pt-12 pb-8">
         {/* Brand */}
         <div className="flex flex-col items-center text-center mb-10">
           <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-glow mb-4">
@@ -60,7 +60,7 @@ export default function MobileLogin() {
                 placeholder="tu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 h-12 rounded-xl"
+                className="pl-10 h-12 rounded-xl border-border bg-background focus-visible:ring-ring/40"
                 autoComplete="email"
               />
             </div>
@@ -78,7 +78,7 @@ export default function MobileLogin() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-10 h-12 rounded-xl"
+                className="pl-10 pr-10 h-12 rounded-xl border-border bg-background focus-visible:ring-ring/40"
                 autoComplete="current-password"
               />
               <button
@@ -121,9 +121,8 @@ export default function MobileLogin() {
 
           <Button
             type="button"
-            variant="secondary"
             onClick={handleRegister}
-            className="w-full h-12 rounded-xl gap-2"
+            className="w-full h-12 rounded-xl gap-2 bg-emerald-500 hover:bg-emerald-600 text-white"
           >
             <UserPlus className="h-5 w-5" />
             Registrarse

@@ -1,15 +1,11 @@
-# Plan: color secundario en /app/login
+Implementar en `src/pages/mobile-app/MobileLogin.tsx` la dirección visual seleccionada por el usuario.
 
-## Qué se va a hacer
-1. **Fondo con acento secundario**: reemplazar el degradado actual `from-primary/5 via-background to-background` por uno que incorpore el Cyan Tech (#14b8d4) como un resplandor suave en la parte superior, manteniendo la legibilidad y el look financiero de Walpay.
-2. **CTA secundario con presencia**: convertir el botón "Ingresar con biometría" —actualmente outline— en un botón secundario sólido con fondo `secondary` y texto `secondary-foreground`, para que el cyan aparezca como color de acción alternativa.
-3. **Icono de marca con halo sutil**: agregar un `shadow-glow` (definido en `index.css`) al recuadro de la marca para reforzar el acento cyan sin saturar.
+Cambios concretos:
 
-## Archivos a editar
-- `src/pages/mobile-app/MobileLogin.tsx`: degradado de fondo, variante del botón biométrico, sombra del logo.
+1. Eliminar el fondo degradado (`bg-gradient-to-b ...`) del contenedor del login y usar un fondo limpio consistente con la app (por ejemplo `bg-background` o un sutil `bg-muted/30`).
+2. Reemplazar el botón de "Registrarse" secundario cyan por un botón sólido color esmeralda (`bg-emerald-500` / `hover:bg-emerald-600` con texto blanco), manteniendo su forma `rounded-xl` y ancho completo.
+3. Ajustar el estilo de los inputs para que sean limpios, con bordes sutiles (`border-border`) y estado focus con anillo sutil, acorde a la dirección minimalista refinada.
+4. Mantener el `PhoneFrame` envolvente y la funcionalidad existente (formulario de login, mostrar/ocultar contraseña, recuperación y registro simulado).
+5. Verificar el resultado en el preview y ejecutar el typecheck para asegurar que no hay errores de build.
 
-## Criterios de aceptación
-- El login móvil muestra un fondo que degrada desde un tinte cyan sutil hacia el fondo base de la app.
-- El botón de biometría usa el color secundario del sistema de diseño.
-- No se agregan colores hardcodeados; solo se usan tokens `bg-secondary`, `text-secondary-foreground`, `from-secondary/15`, `shadow-glow`, etc.
-- Se mantiene el contraste y la accesibilidad en ambos temas (claro/oscuro).
+No se agrega ni cambia lógica de negocio; solo es refinado visual del login existente.
