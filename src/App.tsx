@@ -76,6 +76,7 @@ const App = () => (
               <Route path="reports" element={<DashboardReports />} />
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
+            <Route path="/app/login" element={<MobileLogin />} />
             <Route path="/app" element={<MobileAppLayout />}>
               <Route index element={<MobileHome />} />
               <Route path="cards" element={<MobileCards />} />
