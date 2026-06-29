@@ -124,8 +124,7 @@ export default function MobileLogin() {
           <Button
             type="button"
             onClick={handleRegister}
-            variant="outline"
-            className="w-full h-12 rounded-xl gap-2 border-primary/30 text-primary hover:bg-primary/5"
+            className="w-full h-12 rounded-xl gap-2 bg-[hsl(var(--mint))] text-[hsl(var(--mint-foreground))] hover:bg-[hsl(var(--mint)/0.9)]"
           >
             <UserPlus className="h-5 w-5" />
             Registrarse

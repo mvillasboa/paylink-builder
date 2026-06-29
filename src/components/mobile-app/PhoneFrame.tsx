@@ -27,6 +27,9 @@ export function PhoneFrame({ children }: PhoneFrameProps) {
           "--accent": "210 40% 96%",
           "--accent-foreground": "210 100% 20%",
           "--ring": "210 100% 26%",
+          // Mint green accent (#20c997)
+          "--mint": "161 63% 51%",
+          "--mint-foreground": "0 0% 100%",
         } as React.CSSProperties
       }
     >
