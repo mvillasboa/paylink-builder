@@ -35,10 +35,10 @@ export default function MobileLogin() {
 
   return (
     <PhoneFrame>
-      <div className="flex flex-col min-h-full bg-gradient-to-b from-primary/5 via-background to-background px-6 pt-12 pb-8">
+      <div className="flex flex-col min-h-full bg-gradient-to-b from-secondary/15 via-primary/5 to-background px-6 pt-12 pb-8">
         {/* Brand */}
         <div className="flex flex-col items-center text-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg mb-4">
+          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-glow mb-4">
             <span className="text-primary-foreground font-bold text-2xl">W</span>
           </div>
           <h1 className="text-2xl font-bold text-foreground">Walpay</h1>
@@ -122,7 +122,7 @@ export default function MobileLogin() {
 
           <Button
             type="button"
-            variant="outline"
+            variant="secondary"
             onClick={handleBiometric}
             className="w-full h-12 rounded-xl gap-2"
           >
