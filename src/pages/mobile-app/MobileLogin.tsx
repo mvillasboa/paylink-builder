@@ -122,11 +122,11 @@ export default function MobileLogin() {
           <Button
             type="button"
             variant="secondary"
-            onClick={handleBiometric}
+            onClick={handleRegister}
             className="w-full h-12 rounded-xl gap-2"
           >
-            <Fingerprint className="h-5 w-5" />
-            Ingresar con biometría
+            <UserPlus className="h-5 w-5" />
+            Registrarse
           </Button>
         </form>
 
