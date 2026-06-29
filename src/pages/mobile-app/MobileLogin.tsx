@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserPlus, Eye, EyeOff, Mail, Lock } from "lucide-react";
+import walpayMark from "@/assets/walpay-mark.png.asset.json";
 import { toast } from "sonner";
 
 export default function MobileLogin() {
@@ -37,10 +38,11 @@ export default function MobileLogin() {
       <div className="flex flex-col min-h-full bg-background px-6 pt-12 pb-8">
         {/* Brand */}
         <div className="flex flex-col items-center text-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-glow mb-4">
-            <span className="text-primary-foreground font-bold text-2xl">W</span>
-          </div>
-          <h1 className="text-2xl font-bold text-foreground">Walpay</h1>
+          <img
+            src={walpayMark.url}
+            alt="W pagos"
+            className="h-20 w-auto object-contain mb-4"
+          />
           <p className="text-sm text-muted-foreground mt-1">
             Gestioná tus tarjetas y suscripciones
           </p>
@@ -122,7 +124,8 @@ export default function MobileLogin() {
           <Button
             type="button"
             onClick={handleRegister}
-            className="w-full h-12 rounded-xl gap-2 bg-emerald-500 hover:bg-emerald-600 text-white"
+            variant="outline"
+            className="w-full h-12 rounded-xl gap-2 border-primary/30 text-primary hover:bg-primary/5"
           >
             <UserPlus className="h-5 w-5" />
             Registrarse
