@@ -39,6 +39,7 @@ import MobileCards from "./pages/mobile-app/MobileCards";
 import MobileSubscriptions from "./pages/mobile-app/MobileSubscriptions";
 import MobilePayments from "./pages/mobile-app/MobilePayments";
 import MobileProfile from "./pages/mobile-app/MobileProfile";
+import MobileLogin from "./pages/mobile-app/MobileLogin";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ const App = () => (
               <Route path="reports" element={<DashboardReports />} />
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
+            <Route path="/app/login" element={<MobileLogin />} />
             <Route path="/app" element={<MobileAppLayout />}>
               <Route index element={<MobileHome />} />
               <Route path="cards" element={<MobileCards />} />
