@@ -39,6 +39,7 @@ import MobileCards from "./pages/mobile-app/MobileCards";
 import MobileSubscriptions from "./pages/mobile-app/MobileSubscriptions";
 import MobilePayments from "./pages/mobile-app/MobilePayments";
 import MobileProfile from "./pages/mobile-app/MobileProfile";
+import MobileLogin from "./pages/mobile-app/MobileLogin";
 
 const queryClient = new QueryClient();
 
