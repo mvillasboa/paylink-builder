@@ -1,29 +1,15 @@
-## Problema
+# Plan: color secundario en /app/login
 
-El logo actual (`walton-pagos-logo-pink.png`) es una imagen cuadrada de 512×512 px con mucho espacio en blanco arriba y abajo, pero en todas las plantillas de correo se está renderizando con `width="180" height="27"` (proporción 6.67:1). Esto deforma/aplasta el logo horriblemente.
+## Qué se va a hacer
+1. **Fondo con acento secundario**: reemplazar el degradado actual `from-primary/5 via-background to-background` por uno que incorpore el Cyan Tech (#14b8d4) como un resplandor suave en la parte superior, manteniendo la legibilidad y el look financiero de Walpay.
+2. **CTA secundario con presencia**: convertir el botón "Ingresar con biometría" —actualmente outline— en un botón secundario sólido con fondo `secondary` y texto `secondary-foreground`, para que el cyan aparezca como color de acción alternativa.
+3. **Icono de marca con halo sutil**: agregar un `shadow-glow` (definido en `index.css`) al recuadro de la marca para reforzar el acento cyan sin saturar.
 
-## Solución
+## Archivos a editar
+- `src/pages/mobile-app/MobileLogin.tsx`: degradado de fondo, variante del botón biométrico, sombra del logo.
 
-1. **Generar una versión apaisada (wordmark)** del logo a partir del actual, eliminando el espacio en blanco superior e inferior, conservando los colores actuales (negro + magenta). Aspect ratio objetivo ~4.5:1 (p. ej. 900×200 px).
-
-2. **Subir el nuevo asset** como `src/assets/walton-pagos-logo-wordmark.png` vía `lovable-assets`.
-
-3. **Reemplazar la URL** del logo en todas las plantillas y en `EmailPreview.tsx`:
-   - URL antigua: `537d82b2-…/walton-pagos-logo-pink.png`
-   - URL nueva: `<nuevo asset id>/walton-pagos-logo-wordmark.png`
-
-4. **Ajustar dimensiones de render** en los 10 templates + `EmailPreview.tsx`:
-   - De `width="180" height="27"` (deformado) a `width="180" height="40"` (proporción real ~4.5:1).
-   - Actualizar el `style="height:27px;width:180px;"` inline en la misma etiqueta `<img>`.
-
-5. **Eliminar el asset antiguo** (`walton-pagos-logo-pink.png.asset.json`) para limpiar.
-
-## Archivos a modificar
-
-- Crear: `src/assets/walton-pagos-logo-wordmark.png.asset.json`
-- Eliminar: `src/assets/walton-pagos-logo-pink.png.asset.json`
-- Editar: los 10 `email-templates/*.html` + `src/pages/EmailPreview.tsx`
-
-## Verificación
-
-Tras los cambios, abrir `/email-preview` y confirmar que el logo se ve nítido, proporcionado y centrado sobre el header blanco en todas las plantillas.
+## Criterios de aceptación
+- El login móvil muestra un fondo que degrada desde un tinte cyan sutil hacia el fondo base de la app.
+- El botón de biometría usa el color secundario del sistema de diseño.
+- No se agregan colores hardcodeados; solo se usan tokens `bg-secondary`, `text-secondary-foreground`, `from-secondary/15`, `shadow-glow`, etc.
+- Se mantiene el contraste y la accesibilidad en ambos temas (claro/oscuro).
