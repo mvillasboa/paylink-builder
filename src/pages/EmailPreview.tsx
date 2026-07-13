@@ -150,22 +150,6 @@ const emailTemplates: Record<string, string> = {
                   WhatsApp: <a href="tel:[WHATSAPP_WALTON]" style="color: #dc2626; text-decoration: none; font-weight: 600;">[WHATSAPP_WALTON]</a>
                 </p>
               </div>
-
-              <div class="security-box" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0;">
-                <p class="security-title" style="color: #0a1929; font-size: 13px; font-weight: 700; margin: 0 0 8px 0;">🔒 Seguridad</p>
-                <p class="security-text" style="color: #4a5568; font-size: 12px; line-height: 1.6; margin: 0;">
-                  Walton Pagos nunca solicitará por correo electrónico, teléfono o WhatsApp:
-                </p>
-                <ul class="security-list" style="color: #4a5568; font-size: 12px; line-height: 1.7; margin: 6px 0 8px 0; padding-left: 18px;">
-                  <li>PIN de tu tarjeta.</li>
-                  <li>Códigos SMS u OTP.</li>
-                  <li>Contraseñas.</li>
-                  <li>Credenciales de aplicaciones bancarias.</li>
-                </ul>
-                <p class="security-text" style="color: #4a5568; font-size: 12px; line-height: 1.6; margin: 0;">
-                  El registro seguro de tu tarjeta se realiza exclusivamente mediante el botón <strong>"Registrar mi tarjeta"</strong>.
-                </p>
-              </div>
             </td>
           </tr>
           <tr>
