@@ -573,7 +573,7 @@ const emailTemplates: Record<string, string> = {
               <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 16px 0 0 0;">
                 <p style="color: #0a1929; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin: 0 0 8px 0;">¿No reconocés este pago?</p>
                 <p style="color: #4a5568; font-size: 14px; line-height: 1.5; margin: 0;">
-                  Comunicate inmediatamente con Walton Pagos al <a href="tel:[TELEFONO_WALTON_1]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_1]</a>, <a href="tel:[TELEFONO_WALTON_2]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_2]</a> o al correo <a href="mailto:[EMAIL_WALTON]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[EMAIL_WALTON]</a>.
+                  Comunicate inmediatamente con Walton Pagos al <a href="tel:[TELEFONO_WALTON_1]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_1]</a> o al correo <a href="mailto:[EMAIL_WALTON]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[EMAIL_WALTON]</a>.
                 </p>
               </div>
             </td>
