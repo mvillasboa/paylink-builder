@@ -15,10 +15,18 @@ const mockData: Record<string, string> = {
   FRECUENCIA: "mensual",
   XXXX: "4567",
   FECHA: "14 de junio de 2026",
+  FECHA_HORA_PAGO: "14 de junio de 2026, 15:42 hs",
   PAGADOR_NOMBRE: "Malena Pereira",
   PAGADOR_EMAIL: "malena.pereira@email.com",
   SUB_ID: "sub_8f3a2b1c9d",
   MOTIVO: "Fondos insuficientes",
+  EMAIL_COMERCIO: "contacto@villarricadental.com",
+  WHATSAPP_COMERCIO: "+595 981 555 123",
+  TELEFONO_WALTON_1: "+595 21 700 9000",
+  TELEFONO_WALTON_2: "+595 981 700 900",
+  EMAIL_WALTON: "soporte@waltonpagos.com",
+  OPERACION_ID: "WP-2026-000184573",
+  CONCEPTO: "Consulta odontológica",
 };
 
 const emailTemplates: Record<string, string> = {
