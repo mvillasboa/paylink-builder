@@ -545,14 +545,6 @@ const emailTemplates: Record<string, string> = {
                     <td style="color: #64748b; font-size: 13px;">Tarjeta</td>
                     <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
                   </tr></table></td></tr>
-                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
-                    <td style="color: #64748b; font-size: 13px;">Concepto</td>
-                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[CONCEPTO]</td>
-                  </tr></table></td></tr>
-                  <tr><td style="padding: 10px 0;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
-                    <td style="color: #64748b; font-size: 13px;">N.º de operación</td>
-                    <td align="right" style="color: #0a1929; font-size: 13px; font-weight: 600; font-family: 'SF Mono', Menlo, Consolas, monospace;">[OPERACION_ID]</td>
-                  </tr></table></td></tr>
                 </table>
                 <div class="receipt-total" style="background-color: #0a1929; border-radius: 6px; padding: 14px 16px; margin-top: 16px;">
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
