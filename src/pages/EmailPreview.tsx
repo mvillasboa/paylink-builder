@@ -15,10 +15,18 @@ const mockData: Record<string, string> = {
   FRECUENCIA: "mensual",
   XXXX: "4567",
   FECHA: "14 de junio de 2026",
+  FECHA_HORA_PAGO: "14 de junio de 2026, 15:42 hs",
   PAGADOR_NOMBRE: "Malena Pereira",
   PAGADOR_EMAIL: "malena.pereira@email.com",
   SUB_ID: "sub_8f3a2b1c9d",
   MOTIVO: "Fondos insuficientes",
+  EMAIL_COMERCIO: "contacto@villarricadental.com",
+  WHATSAPP_COMERCIO: "+595 981 555 123",
+  TELEFONO_WALTON_1: "+595 21 700 9000",
+  TELEFONO_WALTON_2: "+595 981 700 900",
+  EMAIL_WALTON: "soporte@waltonpagos.com",
+  OPERACION_ID: "WP-2026-000184573",
+  CONCEPTO: "Consulta odontológica",
 };
 
 const emailTemplates: Record<string, string> = {
@@ -509,44 +517,42 @@ const emailTemplates: Record<string, string> = {
                   <span class="success-check" style="color: #10b981; font-size: 32px;">&#10003;</span>
                 </div>
               </div>
-              <h1 class="heading">¡Pago recibido!</h1>
+              <h1 class="heading">¡Pago procesado correctamente!</h1>
+              <p class="greeting" style="color: #0a1929; font-size: 16px; font-weight: 600; margin: 0 0 12px 0; text-align: center;">Hola, [PAGADOR_NOMBRE]:</p>
               <p class="body-text">
-                Recibimos tu pago a <strong style="color: #0a1929;">[COMERCIO]</strong> por <strong style="color: #0a1929;">Gs. [MONTO]</strong>.<br>
-                Tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong>.
+                Procesamos correctamente tu pago a <strong style="color: #0a1929;">[COMERCIO]</strong> por <strong style="color: #0a1929;">Gs. [MONTO]</strong>.
               </p>
               <div class="receipt-box">
                 <div class="receipt-title" style="text-align: center;">Comprobante de pago</div>
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                        <tr>
-                          <td style="color: #64748b; font-size: 13px;">Comercio</td>
-                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[COMERCIO]</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                        <tr>
-                          <td style="color: #64748b; font-size: 13px;">Tarjeta</td>
-                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                        <tr>
-                          <td style="color: #64748b; font-size: 13px;">Fecha de pago</td>
-                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA]</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Comercio</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[COMERCIO]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Razón social</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RAZON_SOCIAL]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">RUC</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RUC]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Fecha y hora</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA_HORA_PAGO]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Tarjeta</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Concepto</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[CONCEPTO]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">N.º de operación</td>
+                    <td align="right" style="color: #0a1929; font-size: 13px; font-weight: 600; font-family: 'SF Mono', Menlo, Consolas, monospace;">[OPERACION_ID]</td>
+                  </tr></table></td></tr>
                 </table>
                 <div class="receipt-total" style="background-color: #0a1929; border-radius: 6px; padding: 14px 16px; margin-top: 16px;">
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -558,8 +564,16 @@ const emailTemplates: Record<string, string> = {
                 </div>
               </div>
               <div class="contact-box">
-                <p class="contact-box-text" style="text-align: center;">
-                  Para consultas sobre este pago o sobre la baja del servicio, contactá a: <a href="mailto:[CONTACTO]">[CONTACTO]</a>.
+                <p class="contact-box-text" style="text-align: left; margin: 0 0 8px 0;"><strong style="color: #0a1929; font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px;">Consultas sobre el servicio</strong></p>
+                <p class="contact-box-text" style="text-align: left;">
+                  Para consultas sobre el servicio contratado, el importe cobrado, la factura o la baja de la suscripción, comunicate directamente con <strong>[COMERCIO]</strong>:<br>
+                  <a href="mailto:[EMAIL_COMERCIO]">[EMAIL_COMERCIO]</a> · <a href="tel:[TELEFONO_COMERCIO]">[TELEFONO_COMERCIO]</a>
+                </p>
+              </div>
+              <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 16px 0 0 0;">
+                <p style="color: #0a1929; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin: 0 0 8px 0;">¿No reconocés este pago?</p>
+                <p style="color: #4a5568; font-size: 14px; line-height: 1.5; margin: 0;">
+                  Comunicate inmediatamente con Walton Pagos al <a href="tel:[TELEFONO_WALTON_1]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_1]</a>, <a href="tel:[TELEFONO_WALTON_2]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_2]</a> o al correo <a href="mailto:[EMAIL_WALTON]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[EMAIL_WALTON]</a>.
                 </p>
               </div>
             </td>
@@ -567,7 +581,7 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center;">
               <p class="footer-text">
-                Este correo fue enviado automáticamente por Walton Pagos a solicitud de <strong>[COMERCIO]</strong>.
+                Este correo fue enviado automáticamente por Walton Pagos en nombre de <strong>[COMERCIO]</strong>. Walton Pagos procesa el pago, pero no presta el servicio contratado.
               </p>
             </td>
           </tr>
