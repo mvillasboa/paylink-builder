@@ -34,25 +34,37 @@ const emailTemplates: Record<string, string> = {
     body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
     .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
     .header { background-color: #ffffff; padding: 24px 32px; text-align: center; }
-    .header-logo { color: #ffffff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
-    .header-accent { color: #14b8d4; }
     .status-bar { background-color: #e6f7fa; border-left: 4px solid #14b8d4; padding: 12px 32px; }
     .status-text { color: #0a1929; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
     .content { padding: 32px; }
-    .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 20px 0; }
-    .body-text { color: #4a5568; font-size: 15px; line-height: 1.6; margin: 0 0 24px 0; }
+    .greeting { color: #0a1929; font-size: 16px; font-weight: 600; margin: 0 0 16px 0; }
+    .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 16px 0; }
+    .body-text { color: #4a5568; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0; }
+    .merchant-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #14b8d4; border-radius: 6px; padding: 16px 20px; margin: 0 0 24px 0; }
+    .merchant-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+    .merchant-value { color: #0a1929; font-size: 14px; font-weight: 600; }
     .cta-button { display: inline-block; background-color: #14b8d4; color: #ffffff !important; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; text-align: center; }
-    .cta-wrapper { text-align: center; margin: 28px 0; }
+    .cta-wrapper { text-align: center; margin: 28px 0 12px 0; }
     .link-fallback { color: #4a5568; font-size: 12px; text-align: center; word-break: break-all; margin-top: 12px; }
     .link-fallback a { color: #14b8d4; text-decoration: underline; }
     .info-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 20px; margin: 24px 0; }
     .info-box-title { color: #0a1929; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin: 0 0 8px 0; }
     .info-box-text { color: #4a5568; font-size: 13px; line-height: 1.5; margin: 0; }
-    .alt-action { background-color: #fff8e6; border: 1px solid #fde68a; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
-    .alt-action-text { color: #92400e; font-size: 13px; line-height: 1.5; margin: 0; }
-    .alt-action-text a { color: #14b8d4; text-decoration: underline; }
+    .contact-block { border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 12px 0; background-color: #ffffff; }
+    .contact-block-title { color: #0a1929; font-size: 14px; font-weight: 700; margin: 0 0 6px 0; }
+    .contact-block-text { color: #4a5568; font-size: 13px; line-height: 1.6; margin: 0; }
+    .contact-block-text a { color: #14b8d4; text-decoration: none; font-weight: 600; }
+    .contact-fraud { border: 1px solid #fecaca; background-color: #fef2f2; border-left: 4px solid #dc2626; }
+    .contact-fraud .contact-block-title { color: #991b1b; }
+    .contact-fraud .contact-block-text { color: #7f1d1d; }
+    .contact-fraud .contact-block-text a { color: #dc2626; }
+    .security-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
+    .security-title { color: #0a1929; font-size: 13px; font-weight: 700; margin: 0 0 8px 0; }
+    .security-text { color: #4a5568; font-size: 12px; line-height: 1.6; margin: 0; }
+    .security-list { color: #4a5568; font-size: 12px; line-height: 1.7; margin: 6px 0 8px 0; padding-left: 18px; }
     .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; }
-    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.6; margin: 0 0 8px 0; }
+    .footer-institutional { color: #94a3b8; font-size: 10px; line-height: 1.6; margin: 0; font-style: italic; }
     @media screen and (max-width: 600px) {
       .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
       .heading { font-size: 20px !important; }
@@ -77,10 +89,35 @@ const emailTemplates: Record<string, string> = {
           </tr>
           <tr>
             <td class="content" style="padding: 32px;">
+              <p class="greeting" style="color: #0a1929; font-size: 16px; font-weight: 600; margin: 0 0 16px 0;">Hola, [PAGADOR_NOMBRE].</p>
               <h1 class="heading">Completá tu registro de tarjeta</h1>
               <p class="body-text">
-                <strong style="color: #0a1929;">[COMERCIO]</strong> te invita a registrar tu tarjeta para pagos recurrentes. Para completar la suscripción, ingresá al siguiente enlace seguro:
+                El siguiente comercio te invita a registrar tu tarjeta para procesar pagos recurrentes:
               </p>
+
+              <div class="merchant-card" style="background-color: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #14b8d4; border-radius: 6px; padding: 16px 20px; margin: 0 0 24px 0;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td style="padding: 4px 0;">
+                      <div class="merchant-label" style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;">Comercio</div>
+                      <div class="merchant-value" style="color: #0a1929; font-size: 15px; font-weight: 700;">[COMERCIO]</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0 4px 0;">
+                      <div class="merchant-label" style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;">Razón Social</div>
+                      <div class="merchant-value" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RAZON_SOCIAL]</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0 4px 0;">
+                      <div class="merchant-label" style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;">RUC</div>
+                      <div class="merchant-value" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RUC]</div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
               <div class="cta-wrapper">
                 <a href="[LINK]" class="cta-button" style="background-color: #14b8d4; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; display: inline-block;">Registrar mi tarjeta</a>
               </div>
@@ -88,15 +125,45 @@ const emailTemplates: Record<string, string> = {
                 Si el botón no funciona, copiá y pegá este enlace en tu navegador:<br>
                 <a href="[LINK]">[LINK]</a>
               </p>
+
               <div class="info-box">
                 <div class="info-box-title">¿Qué estás autorizando?</div>
                 <p class="info-box-text">
-                  Al registrar tu tarjeta, autorizás que <strong>[COMERCIO]</strong> pueda procesar pagos recurrentes conforme a las condiciones informadas.
+                  Al registrar tu tarjeta, autorizás que <strong>[COMERCIO]</strong> pueda procesar pagos recurrentes conforme a las condiciones informadas por el comercio.
                 </p>
               </div>
-              <div class="alt-action">
-                <p class="alt-action-text">
-                  Si no reconocés esta solicitud, podés ignorar este mensaje o comunicarte con: <a href="mailto:[CONTACTO]">[CONTACTO]</a>.
+
+              <div class="contact-block" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 12px 0; background-color: #ffffff;">
+                <p class="contact-block-title" style="color: #0a1929; font-size: 14px; font-weight: 700; margin: 0 0 6px 0;">¿Tenés consultas sobre el servicio contratado?</p>
+                <p class="contact-block-text" style="color: #4a5568; font-size: 13px; line-height: 1.6; margin: 0;">
+                  Contactá directamente al comercio.<br>
+                  Correo: <a href="mailto:[CONTACTO]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[CONTACTO]</a><br>
+                  Teléfono: <a href="tel:[TELEFONO_COMERCIO]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_COMERCIO]</a>
+                </p>
+              </div>
+
+              <div class="contact-block contact-fraud" style="border: 1px solid #fecaca; background-color: #fef2f2; border-left: 4px solid #dc2626; border-radius: 6px; padding: 16px 20px; margin: 12px 0;">
+                <p class="contact-block-title" style="color: #991b1b; font-size: 14px; font-weight: 700; margin: 0 0 6px 0;">¿No reconocés esta solicitud o sospechás un uso indebido de tus datos?</p>
+                <p class="contact-block-text" style="color: #7f1d1d; font-size: 13px; line-height: 1.6; margin: 0;">
+                  Contactá a Walton Pagos para reportar la situación.<br>
+                  Teléfono: <a href="tel:[TELEFONO_WALTON]" style="color: #dc2626; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON]</a><br>
+                  WhatsApp: <a href="tel:[WHATSAPP_WALTON]" style="color: #dc2626; text-decoration: none; font-weight: 600;">[WHATSAPP_WALTON]</a>
+                </p>
+              </div>
+
+              <div class="security-box" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0;">
+                <p class="security-title" style="color: #0a1929; font-size: 13px; font-weight: 700; margin: 0 0 8px 0;">🔒 Seguridad</p>
+                <p class="security-text" style="color: #4a5568; font-size: 12px; line-height: 1.6; margin: 0;">
+                  Walton Pagos nunca solicitará por correo electrónico, teléfono o WhatsApp:
+                </p>
+                <ul class="security-list" style="color: #4a5568; font-size: 12px; line-height: 1.7; margin: 6px 0 8px 0; padding-left: 18px;">
+                  <li>PIN de tu tarjeta.</li>
+                  <li>Códigos SMS u OTP.</li>
+                  <li>Contraseñas.</li>
+                  <li>Credenciales de aplicaciones bancarias.</li>
+                </ul>
+                <p class="security-text" style="color: #4a5568; font-size: 12px; line-height: 1.6; margin: 0;">
+                  El registro seguro de tu tarjeta se realiza exclusivamente mediante el botón <strong>"Registrar mi tarjeta"</strong>.
                 </p>
               </div>
             </td>
@@ -105,6 +172,9 @@ const emailTemplates: Record<string, string> = {
             <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center;">
               <p class="footer-text">
                 Este correo fue enviado automáticamente por Walton Pagos a solicitud de <strong>[COMERCIO]</strong>.
+              </p>
+              <p class="footer-institutional">
+                Walton Pagos actúa como plataforma tecnológica para el registro y procesamiento de pagos recurrentes. La prestación del servicio corresponde exclusivamente al comercio identificado en este correo.
               </p>
             </td>
           </tr>
