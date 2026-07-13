@@ -142,12 +142,11 @@ const emailTemplates: Record<string, string> = {
                 </p>
               </div>
 
-              <div class="contact-block contact-fraud" style="border: 1px solid #fecaca; background-color: #fef2f2; border-left: 4px solid #dc2626; border-radius: 6px; padding: 16px 20px; margin: 12px 0;">
-                <p class="contact-block-title" style="color: #991b1b; font-size: 14px; font-weight: 700; margin: 0 0 6px 0;">¿No reconocés esta solicitud o sospechás un uso indebido de tus datos?</p>
-                <p class="contact-block-text" style="color: #7f1d1d; font-size: 13px; line-height: 1.6; margin: 0;">
-                  Contactá a Walton Pagos para reportar la situación.<br>
-                  Teléfono: <a href="tel:[TELEFONO_WALTON]" style="color: #dc2626; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON]</a><br>
-                  WhatsApp: <a href="tel:[WHATSAPP_WALTON]" style="color: #dc2626; text-decoration: none; font-weight: 600;">[WHATSAPP_WALTON]</a>
+              <div class="contact-block" style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 12px 0; background-color: #ffffff;">
+                <p class="contact-block-title" style="color: #0a1929; font-size: 14px; font-weight: 700; margin: 0 0 6px 0;">¿No reconocés esta solicitud o sospechás un uso indebido de tus datos?</p>
+                <p class="contact-block-text" style="color: #4a5568; font-size: 13px; line-height: 1.6; margin: 0;">
+                  Contactá a Walton Pagos por WhatsApp para reportar la situación.<br>
+                  WhatsApp: <a href="https://wa.me/[WHATSAPP_WALTON]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[WHATSAPP_WALTON]</a>
                 </p>
               </div>
             </td>
