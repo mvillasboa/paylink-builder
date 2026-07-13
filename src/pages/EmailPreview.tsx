@@ -3,15 +3,20 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const mockData: Record<string, string> = {
-  COMERCIO: "Gimnasio PowerFit",
+  COMERCIO: "Villarrica Dental Center",
+  RAZON_SOCIAL: "VDC S.A.",
+  RUC: "80056987-5",
   LINK: "https://waltonpagos.com/register/abc123",
-  CONTACTO: "soporte@powerfit.com",
+  CONTACTO: "contacto@villarricadental.com",
+  TELEFONO_COMERCIO: "+595 21 555 1234",
+  TELEFONO_WALTON: "+595 21 700 9000",
+  WHATSAPP_WALTON: "+595 981 700 900",
   MONTO: "125.000",
   FRECUENCIA: "mensual",
   XXXX: "4567",
   FECHA: "14 de junio de 2026",
-  PAGADOR_NOMBRE: "Juan Pérez",
-  PAGADOR_EMAIL: "juan.perez@email.com",
+  PAGADOR_NOMBRE: "Malena Pereira",
+  PAGADOR_EMAIL: "malena.pereira@email.com",
   SUB_ID: "sub_8f3a2b1c9d",
   MOTIVO: "Fondos insuficientes",
 };
