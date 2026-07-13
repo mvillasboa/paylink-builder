@@ -851,13 +851,6 @@ const emailTemplates: Record<string, string> = {
                   WhatsApp: <a href="https://wa.me/[WHATSAPP_COMERCIO]">[WHATSAPP_COMERCIO]</a>
                 </p>
               </div>
-              <!-- Inactivación no solicitada -->
-              <div class="notice-box" style="margin-top: 16px;">
-                <p class="notice-text" style="margin: 0 0 6px 0; font-weight: 700; color: #0a1929;">¿No solicitaste esta inactivación?</p>
-                <p class="notice-text" style="margin: 0;">
-                  Comunicate inmediatamente con Walton Pagos al <a href="tel:[TELEFONO_WALTON_1]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_1]</a> o al correo <a href="mailto:[EMAIL_WALTON]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[EMAIL_WALTON]</a>.
-                </p>
-              </div>
             </td>
           </tr>
           <!-- Footer -->
