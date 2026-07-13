@@ -591,7 +591,7 @@ const emailTemplates: Record<string, string> = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light">
   <meta name="supported-color-schemes" content="light">
-  <title>Tu tarjeta fue inactivada</title>
+  <title>Medio de pago inactivado</title>
   <style>
     body {
       margin: 0;
@@ -761,15 +761,16 @@ const emailTemplates: Record<string, string> = {
           <!-- Status Bar -->
           <tr>
             <td class="status-bar" style="background-color: #f1f5f9; border-left: 4px solid #94a3b8; padding: 12px 32px;">
-              <div class="status-text">Tarjeta inactivada</div>
+              <div class="status-text">Medio de pago inactivado</div>
             </td>
           </tr>
           <!-- Content -->
           <tr>
             <td class="content" style="padding: 32px;">
               <h1 class="heading">Inactivación confirmada</h1>
+              <p class="greeting" style="color: #0a1929; font-size: 16px; font-weight: 600; margin: 0 0 12px 0; text-align: center;">Hola, [PAGADOR_NOMBRE]:</p>
               <p class="body-text">
-                Tu tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong> fue inactivada para pagos recurrentes de <strong style="color: #0a1929;">[COMERCIO]</strong>. No se realizarán nuevos cobros con esta tarjeta.
+                Confirmamos la inactivación de la tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong> para los pagos recurrentes de <strong style="color: #0a1929;">[COMERCIO]</strong>.
               </p>
               <!-- Details -->
               <div class="details-box">
@@ -788,8 +789,28 @@ const emailTemplates: Record<string, string> = {
                     <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
                       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tr>
-                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Tarjeta</td>
-                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Razón social</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RAZON_SOCIAL]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">RUC</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RUC]</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Medio de pago</td>
+                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Tarjeta terminada en [XXXX]</td>
                         </tr>
                       </table>
                     </td>
@@ -798,7 +819,7 @@ const emailTemplates: Record<string, string> = {
                     <td style="padding: 8px 0;">
                       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tr>
-                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Fecha de inactivación</td>
+                          <td style="color: #94a3b8; font-size: 13px; font-weight: 600;">Fecha y hora de inactivación</td>
                           <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA]</td>
                         </tr>
                       </table>
@@ -806,22 +827,35 @@ const emailTemplates: Record<string, string> = {
                   </tr>
                 </table>
               </div>
-              <!-- Info Box -->
+              <!-- Info Box: efectos -->
               <div class="info-box">
-                <p class="info-box-text">
-                  A partir de esta inactivación, no se procesarán nuevos pagos recurrentes con esta tarjeta para <strong>[COMERCIO]</strong>.
+                <p class="info-box-text" style="margin: 0 0 10px 0;">
+                  A partir de esta inactivación, no se procesarán nuevos pagos recurrentes con este medio de pago para <strong>[COMERCIO]</strong>.
+                </p>
+                <p class="info-box-text" style="margin: 0 0 10px 0;">
+                  Esta inactivación no afecta los pagos procesados anteriormente.
+                </p>
+                <p class="info-box-text" style="margin: 0;">
+                  La inactivación del medio de pago no implica la cancelación del servicio contratado ni extingue obligaciones pendientes con el comercio. Para solicitar la baja del servicio, consultar obligaciones pendientes o registrar un nuevo medio de pago, comunicate directamente con <strong>[COMERCIO]</strong>.
                 </p>
               </div>
-              <!-- Notice Box -->
-              <div class="notice-box">
-                <p class="notice-text">
-                  <strong>Nota:</strong> Esta inactivación no afecta pagos anteriores ya procesados.
+              <!-- Contacto del comercio -->
+              <div class="contact-box" style="text-align: left;">
+                <p class="contact-box-text" style="text-align: left; margin: 0 0 8px 0; font-weight: 700;">Consultas sobre el servicio</p>
+                <p class="contact-box-text" style="text-align: left; margin: 0 0 10px 0;">
+                  Para consultas sobre el servicio contratado, obligaciones pendientes, baja del servicio, actualización del medio de pago o reactivación, comunicate directamente con <strong>[COMERCIO]</strong>:
+                </p>
+                <p class="contact-box-text" style="text-align: left; margin: 0;">
+                  <a href="mailto:[EMAIL_COMERCIO]">[EMAIL_COMERCIO]</a><br>
+                  <a href="tel:[TELEFONO_COMERCIO]">[TELEFONO_COMERCIO]</a><br>
+                  WhatsApp: <a href="https://wa.me/[WHATSAPP_COMERCIO]">[WHATSAPP_COMERCIO]</a>
                 </p>
               </div>
-              <!-- Contact Box -->
-              <div class="contact-box">
-                <p class="contact-box-text">
-                  Para consultas o información adicional, contactá a: <a href="mailto:[CONTACTO]">[CONTACTO]</a>.
+              <!-- Inactivación no solicitada -->
+              <div class="notice-box" style="margin-top: 16px;">
+                <p class="notice-text" style="margin: 0 0 6px 0; font-weight: 700; color: #0a1929;">¿No solicitaste esta inactivación?</p>
+                <p class="notice-text" style="margin: 0;">
+                  Comunicate inmediatamente con Walton Pagos al <a href="tel:[TELEFONO_WALTON_1]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_1]</a> o al correo <a href="mailto:[EMAIL_WALTON]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[EMAIL_WALTON]</a>.
                 </p>
               </div>
             </td>
@@ -829,8 +863,11 @@ const emailTemplates: Record<string, string> = {
           <!-- Footer -->
           <tr>
             <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center;">
-              <p class="footer-text">
-                Este correo fue enviado automáticamente por Walton Pagos.
+              <p class="footer-text" style="margin: 0 0 6px 0;">
+                Este correo fue enviado automáticamente por Walton Pagos en nombre de <strong>[COMERCIO]</strong>.
+              </p>
+              <p class="footer-text" style="margin: 0;">
+                Walton Pagos administra el medio de pago para cobros recurrentes, pero no presta ni cancela el servicio contratado con el comercio.
               </p>
             </td>
           </tr>
