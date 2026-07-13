@@ -7,176 +7,37 @@
   <meta name="supported-color-schemes" content="light">
   <title>Pago confirmado a [COMERCIO]</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f4f6f8;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    .wrapper {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #ffffff;
-    }
-    .header {
-      background-color: #ffffff;
-      padding: 24px 32px;
-      text-align: center;
-    }
-    .header-logo {
-      color: #ffffff;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-    .header-accent {
-      color: #14b8d4;
-    }
-    .status-bar {
-      background-color: #ecfdf5;
-      border-left: 4px solid #10b981;
-      padding: 12px 32px;
-    }
-    .status-text {
-      color: #0a1929;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-    .content {
-      padding: 32px;
-    }
-    .success-icon {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .success-circle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      height: 64px;
-      background-color: #ecfdf5;
-      border-radius: 50%;
-    }
-    .success-check {
-      color: #10b981;
-      font-size: 32px;
-      line-height: 1;
-    }
-    .heading {
-      color: #0a1929;
-      font-size: 22px;
-      font-weight: 700;
-      line-height: 1.3;
-      margin: 0 0 20px 0;
-      text-align: center;
-    }
-    .body-text {
-      color: #4a5568;
-      font-size: 15px;
-      line-height: 1.6;
-      margin: 0 0 24px 0;
-      text-align: center;
-    }
-    .receipt-box {
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 24px;
-      margin: 24px 0;
-    }
-    .receipt-title {
-      color: #0a1929;
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin: 0 0 16px 0;
-      text-align: center;
-    }
-    .receipt-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px dashed #cbd5e1;
-    }
-    .receipt-row:last-child {
-      border-bottom: none;
-    }
-    .receipt-label {
-      color: #64748b;
-      font-size: 13px;
-    }
-    .receipt-value {
-      color: #0a1929;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .receipt-total {
-      background-color: #0a1929;
-      border-radius: 6px;
-      padding: 14px 16px;
-      margin-top: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .receipt-total-label {
-      color: #94a3b8;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .receipt-total-value {
-      color: #14b8d4;
-      font-size: 18px;
-      font-weight: 700;
-    }
-    .contact-box {
-      background-color: #e6f7fa;
-      border: 1px solid #14b8d4;
-      border-radius: 6px;
-      padding: 16px 20px;
-      margin: 24px 0 0 0;
-    }
-    .contact-box-text {
-      color: #0a1929;
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 0;
-      text-align: center;
-    }
-    .contact-box-text a {
-      color: #14b8d4;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .footer {
-      background-color: #f4f6f8;
-      padding: 20px 32px;
-      text-align: center;
-    }
-    .footer-text {
-      color: #94a3b8;
-      font-size: 11px;
-      line-height: 1.5;
-      margin: 0;
-    }
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #ffffff; padding: 24px 32px; text-align: center; }
+    .header-logo { color: #ffffff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    .header-accent { color: #14b8d4; }
+    .status-bar { background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 32px; }
+    .status-text { color: #0a1929; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 32px; }
+    .success-icon { text-align: center; margin-bottom: 24px; }
+    .success-circle { display: inline-block; text-align: center; width: 64px; height: 64px; background-color: #ecfdf5; border-radius: 50%; line-height: 64px; }
+    .success-check { color: #10b981; font-size: 32px; }
+    .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 20px 0; text-align: center; }
+    .body-text { color: #4a5568; font-size: 15px; line-height: 1.6; margin: 0 0 24px 0; text-align: center; }
+    .receipt-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 24px; margin: 24px 0; }
+    .receipt-title { color: #0a1929; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin: 0 0 16px 0; text-align: center; }
+    .receipt-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #cbd5e1; }
+    .receipt-row:last-child { border-bottom: none; }
+    .receipt-label { color: #64748b; font-size: 13px; }
+    .receipt-value { color: #0a1929; font-size: 14px; font-weight: 600; }
+    .receipt-total { background-color: #0a1929; border-radius: 6px; padding: 14px 16px; margin-top: 16px; }
+    .receipt-total-label { color: #94a3b8; font-size: 13px; font-weight: 600; }
+    .receipt-total-value { color: #14b8d4; font-size: 18px; font-weight: 700; }
+    .contact-box { background-color: #e6f7fa; border: 1px solid #14b8d4; border-radius: 6px; padding: 16px 20px; margin: 24px 0 0 0; }
+    .contact-box-text { color: #0a1929; font-size: 14px; line-height: 1.5; margin: 0; text-align: center; }
+    .contact-box-text a { color: #14b8d4; text-decoration: none; font-weight: 600; }
+    .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.5; margin: 0; }
     @media screen and (max-width: 600px) {
-      .content, .header, .status-bar, .footer {
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-      }
-      .heading {
-        font-size: 20px !important;
-      }
-      .receipt-row {
-        flex-direction: column;
-        gap: 2px;
-      }
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+      .heading { font-size: 20px !important; }
+      .receipt-row { flex-direction: column; gap: 2px; }
     }
   </style>
 </head>
@@ -185,66 +46,51 @@
     <tr>
       <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
         <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
-          <!-- Header -->
           <tr>
             <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
-              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" align="center" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;margin:0 auto;" />
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;margin:0 auto;" />
             </td>
           </tr>
-          <!-- Status Bar -->
           <tr>
             <td class="status-bar" style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 32px;">
               <div class="status-text">Pago confirmado</div>
             </td>
           </tr>
-          <!-- Content -->
           <tr>
             <td class="content" style="padding: 32px;">
-              <!-- Success Icon -->
               <div class="success-icon">
                 <div class="success-circle" style="display: inline-block; text-align: center; width: 64px; height: 64px; background-color: #ecfdf5; border-radius: 50%; line-height: 64px;">
                   <span class="success-check" style="color: #10b981; font-size: 32px;">&#10003;</span>
                 </div>
               </div>
-              <h1 class="heading">¡Pago recibido!</h1>
+              <h1 class="heading">¡Pago procesado correctamente!</h1>
+              <p class="greeting" style="color: #0a1929; font-size: 16px; font-weight: 600; margin: 0 0 12px 0; text-align: center;">Hola, [PAGADOR_NOMBRE]:</p>
               <p class="body-text">
-                Recibimos tu pago a <strong style="color: #0a1929;">[COMERCIO]</strong> por <strong style="color: #0a1929;">Gs. [MONTO]</strong>.<br>
-                Tarjeta terminada en <strong style="color: #0a1929;">[XXXX]</strong>.
+                Procesamos correctamente tu pago a <strong style="color: #0a1929;">[COMERCIO]</strong> por <strong style="color: #0a1929;">Gs. [MONTO]</strong>.
               </p>
-              <!-- Receipt -->
               <div class="receipt-box">
-                <div class="receipt-title">Comprobante de pago</div>
+                <div class="receipt-title" style="text-align: center;">Comprobante de pago</div>
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                        <tr>
-                          <td style="color: #64748b; font-size: 13px;">Comercio</td>
-                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[COMERCIO]</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                        <tr>
-                          <td style="color: #64748b; font-size: 13px;">Tarjeta</td>
-                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                        <tr>
-                          <td style="color: #64748b; font-size: 13px;">Fecha de pago</td>
-                          <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA]</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Comercio</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[COMERCIO]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Razón social</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RAZON_SOCIAL]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">RUC</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[RUC]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Fecha y hora</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">[FECHA_HORA_PAGO]</td>
+                  </tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px dashed #cbd5e1;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>
+                    <td style="color: #64748b; font-size: 13px;">Tarjeta</td>
+                    <td align="right" style="color: #0a1929; font-size: 14px; font-weight: 600;">Terminada en [XXXX]</td>
+                  </tr></table></td></tr>
                 </table>
                 <div class="receipt-total" style="background-color: #0a1929; border-radius: 6px; padding: 14px 16px; margin-top: 16px;">
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -255,19 +101,25 @@
                   </table>
                 </div>
               </div>
-              <!-- Contact Box -->
               <div class="contact-box">
-                <p class="contact-box-text">
-                  Para consultas sobre este pago o sobre la baja del servicio, contactá a: <a href="mailto:[CONTACTO]">[CONTACTO]</a>.
+                <p class="contact-box-text" style="text-align: left; margin: 0 0 8px 0;"><strong style="color: #0a1929; font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px;">Consultas sobre el servicio</strong></p>
+                <p class="contact-box-text" style="text-align: left;">
+                  Para consultas sobre el servicio contratado, el importe cobrado, la factura o la baja de la suscripción, comunicate directamente con <strong>[COMERCIO]</strong>:<br>
+                  <a href="mailto:[EMAIL_COMERCIO]">[EMAIL_COMERCIO]</a> · <a href="tel:[TELEFONO_COMERCIO]">[TELEFONO_COMERCIO]</a>
+                </p>
+              </div>
+              <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 16px 0 0 0;">
+                <p style="color: #0a1929; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin: 0 0 8px 0;">¿No reconocés este pago?</p>
+                <p style="color: #4a5568; font-size: 14px; line-height: 1.5; margin: 0;">
+                  Comunicate inmediatamente con Walton Pagos al <a href="tel:[TELEFONO_WALTON_1]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[TELEFONO_WALTON_1]</a> o al correo <a href="mailto:[EMAIL_WALTON]" style="color: #14b8d4; text-decoration: none; font-weight: 600;">[EMAIL_WALTON]</a>.
                 </p>
               </div>
             </td>
           </tr>
-          <!-- Footer -->
           <tr>
             <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center;">
               <p class="footer-text">
-                Este correo fue enviado automáticamente por Walton Pagos a solicitud de <strong>[COMERCIO]</strong>.
+                Este correo fue enviado automáticamente por Walton Pagos en nombre de <strong>[COMERCIO]</strong>. Walton Pagos procesa el pago, pero no presta el servicio contratado.
               </p>
             </td>
           </tr>
