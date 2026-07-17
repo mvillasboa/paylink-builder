@@ -1,29 +1,93 @@
-# Sincronizar /email-templates con EmailPreview
+# Flujo de registro y KYC — App móvil (/app)
 
-## Problema
-Los cambios recientes (correos 04 y 05, más los ajustes previos de contacto/WhatsApp) se aplicaron solo a `src/pages/EmailPreview.tsx`. Los archivos sueltos en `email-templates/*.html` quedaron con la versión original, por eso "el código no se actualiza".
+Diseño de un onboarding progresivo, con mockData (sin backend), coherente con el look actual de `/app` (Walpay: azul #004684 + menta #20c997) y usando el `PhoneFrame`.
 
-## Alcance
-Regenerar los 10 HTML de `email-templates/` para que sean copia fiel de los strings de plantilla definidos en `src/pages/EmailPreview.tsx` (única fuente de verdad de aquí en más).
+## Objetivo
 
-Archivos a reescribir:
-- `email-templates/01-link-suscripcion-tarjeta.html`
-- `email-templates/02-confirmacion-suscripcion-tarjeta.html`
-- `email-templates/03-confirmacion-suscripcion-monto-frecuencia.html`
-- `email-templates/04-confirmacion-pago.html`
-- `email-templates/05-inactivacion-tarjeta.html`
-- `email-templates/06-inactivacion-tarjeta-rechazo.html`
-- `email-templates/07-comercio-registro-tarjeta.html`
-- `email-templates/08-comercio-confirmacion-pago.html`
-- `email-templates/09-comercio-inactivacion-usuario.html`
-- `email-templates/10-comercio-inactivacion-rechazo.html`
+Convertir a un visitante en un usuario verificado con KYC nivel medio (datos personales + email + teléfono + selfie + CI anverso/reverso), en pasos cortos con progreso visible, guardando el estado en `localStorage` para que las pantallas sean navegables como demo.
 
-## Cómo
-1. Leer `src/pages/EmailPreview.tsx` completo y extraer cada string de plantilla del objeto de templates.
-2. Sobrescribir cada archivo `.html` correspondiente con el contenido exacto de su template (mismos placeholders `[PAGADOR_NOMBRE]`, `[COMERCIO]`, etc.).
-3. No modificar `EmailPreview.tsx` ni otras partes de la app.
+## UX del flujo
 
-## Resultado esperado
-- `email-templates/05-inactivacion-tarjeta.html` reflejará: encabezado "MEDIO DE PAGO INACTIVADO", saludo personalizado, comprobante con Comercio / Razón Social / RUC / medio de pago / fecha, bloque "Consultas sobre el servicio" con email + teléfono + WhatsApp, y footer institucional actualizado. Sin el bloque "¿No solicitaste esta inactivación?".
-- `04-confirmacion-pago.html` reflejará el comprobante actual sin Concepto ni N.º de operación, con un único teléfono de contacto Walton, etc.
-- Los otros 8 quedarán idénticos al preview.
+Barra de progreso superior (paso N de 7) + botón "Atrás" + CTA principal por pantalla. Cada paso valida antes de avanzar. Al terminar, redirige a `/app` con banner "Verificación en revisión" o "Aprobada" (mock).
+
+```text
+/app/login
+   │
+   ├── "Registrate" ──► /app/signup                 (1) Email + contraseña
+   │                        │
+   │                        ▼
+   │                    /app/onboarding/verify-email (2) OTP 6 dígitos
+   │                        │
+   │                        ▼
+   │                    /app/onboarding/personal    (3) Nombre, apellido, fecha nac.
+   │                        │
+   │                        ▼
+   │                    /app/onboarding/phone       (4) Teléfono + OTP SMS
+   │                        │
+   │                        ▼
+   │                    /app/onboarding/document    (5) CI: anverso + reverso
+   │                        │
+   │                        ▼
+   │                    /app/onboarding/selfie      (6) Selfie con prueba de vida
+   │                        │
+   │                        ▼
+   │                    /app/onboarding/review      (7) Resumen + T&C + Enviar
+   │                        │
+   │                        ▼
+   │                    /app/onboarding/status      Estado: en revisión / aprobado
+   │                        │
+   │                        ▼
+   │                    /app  (home)
+```
+
+## Pantallas (detalle de contenido)
+
+1. **Signup** — email, contraseña, confirmar contraseña, checkbox T&C. Validación con `zod`.
+2. **Verify email** — 6 inputs OTP, reenviar en 30s, código mock aceptado: `123456`.
+3. **Datos personales** — nombre, apellido, fecha de nacimiento (mayoría de edad), nacionalidad (default Paraguay), género (opcional).
+4. **Teléfono** — prefijo +595, número, OTP SMS (mock `123456`).
+5. **Documento (CI)** — dos "cámaras mock": tarjetas con ícono de cámara que al tocar simulan captura y muestran una miniatura placeholder. Muestra número de CI y fecha de emisión (inputs).
+6. **Selfie** — círculo guía con ícono de cara + botón "Capturar" que muestra placeholder. Nota de prueba de vida ("parpadeá y sonreí").
+7. **Review** — checklist de todo lo cargado + T&C/Política de privacidad + botón "Enviar verificación".
+8. **Status** — estado en revisión (spinner + tiempo estimado 24-48h) con CTA "Ir al inicio". Segundo estado mockeable: "Aprobado" con check verde.
+
+## Componentes nuevos
+
+- `src/components/mobile-app/onboarding/OnboardingLayout.tsx` — header con back + barra de progreso + slot.
+- `src/components/mobile-app/onboarding/OtpInput.tsx` — 6 casillas.
+- `src/components/mobile-app/onboarding/DocumentCapture.tsx` — tarjeta captura anverso/reverso (mock).
+- `src/components/mobile-app/onboarding/SelfieCapture.tsx` — placeholder con guía circular.
+- `src/components/mobile-app/onboarding/StepBadge.tsx` — indicador "Paso X de 7".
+
+## Estado y datos
+
+- `src/hooks/useOnboarding.ts` — hook con `useState` + `localStorage` (`walpay.onboarding`) para persistir email, teléfono, datos personales, flags `emailVerified`, `phoneVerified`, `documentUploaded`, `selfieUploaded`, `kycStatus` (`draft` | `submitted` | `in_review` | `approved` | `rejected`).
+- `src/data/mockOnboarding.ts` — constantes: OTP válido, tiempos, mensajes.
+- Sin cambios de backend, sin migraciones.
+
+## Rutas (en `src/App.tsx`)
+
+Nuevas rutas públicas bajo `/app` (no requieren auth real por ser mock):
+
+- `/app/signup`
+- `/app/onboarding/verify-email`
+- `/app/onboarding/personal`
+- `/app/onboarding/phone`
+- `/app/onboarding/document`
+- `/app/onboarding/selfie`
+- `/app/onboarding/review`
+- `/app/onboarding/status`
+
+Actualizar `MobileLogin.tsx`: el botón "Registrarse" (menta) navega a `/app/signup` en vez del `toast`.
+
+## Diseño
+
+- Reutiliza tokens de `PhoneFrame` (azul primario Walpay, menta `#20c997` para acciones de éxito/avance final).
+- Botón primario azul en avance normal; menta en "Enviar verificación" y "Aprobado".
+- Iconografía `lucide-react`: `Mail`, `Phone`, `IdCard`, `Camera`, `ShieldCheck`, `CheckCircle2`.
+- Toasts con `sonner` en cada validación.
+
+## Fuera de alcance
+
+- Persistencia real, subida de archivos, integración con proveedor KYC (Truora/Metamap/etc.), verificación biométrica real.
+- Flujo para personas jurídicas (RUC).
