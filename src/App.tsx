@@ -40,6 +40,14 @@ import MobileSubscriptions from "./pages/mobile-app/MobileSubscriptions";
 import MobilePayments from "./pages/mobile-app/MobilePayments";
 import MobileProfile from "./pages/mobile-app/MobileProfile";
 import MobileLogin from "./pages/mobile-app/MobileLogin";
+import MobileSignup from "./pages/mobile-app/onboarding/MobileSignup";
+import MobileVerifyEmail from "./pages/mobile-app/onboarding/MobileVerifyEmail";
+import MobilePersonalInfo from "./pages/mobile-app/onboarding/MobilePersonalInfo";
+import MobilePhoneVerify from "./pages/mobile-app/onboarding/MobilePhoneVerify";
+import MobileDocument from "./pages/mobile-app/onboarding/MobileDocument";
+import MobileSelfie from "./pages/mobile-app/onboarding/MobileSelfie";
+import MobileReview from "./pages/mobile-app/onboarding/MobileReview";
+import MobileKycStatus from "./pages/mobile-app/onboarding/MobileKycStatus";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +85,14 @@ const App = () => (
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
             <Route path="/app/login" element={<MobileLogin />} />
+            <Route path="/app/signup" element={<MobileSignup />} />
+            <Route path="/app/onboarding/verify-email" element={<MobileVerifyEmail />} />
+            <Route path="/app/onboarding/personal" element={<MobilePersonalInfo />} />
+            <Route path="/app/onboarding/phone" element={<MobilePhoneVerify />} />
+            <Route path="/app/onboarding/document" element={<MobileDocument />} />
+            <Route path="/app/onboarding/selfie" element={<MobileSelfie />} />
+            <Route path="/app/onboarding/review" element={<MobileReview />} />
+            <Route path="/app/onboarding/status" element={<MobileKycStatus />} />
             <Route path="/app" element={<MobileAppLayout />}>
               <Route index element={<MobileHome />} />
               <Route path="cards" element={<MobileCards />} />
