@@ -30,7 +30,7 @@ export default function MobileLogin() {
   };
 
   const handleRegister = () => {
-    toast.info("Registro disponible próximamente");
+    navigate("/app/signup");
   };
 
   return (
@@ -137,7 +137,7 @@ export default function MobileLogin() {
           <button
             type="button"
             className="text-primary font-semibold"
-            onClick={() => toast.info("Registro disponible próximamente")}
+            onClick={() => navigate("/app/signup")}
           >
             Registrate
           </button>

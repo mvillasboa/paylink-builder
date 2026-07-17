@@ -85,6 +85,14 @@ const App = () => (
               <Route path="settings" element={<DashboardSettings />} />
             </Route>
             <Route path="/app/login" element={<MobileLogin />} />
+            <Route path="/app/signup" element={<MobileSignup />} />
+            <Route path="/app/onboarding/verify-email" element={<MobileVerifyEmail />} />
+            <Route path="/app/onboarding/personal" element={<MobilePersonalInfo />} />
+            <Route path="/app/onboarding/phone" element={<MobilePhoneVerify />} />
+            <Route path="/app/onboarding/document" element={<MobileDocument />} />
+            <Route path="/app/onboarding/selfie" element={<MobileSelfie />} />
+            <Route path="/app/onboarding/review" element={<MobileReview />} />
+            <Route path="/app/onboarding/status" element={<MobileKycStatus />} />
             <Route path="/app" element={<MobileAppLayout />}>
               <Route index element={<MobileHome />} />
               <Route path="cards" element={<MobileCards />} />
