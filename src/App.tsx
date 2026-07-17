@@ -40,6 +40,14 @@ import MobileSubscriptions from "./pages/mobile-app/MobileSubscriptions";
 import MobilePayments from "./pages/mobile-app/MobilePayments";
 import MobileProfile from "./pages/mobile-app/MobileProfile";
 import MobileLogin from "./pages/mobile-app/MobileLogin";
+import MobileSignup from "./pages/mobile-app/onboarding/MobileSignup";
+import MobileVerifyEmail from "./pages/mobile-app/onboarding/MobileVerifyEmail";
+import MobilePersonalInfo from "./pages/mobile-app/onboarding/MobilePersonalInfo";
+import MobilePhoneVerify from "./pages/mobile-app/onboarding/MobilePhoneVerify";
+import MobileDocument from "./pages/mobile-app/onboarding/MobileDocument";
+import MobileSelfie from "./pages/mobile-app/onboarding/MobileSelfie";
+import MobileReview from "./pages/mobile-app/onboarding/MobileReview";
+import MobileKycStatus from "./pages/mobile-app/onboarding/MobileKycStatus";
 
 const queryClient = new QueryClient();
 
