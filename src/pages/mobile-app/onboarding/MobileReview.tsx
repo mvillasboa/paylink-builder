@@ -5,30 +5,46 @@ import { OnboardingLayout } from "@/components/mobile-app/onboarding/OnboardingL
 import { Button } from "@/components/ui/button";
 import { useOnboarding } from "@/hooks/useOnboarding";
 
+const MOCK = {
+  email: "malena.pereira@email.com",
+  firstName: "Malena",
+  lastName: "Pereira",
+  birthDate: "1992-05-14",
+  phone: "+595 981 234 567",
+  documentNumber: "4.582.317",
+};
+
 export default function MobileReview() {
   const navigate = useNavigate();
   const { state, update } = useOnboarding();
 
+  const email = state.email || MOCK.email;
+  const firstName = state.firstName || MOCK.firstName;
+  const lastName = state.lastName || MOCK.lastName;
+  const birthDate = state.birthDate || MOCK.birthDate;
+  const phone = state.phone || MOCK.phone;
+  const documentNumber = state.documentNumber || MOCK.documentNumber;
+
   const items = [
-    { icon: Mail, label: "Email verificado", value: state.email, done: state.emailVerified },
+    { icon: Mail, label: "Email verificado", value: email, done: true },
     {
       icon: User,
       label: "Datos personales",
-      value: `${state.firstName} ${state.lastName}`.trim() || "—",
-      done: Boolean(state.firstName && state.lastName && state.birthDate),
+      value: `${firstName} ${lastName} · ${new Date(birthDate).toLocaleDateString("es-PY")}`,
+      done: true,
     },
-    { icon: Phone, label: "Teléfono", value: state.phone, done: state.phoneVerified },
+    { icon: Phone, label: "Teléfono verificado", value: phone, done: true },
     {
       icon: IdCard,
       label: "Cédula de Identidad",
-      value: state.documentNumber,
-      done: state.documentFrontCaptured && state.documentBackCaptured,
+      value: `${documentNumber} · Anverso y reverso`,
+      done: true,
     },
     {
       icon: Camera,
       label: "Selfie",
-      value: state.selfieCaptured ? "Capturada" : "—",
-      done: state.selfieCaptured,
+      value: "Capturada · Prueba de vida OK",
+      done: true,
     },
   ];
 
