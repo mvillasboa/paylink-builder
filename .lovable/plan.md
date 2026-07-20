@@ -1,93 +1,38 @@
-# Flujo de registro y KYC — App móvil (/app)
-
-Diseño de un onboarding progresivo, con mockData (sin backend), coherente con el look actual de `/app` (Walpay: azul #004684 + menta #20c997) y usando el `PhoneFrame`.
-
 ## Objetivo
+Reemplazar el logo actual de Walpay por el nuevo logo "Wpagos" en toda la aplicación excepto en `/app/login` (que queda intacto). Ajustar la paleta del homepage para armonizar con el azul del nuevo logo.
 
-Convertir a un visitante en un usuario verificado con KYC nivel medio (datos personales + email + teléfono + selfie + CI anverso/reverso), en pasos cortos con progreso visible, guardando el estado en `localStorage` para que las pantallas sean navegables como demo.
+## Análisis del nuevo logo
+- "W" en negro con `®`
+- Bloque azul sólido con "pagos" en blanco
+- Tono azul aproximado: `#1F3D7A` (navy medio, no cyan)
 
-## UX del flujo
+Encaja muy bien con la paleta actual Deep Navy (`#0a1929`) — solo hace falta ajustar el acento (hoy `#14b8d4` cyan) para que no compita con el azul del logo.
 
-Barra de progreso superior (paso N de 7) + botón "Atrás" + CTA principal por pantalla. Cada paso valida antes de avanzar. Al terminar, redirige a `/app` con banner "Verificación en revisión" o "Aprobada" (mock).
+## Cambios
 
-```text
-/app/login
-   │
-   ├── "Registrate" ──► /app/signup                 (1) Email + contraseña
-   │                        │
-   │                        ▼
-   │                    /app/onboarding/verify-email (2) OTP 6 dígitos
-   │                        │
-   │                        ▼
-   │                    /app/onboarding/personal    (3) Nombre, apellido, fecha nac.
-   │                        │
-   │                        ▼
-   │                    /app/onboarding/phone       (4) Teléfono + OTP SMS
-   │                        │
-   │                        ▼
-   │                    /app/onboarding/document    (5) CI: anverso + reverso
-   │                        │
-   │                        ▼
-   │                    /app/onboarding/selfie      (6) Selfie con prueba de vida
-   │                        │
-   │                        ▼
-   │                    /app/onboarding/review      (7) Resumen + T&C + Enviar
-   │                        │
-   │                        ▼
-   │                    /app/onboarding/status      Estado: en revisión / aprobado
-   │                        │
-   │                        ▼
-   │                    /app  (home)
-```
+### 1. Subir el nuevo logo como asset CDN
+- `src/assets/wpagos-logo.png.asset.json` — desde `/mnt/user-uploads/Image_2_1.png` usando `lovable-assets create`.
 
-## Pantallas (detalle de contenido)
+### 2. Reemplazar el logo en los siguientes archivos
+- `src/components/Navbar.tsx` → usar `wpagos-logo` en lugar de `logo-walpay-color`.
+- `src/components/Hero.tsx` → reemplazar el `img` que apunta a `/lovable-uploads/1b33ddca-…` por el nuevo logo (versión adecuada al fondo oscuro; usar el mismo asset — el fondo blanco del bloque lo integra bien, o envolver en contenedor blanco con padding si hace falta contraste).
+- `src/components/Footer.tsx` → reemplazar el `img` `/lovable-uploads/a3bf07a1-…` por el nuevo asset.
+- `src/pages/Auth.tsx` → reemplazar `logo-walpay-color` por el nuevo.
+- `src/components/dashboard/DashboardLayout.tsx` → reemplazar `logo-walpay-color` por el nuevo; mantener el texto "Walpay" del sidebar tal cual (el nombre del producto no cambia).
 
-1. **Signup** — email, contraseña, confirmar contraseña, checkbox T&C. Validación con `zod`.
-2. **Verify email** — 6 inputs OTP, reenviar en 30s, código mock aceptado: `123456`.
-3. **Datos personales** — nombre, apellido, fecha de nacimiento (mayoría de edad), nacionalidad (default Paraguay), género (opcional).
-4. **Teléfono** — prefijo +595, número, OTP SMS (mock `123456`).
-5. **Documento (CI)** — dos "cámaras mock": tarjetas con ícono de cámara que al tocar simulan captura y muestran una miniatura placeholder. Muestra número de CI y fecha de emisión (inputs).
-6. **Selfie** — círculo guía con ícono de cara + botón "Capturar" que muestra placeholder. Nota de prueba de vida ("parpadeá y sonreí").
-7. **Review** — checklist de todo lo cargado + T&C/Política de privacidad + botón "Enviar verificación".
-8. **Status** — estado en revisión (spinner + tiempo estimado 24-48h) con CTA "Ir al inicio". Segundo estado mockeable: "Aprobado" con check verde.
+### 3. NO tocar
+- `src/pages/mobile-app/MobileLogin.tsx` (walpay-mark) — pedido explícito.
+- `index.html` metadatos — el nombre del producto sigue siendo Walpay.
+- `src/data/mockOnboarding.ts` (solo una key de localStorage).
 
-## Componentes nuevos
+### 4. Ajuste de paleta del homepage
+En `src/index.css`, dentro del scope global (no del `/app`):
+- Sustituir el acento cyan (`--secondary` / `--accent` usados como `#14b8d4`) por un azul intermedio derivado del logo (`#2E5AAB` aprox.) para dar cohesión con el nuevo azul del logo.
+- Ajustar `--gradient-hero` y `--gradient-primary` para transitar de `#0a1929` (Deep Navy) a `#1F3D7A` (azul del logo), eliminando el salto al cyan.
+- Mantener el ícono `Shield` del Hero (`text-accent`) legible con el nuevo tono.
 
-- `src/components/mobile-app/onboarding/OnboardingLayout.tsx` — header con back + barra de progreso + slot.
-- `src/components/mobile-app/onboarding/OtpInput.tsx` — 6 casillas.
-- `src/components/mobile-app/onboarding/DocumentCapture.tsx` — tarjeta captura anverso/reverso (mock).
-- `src/components/mobile-app/onboarding/SelfieCapture.tsx` — placeholder con guía circular.
-- `src/components/mobile-app/onboarding/StepBadge.tsx` — indicador "Paso X de 7".
+Esto afecta al homepage (`Hero`, `Features`, `CTA`, `TrustBadges`, `Footer`) y a `Auth`, `Navbar`, `Dashboard*`. La app móvil (`/app/*`) no se ve afectada porque `PhoneFrame` re-scopea sus propios tokens.
 
-## Estado y datos
-
-- `src/hooks/useOnboarding.ts` — hook con `useState` + `localStorage` (`walpay.onboarding`) para persistir email, teléfono, datos personales, flags `emailVerified`, `phoneVerified`, `documentUploaded`, `selfieUploaded`, `kycStatus` (`draft` | `submitted` | `in_review` | `approved` | `rejected`).
-- `src/data/mockOnboarding.ts` — constantes: OTP válido, tiempos, mensajes.
-- Sin cambios de backend, sin migraciones.
-
-## Rutas (en `src/App.tsx`)
-
-Nuevas rutas públicas bajo `/app` (no requieren auth real por ser mock):
-
-- `/app/signup`
-- `/app/onboarding/verify-email`
-- `/app/onboarding/personal`
-- `/app/onboarding/phone`
-- `/app/onboarding/document`
-- `/app/onboarding/selfie`
-- `/app/onboarding/review`
-- `/app/onboarding/status`
-
-Actualizar `MobileLogin.tsx`: el botón "Registrarse" (menta) navega a `/app/signup` en vez del `toast`.
-
-## Diseño
-
-- Reutiliza tokens de `PhoneFrame` (azul primario Walpay, menta `#20c997` para acciones de éxito/avance final).
-- Botón primario azul en avance normal; menta en "Enviar verificación" y "Aprobado".
-- Iconografía `lucide-react`: `Mail`, `Phone`, `IdCard`, `Camera`, `ShieldCheck`, `CheckCircle2`.
-- Toasts con `sonner` en cada validación.
-
-## Fuera de alcance
-
-- Persistencia real, subida de archivos, integración con proveedor KYC (Truora/Metamap/etc.), verificación biométrica real.
-- Flujo para personas jurídicas (RUC).
+## Verificación
+- Screenshot de `/` (homepage) y `/auth` con Playwright para confirmar que el logo se ve nítido y la nueva paleta luce coherente.
+- Confirmar que `/app/login` sigue mostrando el logo actual sin cambios.
