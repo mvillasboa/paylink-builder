@@ -9,7 +9,7 @@ import { Database } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
-import logoWalpayColor from '@/assets/logo-walpay-color.png';
+import logoWpagos from '@/assets/wpagos-logo.png.asset.json';
 
 const authSchema = z.object({
   email: z.string().trim().email({ message: "Email inválido" }).max(255, { message: "Email muy largo" }),

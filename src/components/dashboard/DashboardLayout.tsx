@@ -50,7 +50,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import logoWalpayColor from "@/assets/logo-walpay-color.png";
+import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
 
 const menuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
