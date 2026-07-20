@@ -40,7 +40,7 @@ export default function MobileLogin() {
         <div className="flex flex-col items-center text-center mb-10">
           <img
             src={walpayMark.url}
-            alt="Walpay"
+            alt="W pagos"
             className="h-14 w-auto object-contain mb-4"
           />
           <p className="text-sm text-muted-foreground mt-1">
