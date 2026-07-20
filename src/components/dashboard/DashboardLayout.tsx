@@ -50,7 +50,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import logoWalpayColor from "@/assets/logo-walpay-color.png";
+import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
 
 const menuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -101,8 +101,8 @@ export function DashboardLayout() {
           <SidebarHeader className="border-b border-border/50 p-4">
             <div className="flex items-center gap-3">
               <img 
-                src={logoWalpayColor} 
-                alt="Walpay" 
+                src={logoWpagos.url} 
+                alt="W pagos" 
                 className="h-10 w-auto"
               />
               <div>
