@@ -1,4 +1,4 @@
-import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
+import logoWalpayWhite from "@/assets/logo-walpay-white.jpg";
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-primary text-primary-foreground py-12 border-t border-primary-light/20">
@@ -6,8 +6,8 @@ export const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="inline-flex items-center bg-white rounded-lg px-3 py-2">
-              <img alt="W pagos" className="h-10 w-auto" src={logoWpagos.url} />
+            <div className="flex items-center gap-2">
+              <img alt="Walpay" className="h-28 w-auto" src="/lovable-uploads/a3bf07a1-25cb-4348-ac8b-ee5a6267f999.png" />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">La plataforma para registro seguro de tarjetas y gestión de pagos recurrentes</p>
           </div>

@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
-import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
+import logoWalpayColor from "@/assets/logo-walpay-color.png";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -30,8 +30,8 @@ export const Navbar = () => {
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
             <img 
-              src={logoWpagos.url} 
-              alt="W pagos - Plataforma de Pagos B2B" 
+              src={logoWalpayColor} 
+              alt="Walpay - Plataforma de Pagos B2B" 
               className="h-10 w-auto"
             />
           </a>

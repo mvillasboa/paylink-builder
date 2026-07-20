@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
+import logoWalpayWhite from "@/assets/logo-walpay-white.jpg";
 export const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
       {/* Background Pattern */}
@@ -22,9 +22,7 @@ export const Hero = () => {
         <div className="max-w-4xl mx-auto text-center space-y-6 animate-slide-up">
           {/* Prominent Logo */}
           <div className="flex justify-center">
-            <div className="bg-white rounded-2xl px-6 py-4 shadow-strong">
-              <img alt="W pagos" className="h-16 sm:h-20 lg:h-24 w-auto" src={logoWpagos.url} />
-            </div>
+            <img alt="Walpay" className="h-28 sm:h-36 lg:h-44 w-auto" src="/lovable-uploads/1b33ddca-bbd1-4647-a5d5-d8f50e893543.png" />
           </div>
           
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
