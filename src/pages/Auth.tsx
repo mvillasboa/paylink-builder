@@ -101,8 +101,8 @@ export default function Auth() {
         <CardHeader className="space-y-4">
           <div className="flex items-center justify-center">
             <img 
-              src={logoWalpayColor} 
-              alt="Walpay" 
+              src={logoWpagos.url} 
+              alt="W pagos" 
               className="h-12 w-auto"
             />
           </div>
