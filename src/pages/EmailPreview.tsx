@@ -1833,7 +1833,11 @@ const templateSubjects: Record<string, string> = {
   "comercio-pago": "Pago recibido — Gs. [MONTO] de [PAGADOR_NOMBRE]",
   "comercio-inactivacion-usuario": "Tarjeta inactivada por el pagador — [PAGADOR_NOMBRE]",
   "comercio-inactivacion-rechazo": "Tarjeta inactivada por rechazo — [PAGADOR_NOMBRE]",
+  "app-verificacion-codigo": "Tu código de verificación: [CODIGO_VERIFICACION]",
+  "app-cuenta-verificada": "¡Tu cuenta en Walton Pagos está verificada!",
+  "app-registro-rechazado": "No pudimos completar tu registro en Walton Pagos",
 };
+
 
 function interpolateTemplate(template: string, data: Record<string, string>): string {
   return template.replace(/\[([A-Z_]+)\]/g, (_, key) => data[key] || `[${key}]`);
