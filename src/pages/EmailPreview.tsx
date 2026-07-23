@@ -27,7 +27,12 @@ const mockData: Record<string, string> = {
   EMAIL_WALTON: "soporte@waltonpagos.com",
   OPERACION_ID: "WP-2026-000184573",
   CONCEPTO: "Consulta odontológica",
+  NOMBRE_USUARIO: "Malena Pereira",
+  EMAIL_USUARIO: "malena.pereira@email.com",
+  CODIGO_VERIFICACION: "482 913",
+  MOTIVO_RECHAZO: "No pudimos validar la autenticidad de la imagen de tu documento. La foto del anverso presenta reflejos que impiden verificar los datos.",
 };
+
 
 const emailTemplates: Record<string, string> = {
   "link-suscripcion": `<!DOCTYPE html>
