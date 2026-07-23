@@ -1879,6 +1879,10 @@ export default function EmailPreview() {
             <option value="comercio-pago">08 — [Comercio] Confirmación de pago</option>
             <option value="comercio-inactivacion-usuario">09 — [Comercio] Inactivación por el pagador</option>
             <option value="comercio-inactivacion-rechazo">10 — [Comercio] Inactivación por rechazo</option>
+            <option value="app-verificacion-codigo">11 — [App] Código de verificación de registro</option>
+            <option value="app-cuenta-verificada">12 — [App] Cuenta verificada</option>
+            <option value="app-registro-rechazado">13 — [App] Registro rechazado con motivo</option>
+
           </select>
         </div>
 
