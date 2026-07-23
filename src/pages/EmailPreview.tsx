@@ -1796,7 +1796,7 @@ const emailTemplates: Record<string, string> = {
 
               <div class="info-box">
                 <p class="info-title">¿Necesitás ayuda?</p>
-                <p class="info-text">Escribinos por WhatsApp al <a href="https://wa.me/[WHATSAPP_WALTON]">[WHATSAPP_WALTON]</a> o al correo <a href="mailto:[EMAIL_WALTON]">[EMAIL_WALTON]</a>. Nuestro equipo puede orientarte sobre qué corregir.</p>
+                <p class="info-text">Escribinos por WhatsApp al <a href="https://wa.me/[WHATSAPP_WALTON]">[WHATSAPP_WALTON]</a>. Nuestro equipo puede orientarte sobre qué corregir.</p>
               </div>
 
               <div class="info-box">
@@ -1808,7 +1808,7 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
               <p class="footer-text">Este correo fue enviado a [EMAIL_USUARIO].</p>
-              <p class="footer-institutional">Walton Pagos S.A. — Plataforma tecnológica de medios de pago.</p>
+              <p class="footer-institutional">Walton Capital S.A. — Plataforma tecnológica de medios de pago.</p>
             </td>
           </tr>
         </table>
