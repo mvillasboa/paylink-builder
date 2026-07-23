@@ -1685,7 +1685,7 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="content" style="padding: 32px;">
               <div class="success-icon-wrap"><span class="success-icon">✓</span></div>
-              <h1 class="heading">¡Tu cuenta está lista!</h1>
+              <h1 class="heading">¡Tu cuenta está verificada!</h1>
               <p class="body-text" style="text-align:center;">
                 Hola <strong style="color:#0a1929;">[NOMBRE_USUARIO]</strong>, verificamos correctamente tu identidad y activamos tu cuenta en Walton Pagos.
               </p>
@@ -1700,7 +1700,7 @@ const emailTemplates: Record<string, string> = {
 
               <div class="info-box">
                 <p class="info-title">Ya podés</p>
-                <p class="info-text">Registrar tus tarjetas, autorizar suscripciones con comercios y consultar el historial de pagos desde la app.</p>
+                <p class="info-text">Consultar suscripciones, verificar tus pagos y autorizar suscripciones con comercios.</p>
               </div>
 
               <div class="info-box">
@@ -1712,7 +1712,7 @@ const emailTemplates: Record<string, string> = {
           <tr>
             <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
               <p class="footer-text">Este correo fue enviado a [EMAIL_USUARIO].</p>
-              <p class="footer-institutional">Walton Pagos S.A. — Plataforma tecnológica de medios de pago.</p>
+              <p class="footer-institutional">Walton Capital S.A. — Plataforma tecnológica de medios de pago.</p>
             </td>
           </tr>
         </table>
