@@ -27,7 +27,12 @@ const mockData: Record<string, string> = {
   EMAIL_WALTON: "soporte@waltonpagos.com",
   OPERACION_ID: "WP-2026-000184573",
   CONCEPTO: "Consulta odontológica",
+  NOMBRE_USUARIO: "Malena Pereira",
+  EMAIL_USUARIO: "malena.pereira@email.com",
+  CODIGO_VERIFICACION: "482 913",
+  MOTIVO_RECHAZO: "No pudimos validar la autenticidad de la imagen de tu documento. La foto del anverso presenta reflejos que impiden verificar los datos.",
 };
+
 
 const emailTemplates: Record<string, string> = {
   "link-suscripcion": `<!DOCTYPE html>
@@ -1543,7 +1548,279 @@ const emailTemplates: Record<string, string> = {
 </body>
 </html>
 `,
+  "app-verificacion-codigo": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Tu código de verificación</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; overflow: hidden; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #ffffff; padding: 24px 32px; text-align: center; }
+    .status-bar { background-color: #e6f7fa; border-left: 4px solid #14b8d4; padding: 12px 32px; }
+    .status-text { color: #0a1929; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 32px; }
+    .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 12px 0; }
+    .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 24px 0; }
+    .code-box { background-color: #0a1929; border-radius: 10px; padding: 28px 20px; text-align: center; margin: 8px 0 24px 0; }
+    .code-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin: 0 0 10px 0; }
+    .code-value { color: #ffffff; font-size: 34px; font-weight: 700; letter-spacing: 10px; font-family: 'SF Mono', Menlo, Consolas, monospace; margin: 0; }
+    .code-expiry { color: #64748b; font-size: 12px; margin: 12px 0 0 0; }
+    .info-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 0 0 12px 0; }
+    .info-title { color: #0a1929; font-size: 13px; font-weight: 700; margin: 0 0 6px 0; }
+    .info-text { color: #475569; font-size: 13px; line-height: 1.6; margin: 0; }
+    .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.6; margin: 0 0 6px 0; }
+    .footer-institutional { color: #94a3b8; font-size: 10px; line-height: 1.6; margin: 0; font-style: italic; }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+      .code-value { font-size: 28px !important; letter-spacing: 6px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preheader">Tu código de verificación para completar el registro en Walton Pagos.</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <tr>
+            <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;margin:0 auto;" />
+            </td>
+          </tr>
+          <tr>
+            <td class="status-bar" style="background-color: #e6f7fa; border-left: 4px solid #14b8d4; padding: 12px 32px;">
+              <div class="status-text">Código de verificación</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content" style="padding: 32px;">
+              <h1 class="heading">Confirmá tu dirección de correo</h1>
+              <p class="body-text">
+                Hola <strong style="color:#0a1929;">[NOMBRE_USUARIO]</strong>, para continuar con la creación de tu cuenta en la app de Walton Pagos, ingresá el siguiente código de 6 dígitos en la pantalla de verificación:
+              </p>
+
+              <div class="code-box">
+                <p class="code-label">Tu código</p>
+                <p class="code-value">[CODIGO_VERIFICACION]</p>
+                <p class="code-expiry">Válido por 10 minutos</p>
+              </div>
+
+              <div class="info-box">
+                <p class="info-title">¿No solicitaste este código?</p>
+                <p class="info-text">Si no iniciaste el registro en Walton Pagos, ignorá este correo. Tu dirección no será dada de alta sin la verificación.</p>
+              </div>
+
+              <div class="info-box">
+                <p class="info-title">Nunca compartas este código</p>
+                <p class="info-text">Walton Pagos nunca te va a solicitar este código por teléfono, WhatsApp ni redes sociales. Es de uso personal e intransferible.</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p class="footer-text">Este correo fue enviado a [EMAIL_USUARIO].</p>
+              <p class="footer-institutional">Walton Pagos S.A. — Plataforma tecnológica de medios de pago.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
+  "app-cuenta-verificada": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Tu cuenta fue verificada</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; overflow: hidden; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #ffffff; padding: 24px 32px; text-align: center; }
+    .status-bar { background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 12px 32px; }
+    .status-text { color: #15803d; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 32px; }
+    .success-icon-wrap { text-align: center; margin: 0 0 20px 0; }
+    .success-icon { display: inline-block; width: 64px; height: 64px; line-height: 64px; border-radius: 50%; background-color: #20c997; color: #ffffff; font-size: 34px; font-weight: 700; text-align: center; }
+    .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 12px 0; text-align: center; }
+    .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
+    .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 16px; margin: 0 0 20px 0; }
+    .info-box { background-color: #f1f5f9; border-left: 3px solid #14b8d4; padding: 14px 18px; margin: 0 0 12px 0; }
+    .info-title { color: #0a1929; font-size: 13px; font-weight: 700; margin: 0 0 4px 0; }
+    .info-text { color: #475569; font-size: 13px; line-height: 1.6; margin: 0; }
+    .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.6; margin: 0 0 6px 0; }
+    .footer-institutional { color: #94a3b8; font-size: 10px; line-height: 1.6; margin: 0; font-style: italic; }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preheader">Confirmamos que tu identidad fue verificada. Tu cuenta ya está activa.</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <tr>
+            <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;margin:0 auto;" />
+            </td>
+          </tr>
+          <tr>
+            <td class="status-bar" style="background-color: #ecfdf5; border-left: 4px solid #16a34a; padding: 12px 32px;">
+              <div class="status-text">Cuenta verificada</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content" style="padding: 32px;">
+              <div class="success-icon-wrap"><span class="success-icon">✓</span></div>
+              <h1 class="heading">¡Tu cuenta está lista!</h1>
+              <p class="body-text" style="text-align:center;">
+                Hola <strong style="color:#0a1929;">[NOMBRE_USUARIO]</strong>, verificamos correctamente tu identidad y activamos tu cuenta en Walton Pagos.
+              </p>
+
+              <div class="details-box">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Titular</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[NOMBRE_USUARIO]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Email</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[EMAIL_USUARIO]</td></tr></table></td></tr>
+                  <tr><td style="padding: 10px 0;"><table role="presentation" width="100%"><tr><td style="color:#94a3b8;font-size:12px;font-weight:600;">Fecha de verificación</td><td align="right" style="color:#0a1929;font-size:13px;font-weight:600;">[FECHA]</td></tr></table></td></tr>
+                </table>
+              </div>
+
+              <div class="info-box">
+                <p class="info-title">Ya podés</p>
+                <p class="info-text">Registrar tus tarjetas, autorizar suscripciones con comercios y consultar el historial de pagos desde la app.</p>
+              </div>
+
+              <div class="info-box">
+                <p class="info-title">¿No fuiste vos?</p>
+                <p class="info-text">Si no reconocés esta activación, escribinos por WhatsApp al <a href="https://wa.me/[WHATSAPP_WALTON]" style="color:#14b8d4;text-decoration:none;font-weight:600;">[WHATSAPP_WALTON]</a>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p class="footer-text">Este correo fue enviado a [EMAIL_USUARIO].</p>
+              <p class="footer-institutional">Walton Pagos S.A. — Plataforma tecnológica de medios de pago.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
+  "app-registro-rechazado": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>No pudimos completar tu registro</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; overflow: hidden; }
+    .wrapper { width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+    .header { background-color: #ffffff; padding: 24px 32px; text-align: center; }
+    .status-bar { background-color: #fef3c7; border-left: 4px solid #d97706; padding: 12px 32px; }
+    .status-text { color: #92400e; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .content { padding: 32px; }
+    .heading { color: #0a1929; font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 12px 0; }
+    .body-text { color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; }
+    .section-label { color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 8px 0; }
+    .reason-box { background-color: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706; border-radius: 6px; padding: 16px 20px; margin: 0 0 24px 0; }
+    .reason-text { color: #78350f; font-size: 14px; line-height: 1.6; margin: 0; }
+    .cta-wrapper { text-align: center; margin: 12px 0 24px 0; }
+    .cta-button { display: inline-block; background-color: #0a1929; color: #ffffff !important; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 6px; text-align: center; }
+    .info-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin: 0 0 12px 0; }
+    .info-title { color: #0a1929; font-size: 13px; font-weight: 700; margin: 0 0 6px 0; }
+    .info-text { color: #475569; font-size: 13px; line-height: 1.6; margin: 0; }
+    .info-text a { color: #14b8d4; text-decoration: none; font-weight: 600; }
+    .footer { background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .footer-text { color: #94a3b8; font-size: 11px; line-height: 1.6; margin: 0 0 6px 0; }
+    .footer-institutional { color: #94a3b8; font-size: 10px; line-height: 1.6; margin: 0; font-style: italic; }
+    @media screen and (max-width: 600px) {
+      .content, .header, .status-bar, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+      .cta-button { display: block !important; width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preheader">No pudimos completar la verificación de tu cuenta. Revisá los detalles y volvé a intentarlo.</div>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px 0; background-color: #f4f6f8;">
+        <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px;">
+          <tr>
+            <td class="header" style="background-color: #ffffff; padding: 24px 32px; text-align: center;">
+              <img src="/__l5e/assets-v1/980136b7-7c3a-4e6a-bb09-b9162db9cdd8/walton-pagos-logo-wordmark.png" alt="Walton Pagos" width="180" height="32" style="display:block;border:0;outline:none;height:32px;width:180px;margin:0 auto;" />
+            </td>
+          </tr>
+          <tr>
+            <td class="status-bar" style="background-color: #fef3c7; border-left: 4px solid #d97706; padding: 12px 32px;">
+              <div class="status-text">Registro no completado</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content" style="padding: 32px;">
+              <h1 class="heading">No pudimos activar tu cuenta</h1>
+              <p class="body-text">
+                Hola <strong style="color:#0a1929;">[NOMBRE_USUARIO]</strong>, revisamos la información que enviaste para el registro en Walton Pagos y, por el momento, no pudimos completar la verificación de tu identidad.
+              </p>
+
+              <p class="section-label">Motivo</p>
+              <div class="reason-box">
+                <p class="reason-text">[MOTIVO_RECHAZO]</p>
+              </div>
+
+              <p class="body-text">
+                Podés volver a intentarlo desde la app corrigiendo los datos o imágenes indicados. El proceso completo toma unos pocos minutos.
+              </p>
+
+              <div class="cta-wrapper">
+                <a href="[LINK]" class="cta-button">Reintentar registro</a>
+              </div>
+
+              <div class="info-box">
+                <p class="info-title">¿Necesitás ayuda?</p>
+                <p class="info-text">Escribinos por WhatsApp al <a href="https://wa.me/[WHATSAPP_WALTON]">[WHATSAPP_WALTON]</a> o al correo <a href="mailto:[EMAIL_WALTON]">[EMAIL_WALTON]</a>. Nuestro equipo puede orientarte sobre qué corregir.</p>
+              </div>
+
+              <div class="info-box">
+                <p class="info-title">Tus datos están protegidos</p>
+                <p class="info-text">La información y las imágenes cargadas se conservan de forma segura únicamente para completar la verificación de identidad, conforme a la normativa vigente.</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" style="background-color: #f4f6f8; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p class="footer-text">Este correo fue enviado a [EMAIL_USUARIO].</p>
+              <p class="footer-institutional">Walton Pagos S.A. — Plataforma tecnológica de medios de pago.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`,
 };
+
 
 const templateSubjects: Record<string, string> = {
   "link-suscripcion": "[COMERCIO] te invita a registrar tu tarjeta",
@@ -1556,7 +1833,11 @@ const templateSubjects: Record<string, string> = {
   "comercio-pago": "Pago recibido — Gs. [MONTO] de [PAGADOR_NOMBRE]",
   "comercio-inactivacion-usuario": "Tarjeta inactivada por el pagador — [PAGADOR_NOMBRE]",
   "comercio-inactivacion-rechazo": "Tarjeta inactivada por rechazo — [PAGADOR_NOMBRE]",
+  "app-verificacion-codigo": "Tu código de verificación: [CODIGO_VERIFICACION]",
+  "app-cuenta-verificada": "¡Tu cuenta en Walton Pagos está verificada!",
+  "app-registro-rechazado": "No pudimos completar tu registro en Walton Pagos",
 };
+
 
 function interpolateTemplate(template: string, data: Record<string, string>): string {
   return template.replace(/\[([A-Z_]+)\]/g, (_, key) => data[key] || `[${key}]`);
@@ -1598,6 +1879,10 @@ export default function EmailPreview() {
             <option value="comercio-pago">08 — [Comercio] Confirmación de pago</option>
             <option value="comercio-inactivacion-usuario">09 — [Comercio] Inactivación por el pagador</option>
             <option value="comercio-inactivacion-rechazo">10 — [Comercio] Inactivación por rechazo</option>
+            <option value="app-verificacion-codigo">11 — [App] Código de verificación de registro</option>
+            <option value="app-cuenta-verificada">12 — [App] Cuenta verificada</option>
+            <option value="app-registro-rechazado">13 — [App] Registro rechazado con motivo</option>
+
           </select>
         </div>
 
