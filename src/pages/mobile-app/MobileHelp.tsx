@@ -1,87 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {
-  ChevronLeft,
-  MessageCircle,
-  Search,
-  CreditCard,
-  Repeat,
-  Receipt,
-  ShieldCheck,
-} from "lucide-react";
+import { ChevronLeft, MessageCircle, Search } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  helpCategories,
+  helpFaqs,
+  helpSchedule,
+  helpWhatsAppUrl,
+} from "@/data/helpContent";
 
-const WHATSAPP_URL = "https://wa.me/595981234567?text=Hola,%20necesito%20ayuda%20con%20mi%20cuenta";
-
-const categories = [
-  { icon: CreditCard, label: "Tarjetas" },
-  { icon: Repeat, label: "Suscripciones" },
-  { icon: Receipt, label: "Pagos" },
-  { icon: ShieldCheck, label: "Seguridad" },
-];
-
-const faqs = [
-  {
-    category: "Tarjetas",
-    question: "¿Cómo registro una tarjeta para pagos recurrentes?",
-    answer:
-      "Ingresá al link de suscripción que te envía el comercio, completá los datos de tu tarjeta y confirmá. Vas a recibir un correo de confirmación y la tarjeta aparecerá en la sección Tarjetas.",
-  },
-  {
-    category: "Tarjetas",
-    question: "¿Cómo inactivo una tarjeta?",
-    answer:
-      "Entrá a Tarjetas, seleccioná la tarjeta y elegí 'Inactivar'. La tarjeta dejará de usarse para cobros recurrentes, pero seguís siendo responsable de los servicios ya contratados con el comercio.",
-  },
-  {
-    category: "Suscripciones",
-    question: "¿Puedo cancelar una suscripción desde la app?",
-    answer:
-      "Podés inactivar el medio de pago desde la app. La baja del servicio se gestiona directamente con el comercio, ya que la relación contractual es con ellos.",
-  },
-  {
-    category: "Suscripciones",
-    question: "¿Qué pasa si el comercio cambia el monto?",
-    answer:
-      "Recibirás una notificación y un correo para autorizar el nuevo monto. El cobro no se realiza hasta que apruebes el cambio.",
-  },
-  {
-    category: "Pagos",
-    question: "¿Por qué falló mi último cobro?",
-    answer:
-      "Los motivos más comunes son fondos insuficientes, tarjeta vencida o bloqueo del banco emisor. Verificá con tu banco y actualizá la tarjeta desde la sección Tarjetas.",
-  },
-  {
-    category: "Pagos",
-    question: "¿Dónde veo mis comprobantes?",
-    answer:
-      "En la sección Pagos encontrás el historial completo. Cada pago exitoso también se envía por correo electrónico.",
-  },
-  {
-    category: "Seguridad",
-    question: "¿Mis datos de tarjeta están seguros?",
-    answer:
-      "Nunca almacenamos el número completo de tu tarjeta. Los datos se tokenizan bajo estándares PCI DSS y solo se muestran los últimos 4 dígitos.",
-  },
-  {
-    category: "Seguridad",
-    question: "No reconozco un cobro, ¿qué hago?",
-    answer:
-      "Escribinos por WhatsApp desde esta pantalla indicando la fecha y el monto. Nuestro equipo revisará la operación y te acompañará en el reclamo.",
-  },
-];
 
 export default function MobileHelp() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
 
-  const filtered = faqs.filter((f) => {
+  const filtered = helpFaqs.filter((f) => {
     const matchesQuery =
       !query ||
       f.question.toLowerCase().includes(query.toLowerCase()) ||
@@ -121,7 +60,7 @@ export default function MobileHelp() {
 
       <section className="px-5 mt-4">
         <div className="flex gap-2 overflow-x-auto pb-1">
-          {categories.map((c) => {
+          {helpCategories.map((c) => {
             const Icon = c.icon;
             const active = category === c.label;
             return (
@@ -166,10 +105,10 @@ export default function MobileHelp() {
         <div className="rounded-2xl border border-border bg-card p-4">
           <p className="text-sm font-semibold">¿No encontraste lo que buscabas?</p>
           <p className="text-xs text-muted-foreground mt-1">
-            Hablá directamente con un operador. Atención de lunes a viernes de 8:00 a 18:00.
+            Hablá directamente con un operador. {helpSchedule}
           </p>
           <a
-            href={WHATSAPP_URL}
+            href={helpWhatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 w-full py-3 rounded-xl bg-[hsl(var(--mint))] text-[hsl(var(--mint-foreground))] text-sm font-semibold flex items-center justify-center gap-2"
