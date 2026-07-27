@@ -54,7 +54,7 @@ export const helpFaqs: HelpFaq[] = [
     category: "Tarjetas",
     question: "¿Cómo inactivo una tarjeta?",
     answer:
-      "Entrá a Tarjetas, seleccioná la tarjeta y elegí 'Inactivar'. La tarjeta dejará de usarse para cobros recurrentes, pero seguís siendo responsable de los servicios ya contratados con el comercio.",
+      "Entrá a Tarjetas, seleccioná la tarjeta y elegí 'Eliminar tarjeta'. La tarjeta dejará de usarse para cobros recurrentes, pero seguís siendo responsable de los servicios ya contratados con el comercio.",
   },
 
   // ── Suscripciones ───────────────────────────────────────────
@@ -63,12 +63,6 @@ export const helpFaqs: HelpFaq[] = [
     question: "¿Puedo cancelar una suscripción desde la app?",
     answer:
       "Podés inactivar el medio de pago desde la app. La baja del servicio se gestiona directamente con el comercio, ya que la relación contractual es con ellos.",
-  },
-  {
-    category: "Suscripciones",
-    question: "¿Qué pasa si el comercio cambia el monto?",
-    answer:
-      "Recibirás una notificación y un correo para autorizar el nuevo monto. El cobro no se realiza hasta que apruebes el cambio.",
   },
 
   // ── Pagos ───────────────────────────────────────────────────
