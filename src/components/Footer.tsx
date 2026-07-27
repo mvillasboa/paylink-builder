@@ -1,4 +1,4 @@
-import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
+import logoWpagos from "@/assets/wpagos-logo-mark.png.asset.json";
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-primary text-primary-foreground py-12 border-t border-primary-light/20">
@@ -7,8 +7,8 @@ export const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="bg-white rounded-xl px-4 py-3 inline-flex">
-                <img alt="Wpagos" className="h-16 w-auto" src={logoWpagos.url} />
+              <div className="bg-white rounded-lg px-4 py-3 inline-flex">
+                <img alt="Wpagos" className="h-9 w-auto" src={logoWpagos.url} />
               </div>
             </div>
 

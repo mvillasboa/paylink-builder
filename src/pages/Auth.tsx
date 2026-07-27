@@ -9,7 +9,7 @@ import { Database } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
-import logoWpagos from '@/assets/wpagos-logo.png.asset.json';
+import logoWpagos from '@/assets/wpagos-logo-mark.png.asset.json';
 
 const authSchema = z.object({
   email: z.string().trim().email({ message: "Email inválido" }).max(255, { message: "Email muy largo" }),
@@ -103,7 +103,7 @@ export default function Auth() {
             <img 
               src={logoWpagos.url} 
               alt="Wpagos" 
-              className="h-12 w-auto"
+              className="h-9 w-auto"
             />
 
           </div>

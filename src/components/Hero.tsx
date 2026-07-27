@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
+import logoWpagos from "@/assets/wpagos-logo-mark.png.asset.json";
 export const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
       {/* Background Pattern */}
