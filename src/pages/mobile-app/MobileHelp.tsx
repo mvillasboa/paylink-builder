@@ -60,7 +60,7 @@ export default function MobileHelp() {
 
       <section className="px-5 mt-4">
         <div className="flex gap-2 overflow-x-auto pb-1">
-          {categories.map((c) => {
+          {helpCategories.map((c) => {
             const Icon = c.icon;
             const active = category === c.label;
             return (
