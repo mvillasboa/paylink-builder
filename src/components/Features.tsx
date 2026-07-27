@@ -31,7 +31,7 @@ const features = [
   {
     icon: Lock,
     title: "Seguridad Total",
-    description: "Certificación PCI DSS Nivel 1 y encriptación de extremo a extremo. Tus datos y los de tus clientes protegidos.",
+    description: "No almacenamos datos sensibles de tarjeta: el registro se realiza mediante tokenización con el procesador de pagos.",
   },
 ];
 

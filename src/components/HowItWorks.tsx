@@ -13,7 +13,7 @@ const steps = [
     icon: CreditCard,
     number: "02",
     title: "Cliente Registra",
-    description: "Tu cliente registra su tarjeta de forma segura una sola vez. Encriptación de extremo a extremo.",
+    description: "Tu cliente registra su tarjeta una sola vez a través del procesador de pagos.",
   },
   {
     icon: Settings,

@@ -84,7 +84,7 @@ export const helpFaqs: HelpFaq[] = [
     category: "Seguridad",
     question: "¿Mis datos de tarjeta están seguros?",
     answer:
-      "Nunca almacenamos el número completo de tu tarjeta. Los datos se tokenizan bajo estándares PCI DSS y solo se muestran los últimos 4 dígitos.",
+      "Nunca almacenamos el número completo de tu tarjeta ni el CVV. El registro se realiza mediante tokenización con el procesador de pagos y en la app solo se muestran los últimos 4 dígitos.",
   },
   {
     category: "Seguridad",

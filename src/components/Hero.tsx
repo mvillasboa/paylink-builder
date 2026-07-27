@@ -51,11 +51,11 @@ export const Hero = () => {
           <div className="flex items-center gap-6 justify-center">
             <div className="flex items-center gap-2 text-primary-foreground/70">
               <Shield className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium">Certificación PCI DSS</span>
+              <span className="text-sm font-medium">No almacenamos datos de tarjeta</span>
             </div>
             <div className="h-4 w-px bg-primary-foreground/20" />
             <div className="text-sm font-medium text-primary-foreground/70">
-              Encriptación de extremo a extremo
+              Tokenización con el procesador de pagos
             </div>
           </div>
         </div>
