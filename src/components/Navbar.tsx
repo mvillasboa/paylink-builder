@@ -32,7 +32,7 @@ export const Navbar = () => {
             <img 
               src={logoWpagos.url} 
               alt="Wpagos - Plataforma de Pagos B2B" 
-              className="h-7 w-auto"
+              className="h-8 w-auto"
             />
 
           </a>
