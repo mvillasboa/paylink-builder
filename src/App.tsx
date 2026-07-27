@@ -39,6 +39,7 @@ import MobileCards from "./pages/mobile-app/MobileCards";
 import MobileSubscriptions from "./pages/mobile-app/MobileSubscriptions";
 import MobilePayments from "./pages/mobile-app/MobilePayments";
 import MobileProfile from "./pages/mobile-app/MobileProfile";
+import MobileHelp from "./pages/mobile-app/MobileHelp";
 import MobileLogin from "./pages/mobile-app/MobileLogin";
 import MobileSignup from "./pages/mobile-app/onboarding/MobileSignup";
 import MobileVerifyEmail from "./pages/mobile-app/onboarding/MobileVerifyEmail";
@@ -99,6 +100,8 @@ const App = () => (
               <Route path="subscriptions" element={<MobileSubscriptions />} />
               <Route path="payments" element={<MobilePayments />} />
               <Route path="profile" element={<MobileProfile />} />
+              <Route path="help" element={<MobileHelp />} />
+
             </Route>
             <Route path="/docs/java-migration" element={<JavaMigrationGuide />} />
             <Route path="/docs/database-schema" element={<DatabaseSchemaGuide />} />

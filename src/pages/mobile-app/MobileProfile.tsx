@@ -1,4 +1,5 @@
 import { MobileHeader } from "@/components/mobile-app/MobileHeader";
+import { useNavigate } from "react-router-dom";
 import { ChevronRight, Bell, Shield, HelpCircle, FileText, LogOut, Globe } from "lucide-react";
 
 const sections = [
@@ -13,13 +14,14 @@ const sections = [
   {
     title: "Soporte",
     items: [
-      { icon: HelpCircle, label: "Centro de ayuda" },
+      { icon: HelpCircle, label: "Centro de ayuda", to: "/app/help" },
       { icon: FileText, label: "Términos y condiciones" },
     ],
   },
 ];
 
 export default function MobileProfile() {
+  const navigate = useNavigate();
   return (
     <div className="pb-4">
       <MobileHeader title="Perfil" />
@@ -49,6 +51,7 @@ export default function MobileProfile() {
                 <li key={item.label}>
                   <button
                     type="button"
+                    onClick={() => "to" in item && item.to && navigate(item.to as string)}
                     className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-muted/40 transition"
                   >
                     <Icon className="h-4 w-4 text-muted-foreground" />
