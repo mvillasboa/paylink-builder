@@ -105,10 +105,10 @@ export default function MobileHelp() {
         <div className="rounded-2xl border border-border bg-card p-4">
           <p className="text-sm font-semibold">¿No encontraste lo que buscabas?</p>
           <p className="text-xs text-muted-foreground mt-1">
-            Hablá directamente con un operador. Atención de lunes a viernes de 8:00 a 18:00.
+            Hablá directamente con un operador. {helpSchedule}
           </p>
           <a
-            href={WHATSAPP_URL}
+            href={helpWhatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 w-full py-3 rounded-xl bg-[hsl(var(--mint))] text-[hsl(var(--mint-foreground))] text-sm font-semibold flex items-center justify-center gap-2"
