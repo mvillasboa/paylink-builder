@@ -51,6 +51,7 @@ export default function MobileProfile() {
                 <li key={item.label}>
                   <button
                     type="button"
+                    onClick={() => "to" in item && item.to && navigate(item.to as string)}
                     className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-muted/40 transition"
                   >
                     <Icon className="h-4 w-4 text-muted-foreground" />
