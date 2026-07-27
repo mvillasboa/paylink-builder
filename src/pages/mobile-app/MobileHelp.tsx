@@ -20,7 +20,7 @@ export default function MobileHelp() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
 
-  const filtered = faqs.filter((f) => {
+  const filtered = helpFaqs.filter((f) => {
     const matchesQuery =
       !query ||
       f.question.toLowerCase().includes(query.toLowerCase()) ||
