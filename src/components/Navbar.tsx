@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
-import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
+import logoWpagos from "@/assets/wpagos-logo-mark.png.asset.json";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export const Navbar = () => {
             <img 
               src={logoWpagos.url} 
               alt="Wpagos - Plataforma de Pagos B2B" 
-              className="h-10 w-auto"
+              className="h-7 w-auto"
             />
 
           </a>

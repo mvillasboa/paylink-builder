@@ -50,7 +50,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import logoWpagos from "@/assets/wpagos-logo.png.asset.json";
+import logoWpagos from "@/assets/wpagos-logo-mark.png.asset.json";
 
 const menuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -104,7 +104,7 @@ export function DashboardLayout() {
                 src={logoWpagos.url} 
                 alt="Wpagos" 
 
-                className="h-10 w-auto"
+                className="h-7 w-auto"
               />
               <div>
                 <h2 className="font-bold text-lg text-foreground">Walpay</h2>
