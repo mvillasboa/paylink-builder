@@ -1,4 +1,5 @@
 import { MobileHeader } from "@/components/mobile-app/MobileHeader";
+import { useNavigate } from "react-router-dom";
 import { ChevronRight, Bell, Shield, HelpCircle, FileText, LogOut, Globe } from "lucide-react";
 
 const sections = [
@@ -13,13 +14,14 @@ const sections = [
   {
     title: "Soporte",
     items: [
-      { icon: HelpCircle, label: "Centro de ayuda" },
+      { icon: HelpCircle, label: "Centro de ayuda", to: "/app/help" },
       { icon: FileText, label: "Términos y condiciones" },
     ],
   },
 ];
 
 export default function MobileProfile() {
+  const navigate = useNavigate();
   return (
     <div className="pb-4">
       <MobileHeader title="Perfil" />
