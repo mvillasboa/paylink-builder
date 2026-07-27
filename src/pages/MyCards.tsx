@@ -194,8 +194,8 @@ export default function MyCards() {
                   Protección de Datos
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Toda tu información está encriptada con tecnología de última generación. 
-                  Nunca almacenamos tu número completo de tarjeta ni CVV.
+                  Nunca almacenamos tu número completo de tarjeta ni el CVV: el registro se realiza 
+                  mediante tokenización con el procesador de pagos.
                 </p>
               </div>
             </div>
@@ -337,7 +337,7 @@ export default function MyCards() {
               <div>
                 <p className="text-sm font-medium text-foreground">Seguridad Garantizada</p>
                 <p className="text-xs text-muted-foreground">
-                  Tus tarjetas están protegidas con encriptación de nivel bancario
+                  No almacenamos los datos sensibles de tu tarjeta
                 </p>
               </div>
             </div>

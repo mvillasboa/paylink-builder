@@ -17,10 +17,10 @@ const features = [
   {
     icon: Shield,
     title: "Seguridad Garantizada",
-    description: "Protección de nivel bancario con cifrado end-to-end y cumplimiento PCI DSS.",
+    description: "Los datos sensibles de tarjeta no se almacenan: se tokenizan con el procesador de pagos.",
     benefits: [
-      "Certificación PCI DSS Level 1",
-      "Cifrado SSL/TLS",
+      "Sin almacenamiento de datos de tarjeta",
+      "Conexión cifrada SSL/TLS",
       "Detección de fraudes automática"
     ]
   },
