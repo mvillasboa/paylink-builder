@@ -22,8 +22,8 @@ export const Hero = () => {
         <div className="max-w-4xl mx-auto text-center space-y-6 animate-slide-up">
           {/* Prominent Logo */}
           <div className="flex justify-center">
-            <div className="bg-white rounded-2xl px-6 py-4 shadow-strong inline-flex">
-              <img alt="Wpagos" className="h-20 sm:h-24 lg:h-28 w-auto" src={logoWpagos.url} />
+            <div className="bg-white rounded-2xl px-8 py-5 shadow-strong inline-flex items-center">
+              <img alt="Wpagos" className="h-10 sm:h-12 lg:h-14 w-auto" src={logoWpagos.url} />
             </div>
           </div>
 

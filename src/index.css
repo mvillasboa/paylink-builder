@@ -18,44 +18,44 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 30% 12%;
 
-    /* Primary - Deep Professional Blue */
-    --primary: 215 85% 16%;
+    /* Primary - Wpagos brand blue (#064686) */
+    --primary: 210 91% 27%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 215 75% 35%;
+    --primary-light: 210 70% 42%;
     
-    /* Secondary - Mid Blue matching logo */
-    --secondary: 217 60% 40%;
+    /* Secondary - Lighter brand blue */
+    --secondary: 210 72% 38%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 217 55% 55%;
+    --secondary-light: 210 65% 55%;
 
-    /* Muted - Subtle Grays */
-    --muted: 215 15% 96%;
-    --muted-foreground: 215 15% 45%;
+    /* Muted - Subtle Grays with brand tint */
+    --muted: 210 20% 96%;
+    --muted-foreground: 210 14% 45%;
 
-    /* Accent - Success Green */
-    --accent: 155 75% 50%;
+    /* Accent - Mint (#20c997) from the app mark */
+    --accent: 161 63% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 15% 90%;
-    --input: 215 15% 90%;
-    --ring: 215 85% 16%;
+    --border: 210 18% 90%;
+    --input: 210 18% 90%;
+    --ring: 210 91% 27%;
 
     --radius: 0.75rem;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(215 85% 16%) 0%, hsl(217 60% 30%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(215 85% 12%) 0%, hsl(217 65% 22%) 55%, hsl(217 60% 32%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(215 20% 98%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(215 25% 98%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(210 91% 27%) 0%, hsl(210 72% 38%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(212 88% 14%) 0%, hsl(210 91% 24%) 55%, hsl(210 72% 34%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
     
     /* Shadows */
-    --shadow-soft: 0 2px 20px -4px hsl(215 30% 12% / 0.08);
-    --shadow-medium: 0 8px 30px -8px hsl(215 30% 12% / 0.12);
-    --shadow-strong: 0 20px 50px -12px hsl(215 30% 12% / 0.2);
-    --shadow-glow: 0 0 60px hsl(217 60% 40% / 0.18);
+    --shadow-soft: 0 2px 20px -4px hsl(210 40% 14% / 0.08);
+    --shadow-medium: 0 8px 30px -8px hsl(210 40% 14% / 0.12);
+    --shadow-strong: 0 20px 50px -12px hsl(210 55% 14% / 0.22);
+    --shadow-glow: 0 0 60px hsl(210 72% 38% / 0.2);
 
     
     /* Transitions */
