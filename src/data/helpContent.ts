@@ -10,7 +10,7 @@ import type { LucideIcon } from "lucide-react";
 
 /** Botón de WhatsApp: número en formato internacional, sin "+" ni espacios. */
 export const helpWhatsApp = {
-  phone: "595981234567",
+  phone: "595986777222",
   message: "Hola, necesito ayuda con mi cuenta",
 };
 
@@ -20,7 +20,7 @@ export const helpWhatsAppUrl = `https://wa.me/${helpWhatsApp.phone}?text=${encod
 )}`;
 
 /** Horario de atención mostrado en el bloque de contacto. */
-export const helpSchedule = "Atención de lunes a viernes de 8:00 a 18:00.";
+export const helpSchedule = "Atención de lunes a viernes de 8:00 a 17:00.";
 
 /** Íconos disponibles por categoría. Si una categoría no está acá, usa el ícono por defecto. */
 export const helpCategoryIcons: Record<string, LucideIcon> = {
