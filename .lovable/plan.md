@@ -1,42 +1,57 @@
 ## Objetivo
 
-Poder editar los textos del Centro de Ayuda (`/app/help`) sin tocar la pantalla ni el código de la interfaz. Los textos actuales se mantienen tal cual: solo cambia dónde viven.
+Diseñar cómo se ve el **Resumen de Suscripción** que Atención al Cliente enviaría en PDF a un cliente. Solo diseño, con datos mock, sin conectar a la base.
 
-## Qué se hace
+## Cómo se verá / cómo se prueba
 
-**1. Nuevo archivo de contenido: `src/data/helpContent.ts`**
+Nueva ruta `/reporte-suscripcion` que muestra el documento en formato hoja A4 sobre fondo gris, con un botón "Descargar PDF" que abre el diálogo de impresión del navegador (guardar como PDF). Estilos de impresión para que salga limpio, sin la barra ni el fondo.
 
-Un único lugar con todo lo editable:
+## Contenido del documento (una hoja, dos si el historial es largo)
 
 ```text
-helpWhatsApp   -> número + mensaje precargado del botón de WhatsApp
-helpSchedule   -> "Atención de lunes a viernes de 8:00 a 18:00"
-helpCategories -> lista de categorías (nombre + ícono)
-helpFaqs       -> lista de preguntas: { categoría, pregunta, respuesta }
+┌──────────────────────────────────────────────┐
+│ [logo Wpagos]        Resumen de suscripción  │
+│                      Emitido: 29/07/2026     │
+├──────────────────────────────────────────────┤
+│ COMERCIO                                     │
+│ Nombre de fantasía · Razón social · RUC      │
+│ Contacto de atención del comercio            │
+├──────────────────────────────────────────────┤
+│ SUSCRIPCIÓN                                  │
+│ Referencia   Estado (Activa)                 │
+│ Concepto / detalle                           │
+│ Monto  ·  Frecuencia  ·  Día de cobro        │
+│ Inicio  ·  Próximo cobro                     │
+│ Medio de pago: VISA •••• 4242                │
+├──────────────────────────────────────────────┤
+│ PROGRESO DE CUOTAS                           │
+│ 3 de 6 pagadas   [▓▓▓░░░]   Pagado: Gs. X    │
+│                              Pendiente: Gs. Y│
+├──────────────────────────────────────────────┤
+│ CUOTAS PAGADAS                               │
+│ #  Vencimiento   Fecha de pago   Monto       │
+├──────────────────────────────────────────────┤
+│ CUOTAS PENDIENTES                            │
+│ #  Vencimiento   Monto                       │
+├──────────────────────────────────────────────┤
+│ Pie institucional: Walton Capital S.A. es la │
+│ plataforma tecnológica que procesa el cobro; │
+│ el servicio lo presta el comercio. Consultas │
+│ del servicio → comercio. WhatsApp soporte.   │
+└──────────────────────────────────────────────┘
 ```
 
-Cada entrada queda comentada y ordenada por categoría, de modo que agregar, borrar o reescribir una pregunta sea editar unas pocas líneas de texto.
+Decisiones de contenido, según lo indicado:
+- Sin cobros fallidos, sin códigos del procesador, sin notas internas, sin IDs internos (solo la referencia de la suscripción).
+- Tono claro para el cliente pagador: qué paga, a quién, cuándo y cuánto le queda.
+- Montos en Guaraníes con el formato ya usado en el proyecto.
 
-**2. `src/pages/mobile-app/MobileHelp.tsx` pasa a leer del archivo**
+## Detalles técnicos
 
-Se eliminan las constantes internas (`WHATSAPP_URL`, `categories`, `faqs`) y la pantalla las importa desde `helpContent.ts`. El diseño, buscador, filtros y acordeón quedan exactamente igual.
+- `src/data/mockSubscriptionReport.ts`: objeto mock con comercio (razón social, nombre de fantasía, RUC, contacto), suscripción (referencia, concepto, monto, frecuencia, estado, próximo cobro, tarjeta) y arreglo de cuotas con `numero`, `vencimiento`, `fechaPago`, `monto`, `estado`.
+- `src/components/reports/SubscriptionSummaryDocument.tsx`: el documento en sí (ancho A4, tipografía y tokens semánticos del design system, azul de marca en encabezados de tabla).
+- `src/pages/SubscriptionReportPreview.tsx`: envuelve el documento, botón de impresión y nota de "vista previa".
+- Estilos `@media print` en `src/index.css` (o clases utilitarias locales) para ocultar controles y forzar márgenes.
+- Ruta registrada en `src/App.tsx`.
 
-**3. Robustez ante la edición**
-
-- Las categorías se derivan de la lista de FAQs, para que borrar todas las preguntas de una categoría no deje un filtro vacío.
-- Si una FAQ usa una categoría no listada, igual se muestra (no se pierde contenido por un typo).
-- El botón de WhatsApp arma la URL a partir del número y el mensaje, sin necesidad de escribir el encoding a mano.
-
-## Cómo lo vas a editar después
-
-- **Cambiar un texto:** abrís `src/data/helpContent.ts`, editás la respuesta entre comillas.
-- **Agregar una FAQ:** copiás un bloque existente y cambiás `question` y `answer`.
-- **Quitar una FAQ:** borrás su bloque.
-- **Cambiar el WhatsApp o el horario:** una línea al inicio del archivo.
-
-También podés pedirme los cambios por chat indicando la pregunta y el nuevo texto; con todo centralizado en un archivo es una edición puntual.
-
-## Fuera de alcance
-
-- No se corrigen ni reescriben los textos actuales (pedido explícito).
-- No se crea panel de administración ni se guarda el contenido en la base de datos. Queda disponible como paso siguiente si más adelante querés que lo edite alguien sin tocar código.
+Si después querés generarlo desde el detalle de una suscripción con datos reales, el mismo componente sirve recibiendo props.

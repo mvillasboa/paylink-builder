@@ -239,3 +239,29 @@
     transform: scale(1);
   }
 }
+
+/* Print styles for the subscription summary report */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .report-sheet {
+    box-shadow: none !important;
+  }
+
+  .report-sheet section,
+  .report-sheet table {
+    break-inside: avoid;
+  }
+
+  .report-sheet thead {
+    display: table-header-group;
+  }
+}
