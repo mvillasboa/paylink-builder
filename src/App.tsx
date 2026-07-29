@@ -109,6 +109,7 @@ const App = () => (
             <Route path="/docs/database-schema" element={<DatabaseSchemaGuide />} />
             <Route path="/email-preview" element={<EmailPreview />} />
             <Route path="/reporte-suscripcion" element={<SubscriptionReportPreview />} />
+            <Route path="/reporte-suscripcion-simple" element={<SubscriptionReportSimplePreview />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
