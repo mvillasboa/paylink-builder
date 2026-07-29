@@ -34,6 +34,7 @@ import ContactPage from "./pages/ContactPage";
 import ProductLink from "./pages/ProductLink";
 import EmailPreview from "./pages/EmailPreview";
 import SubscriptionReportPreview from "./pages/SubscriptionReportPreview";
+import SubscriptionReportSimplePreview from "./pages/SubscriptionReportSimplePreview";
 import { MobileAppLayout } from "./components/mobile-app/MobileAppLayout";
 import MobileHome from "./pages/mobile-app/MobileHome";
 import MobileCards from "./pages/mobile-app/MobileCards";
@@ -108,6 +109,7 @@ const App = () => (
             <Route path="/docs/database-schema" element={<DatabaseSchemaGuide />} />
             <Route path="/email-preview" element={<EmailPreview />} />
             <Route path="/reporte-suscripcion" element={<SubscriptionReportPreview />} />
+            <Route path="/reporte-suscripcion-simple" element={<SubscriptionReportSimplePreview />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
