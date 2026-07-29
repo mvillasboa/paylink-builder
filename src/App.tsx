@@ -33,6 +33,7 @@ import PricingPage from "./pages/PricingPage";
 import ContactPage from "./pages/ContactPage";
 import ProductLink from "./pages/ProductLink";
 import EmailPreview from "./pages/EmailPreview";
+import SubscriptionReportPreview from "./pages/SubscriptionReportPreview";
 import { MobileAppLayout } from "./components/mobile-app/MobileAppLayout";
 import MobileHome from "./pages/mobile-app/MobileHome";
 import MobileCards from "./pages/mobile-app/MobileCards";
