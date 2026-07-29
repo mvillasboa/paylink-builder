@@ -106,6 +106,7 @@ const App = () => (
             <Route path="/docs/java-migration" element={<JavaMigrationGuide />} />
             <Route path="/docs/database-schema" element={<DatabaseSchemaGuide />} />
             <Route path="/email-preview" element={<EmailPreview />} />
+            <Route path="/reporte-suscripcion" element={<SubscriptionReportPreview />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
